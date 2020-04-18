@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
 
                 if (TextUtils.isEmpty(password))
-                    passwordField.setError("Password should not be empty");
+                    passwordField.setError("Password is Required");
 
 
                 if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
@@ -73,8 +73,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                progressBar.setVisibility(View.INVISIBLE);
                             } else {
-                                Toast.makeText(LoginActivity.this, "Error ! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
 
