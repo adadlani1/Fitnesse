@@ -2,8 +2,11 @@ package and.coursework.fitnesse;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,34 +16,35 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
     private TextView email;
+    private TextView name;
+    private Button signOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        email = findViewById(R.id.Email);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String hello = "Hi ";
+        email = findViewById(R.id.Email);
+        name = findViewById(R.id.Name);
+        signOut = findViewById(R.id.signoutButton);
 
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
 
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            // Name, email address, and profile photo Url
-            String emailStr = user.getEmail();
+        assert mUser != null;
+        email.setText(mUser.getEmail());
 
-            hello = hello.concat(" ").concat(Objects.requireNonNull(user.getEmail()));
-            email.setText(hello);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                onBackPressed();
+            }
+        });
 
-            // Check if user's email is verified
-            String emailVerifiedBool = String.valueOf(user.isEmailVerified());
-
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
-        }
+        Log.d("Main", "user is: " + email);
 
     }
 }
