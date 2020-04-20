@@ -48,7 +48,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/Email"
+            android:id="@+id/emailText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"

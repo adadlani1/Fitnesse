@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mAuth = FirebaseAuth.getInstance();
 
-        emailField = findViewById(R.id.Email);
+        emailField = findViewById(R.id.emailText);
         passwordField = findViewById(R.id.password);
 
         loginButton = findViewById(R.id.loginButton);
