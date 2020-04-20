@@ -1,6 +1,5 @@
 package and.coursework.fitnesse;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,8 +25,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText emailField;
     private EditText passwordField;
 
-    private Button signUpButton;
-
     private ProgressBar progressBar;
 
     @Override
@@ -37,10 +34,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        emailField = findViewById(R.id.email);
+        emailField = findViewById(R.id.Email);
         passwordField = findViewById(R.id.password);
 
-        signUpButton = findViewById(R.id.signUpButton);
+        Button signUpButton = findViewById(R.id.signUpButton);
 
         progressBar = findViewById(R.id.progressBar2);
 
