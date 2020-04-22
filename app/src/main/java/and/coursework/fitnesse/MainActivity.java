@@ -12,12 +12,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Chats");
+
 
     }
 
@@ -34,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.activity:
+                startActivity(new Intent(this, AddActivity.class));
                 return true;
 
             case R.id.profile:

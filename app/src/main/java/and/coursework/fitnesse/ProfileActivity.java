@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.Objects;
+
 public class ProfileActivity extends AppCompatActivity {
     Button signOut;
     FirebaseAuth mAuth;
@@ -75,6 +77,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Profile");
 
 
     }
