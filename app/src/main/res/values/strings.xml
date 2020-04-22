@@ -5,4 +5,8 @@
     <string name="signout_btn">Sign Out</string>
     <string name="password_hint">Password</string>
     <string name="email_hint">Email</string>
+    <string name="profile">Profile</string>
+    <string name="home">Home</string>
+    <string name="activities">Activities</string>
+    <string name="about">About</string>
 </resources>

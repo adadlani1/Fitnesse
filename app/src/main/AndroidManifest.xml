@@ -3,13 +3,12 @@
     package="and.coursework.fitnesse">
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/logo_square"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
