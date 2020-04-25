@@ -1,6 +1,5 @@
 package and.coursework.fitnesse;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,16 +11,18 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NavUtils;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Objects;
 
@@ -40,7 +41,12 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     private String longitudeStr;
     private String latitudeStr;
 
-    private FusedLocationProviderClient client;
+    private ProgressBar progressBar;
+
+    private EditText descriptionText;
+    private EditText minutes;
+
+    private Spinner activities;
 
 
     @Override
@@ -51,7 +57,12 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Add Activity");
 
-        client = LocationServices.getFusedLocationProviderClient(this);
+        progressBar = findViewById(R.id.addActivityProgressBar);
+        descriptionText = findViewById(R.id.descriptionEditText);
+        minutes = findViewById(R.id.minutesEditText);
+        activities = findViewById(R.id.activitiesChooser);
+
+        progressBar.setVisibility(View.INVISIBLE);
 
         if (ActivityCompat.checkSelfPermission(AddActivity.this, ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
             return;
@@ -63,6 +74,27 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         assert location != null;
         onLocationChanged(location);
 
+        Button saveButton = findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                saveInformation();
+                progressBar.setVisibility(View.INVISIBLE);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                overridePendingTransition(100, R.anim.fade_in);
+            }
+        });
+
+    }
+
+    private void saveInformation() {
+        progressBar.setVisibility(View.VISIBLE);
+        String activityChosen = activities.getSelectedItem().toString();
+        String minutesExercised = minutes.getText().toString();
+        String description = descriptionText.getText().toString();
+        String msg = "Activity: " + activityChosen + "\nMinutes: " + minutesExercised + "\nLong: "
+                + longitudeStr + "\nLat: " + latitudeStr + "\nDesc: " + description;
+        Toast.makeText(AddActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -82,7 +114,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     }
 
     /*
-     *  Gesture Detector
+     *  Gesture Detector Methods
      * */
 
     @Override

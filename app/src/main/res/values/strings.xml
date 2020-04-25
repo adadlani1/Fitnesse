@@ -13,6 +13,8 @@
     <string name="minutes">Minutes</string>
     <string name="time">Time (Minutes):</string>
     <string name="location">Location:</string>
+    <string name="description">Description:</string>
+    <string name="save">Save</string>
 
     <string-array name="activities_array">
         <item>Boxercise</item>
