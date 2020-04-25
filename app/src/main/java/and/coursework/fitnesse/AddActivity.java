@@ -163,25 +163,6 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         return super.onTouchEvent(event);
     }
 
-    private void getLocation() {
-        client.getLastLocation().addOnSuccessListener(AddActivity.this, new OnSuccessListener<Location>() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onSuccess(Location location) {
-
-                if (location != null){
-                    showCoordinates();
-                } else {
-                    TextView locationViewq = findViewById(R.id.locationTextView);
-                    locationViewq.setText("No location found");
-                }
-            }
-        });
-    }
-    private void requestPermission(){
-        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
-    }
-
     @Override
     public void onLocationChanged(Location location) {
         double longitude = Math.round(location.getLongitude() * DECIMAL_PLACES_LOCATION) / DECIMAL_PLACES_LOCATION;
@@ -208,7 +189,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     private void showCoordinates() {
         TextView locationView = findViewById(R.id.locationTextView);
-        String locationText = "Location: " + latitudeStr + ", " + longitudeStr;
+        String locationText = "Current Location: " + latitudeStr + ", " + longitudeStr;
         locationView.setText(locationText);
     }
 }
