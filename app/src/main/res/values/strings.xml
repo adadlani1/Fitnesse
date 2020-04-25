@@ -9,13 +9,18 @@
     <string name="home">Home</string>
     <string name="activities">Activities</string>
     <string name="about">About</string>
-    <string name="activities_prompt">Choose an Activity</string>
+    <string name="activities_prompt">Choose an Activity:</string>
     <string name="minutes">Minutes</string>
-    <string name="time">Time (Minutes)</string>
+    <string name="time">Time (Minutes):</string>
     <string name="location">Location:</string>
 
     <string-array name="activities_array">
         <item>Boxercise</item>
+        <item>Weightlifting</item>
+        <item>Strength Training</item>
+        <item>Crossfit</item>
+        <item>High Intensity Interval Training (HIIT)</item>
+        <item>Interval Training</item>
         <item>Running</item>
         <item>Walking</item>
         <item>Badminton</item>
