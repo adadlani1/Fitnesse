@@ -15,6 +15,7 @@
     <string name="location">Location:</string>
     <string name="description">Description:</string>
     <string name="save">Save</string>
+    <string name="add_activity">Add Activity</string>
 
     <string-array name="activities_array">
         <item>Boxercise</item>

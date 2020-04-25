@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.activity:
-                startActivity(new Intent(this, AddActivity.class));
+                startActivity(new Intent(this, PerformedActivity.class));
                 return true;
 
             case R.id.profile:
