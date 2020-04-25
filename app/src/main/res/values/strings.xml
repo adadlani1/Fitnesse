@@ -9,4 +9,20 @@
     <string name="home">Home</string>
     <string name="activities">Activities</string>
     <string name="about">About</string>
+    <string name="activities_prompt">Choose an Activity</string>
+    <string name="minutes">Minutes</string>
+    <string name="time">Time (Minutes)</string>
+    <string name="location">Location:</string>
+
+    <string-array name="activities_array">
+        <item>Boxercise</item>
+        <item>Running</item>
+        <item>Walking</item>
+        <item>Badminton</item>
+        <item>Cricket</item>
+        <item>Football</item>
+        <item>Workout</item>
+        <item>Other</item>
+    </string-array>
+
 </resources>
