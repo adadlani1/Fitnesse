@@ -1,5 +1,6 @@
 package and.coursework.fitnesse;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -7,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +25,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NavUtils;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
@@ -48,6 +55,13 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     private Spinner activities;
 
+    User user;
+    Activity activity;
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    private String userUID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +78,20 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
         progressBar.setVisibility(View.INVISIBLE);
 
-        if (ActivityCompat.checkSelfPermission(AddActivity.this, ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+        user = new User();
+        activity = new Activity();
+
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
+        assert mUser != null;
+        userUID = mUser.getUid();
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userUID).child("Activities");
+
+
+        if (ActivityCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
             return;
         }
 
@@ -78,8 +105,9 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                saveInformation();
-                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                Log.e("ERRORAN", "grteuiogr");
+//                saveInformationToFirebase();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(100, R.anim.fade_in);
             }
@@ -87,14 +115,24 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     }
 
-    private void saveInformation() {
+    private void saveInformationToFirebase() {
         progressBar.setVisibility(View.VISIBLE);
         String activityChosen = activities.getSelectedItem().toString();
         String minutesExercised = minutes.getText().toString();
         String description = descriptionText.getText().toString();
-        String msg = "Activity: " + activityChosen + "\nMinutes: " + minutesExercised + "\nLong: "
-                + longitudeStr + "\nLat: " + latitudeStr + "\nDesc: " + description;
-        Toast.makeText(AddActivity.this, msg, Toast.LENGTH_SHORT).show();
+
+        Log.d("Longitude:", longitudeStr);
+
+        activity.setActivity(activityChosen);
+        activity.setMinutes(minutesExercised);
+        activity.setDescription(description);
+        activity.setLatitude(latitudeStr);
+        activity.setLongitude(longitudeStr);
+
+        user.setActivities(activityChosen);
+        mDatabase.push().setValue(activity);
+
+        Toast.makeText(AddActivity.this, "Saved", Toast.LENGTH_SHORT).show();
     }
 
     @Override
