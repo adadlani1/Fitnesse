@@ -1,40 +1,46 @@
 package and.coursework.fitnesse;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NavUtils;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Objects;
 
-public class AddActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
-    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private final int swipeThreshold = 100;
-    private final int swipeVelocityThreshold = 100;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
+public class AddActivity extends AppCompatActivity implements GestureDetector.OnGestureListener, LocationListener {
+    private static final double DECIMAL_PLACES_LOCATION = 100000.0;
+
+    private final int SWIPE_THRESHOLD = 100;
+    private final int SWIPE_VELOCITY_THRESHOLD = 100;
 
     GestureDetector gestureDetector;
 
     LocationManager locationManager;
+
+    private String longitudeStr;
+    private String latitudeStr;
+
+    private FusedLocationProviderClient client;
 
 
     @Override
@@ -45,25 +51,17 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Add Activity");
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        client = LocationServices.getFusedLocationProviderClient(this);
 
-            ActivityCompat.requestPermissions(AddActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        if (ActivityCompat.checkSelfPermission(AddActivity.this, ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        assert locationManager != null;
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        assert location != null;
+        onLocationChanged(location);
 
     }
 
@@ -82,42 +80,38 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         }
         return super.onOptionsItemSelected(item);
     }
+
     /*
      *  Gesture Detector
      * */
 
     @Override
     public boolean onDown(MotionEvent e) {
-        Log.d("TAG", "onDown: called");
         return false;
     }
 
     @Override
     public void onShowPress(MotionEvent e) {
-        Log.d("TAG", "onShowPress: called");
+
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        Log.d("Anmol", "onSingleTapUp: called");
         return false;
     }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Log.d("Anmol", "onScroll: called");
         return false;
     }
 
     @Override
     public void onLongPress(MotionEvent e) {
-        Log.d("Anmol", "onLongPress: called");
 
     }
 
     @Override
     public boolean onFling(MotionEvent downEvent, MotionEvent moveEvent, float velocityX, float velocityY) {
-        Log.d("Anmol", "onFling: called");
 
         boolean result = false;
         float diffY = moveEvent.getY() - downEvent.getY();
@@ -125,7 +119,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
         if (Math.abs(diffX) > Math.abs(diffY)) {
             // right or left swipe
-            if (Math.abs(diffX) > swipeThreshold && Math.abs(velocityX) > swipeVelocityThreshold) {
+            if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                 if (diffX > 0)
                     onSwipeRight();
                 else
@@ -134,7 +128,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
             }
         } else {
             // up or down swipe
-            if (Math.abs(diffY) > swipeThreshold && Math.abs(velocityY) > swipeVelocityThreshold) {
+            if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                 if (diffY > 0)
                     onSwipeBottom();
                 else
@@ -151,11 +145,11 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     }
 
     private void onSwipeUp() {
-        Toast.makeText(this, "Swipe Up", Toast.LENGTH_LONG).show();
+
     }
 
     private void onSwipeLeft() {
-        Toast.makeText(this, "Swipe Left", Toast.LENGTH_LONG).show();
+
     }
 
     private void onSwipeRight() {
@@ -169,18 +163,52 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         return super.onTouchEvent(event);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {// If request is cancelled, the result arrays are empty.
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                getMyLocation();
+    private void getLocation() {
+        client.getLastLocation().addOnSuccessListener(AddActivity.this, new OnSuccessListener<Location>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onSuccess(Location location) {
 
-
-        }
+                if (location != null){
+                    showCoordinates();
+                } else {
+                    TextView locationViewq = findViewById(R.id.locationTextView);
+                    locationViewq.setText("No location found");
+                }
+            }
+        });
+    }
+    private void requestPermission(){
+        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
     }
 
-    private void getMyLocation() {
+    @Override
+    public void onLocationChanged(Location location) {
+        double longitude = Math.round(location.getLongitude() * DECIMAL_PLACES_LOCATION) / DECIMAL_PLACES_LOCATION;
+        double latitude = Math.round(location.getLatitude() * DECIMAL_PLACES_LOCATION) / DECIMAL_PLACES_LOCATION;
+        longitudeStr = String.valueOf(longitude);
+        latitudeStr = String.valueOf(latitude);
+        showCoordinates();
+    }
 
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    private void showCoordinates() {
+        TextView locationView = findViewById(R.id.locationTextView);
+        String locationText = "Location: " + latitudeStr + ", " + longitudeStr;
+        locationView.setText(locationText);
     }
 }
