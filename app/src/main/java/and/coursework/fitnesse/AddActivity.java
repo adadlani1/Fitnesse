@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NavUtils;
 
+import com.google.android.gms.location.LocationRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -90,24 +91,24 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userUID).child("Activities");
 
+        /*locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        assert locationManager != null;
 
-        if (ActivityCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
             return;
         }
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);*/
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        assert locationManager != null;
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        assert location != null;
-        onLocationChanged(location);
+        showCoordinates(false);
+
+//        onLocationChanged(location);
 
         Button saveButton = findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(new View.OnClickListener(){
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
-                Log.e("ERRORAN", "grteuiogr");
-//                saveInformationToFirebase();
+                saveInformationToFirebase();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(100, R.anim.fade_in);
             }
@@ -239,7 +240,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         double latitude = Math.round(location.getLatitude() * DECIMAL_PLACES_LOCATION) / DECIMAL_PLACES_LOCATION;
         longitudeStr = String.valueOf(longitude);
         latitudeStr = String.valueOf(latitude);
-        showCoordinates();
+        showCoordinates(true);
     }
 
     @Override
@@ -257,9 +258,19 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     }
 
-    private void showCoordinates() {
+    private void showCoordinates(Boolean locAvailable) {
         TextView locationView = findViewById(R.id.locationTextView);
-        String locationText = "Current Location: " + latitudeStr + ", " + longitudeStr;
+        String locationText;
+
+        if (locAvailable) {
+            locationText = "Current Location: " + latitudeStr + ", " + longitudeStr;
+        } else {
+            locationText = "Current Location Not Available";
+            latitudeStr = "Not Available";
+            longitudeStr = "Not Available";
+
+        }
         locationView.setText(locationText);
+
     }
 }
