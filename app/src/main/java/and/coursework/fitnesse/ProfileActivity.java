@@ -27,8 +27,8 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import java.util.Objects;
 
 public class ProfileActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
-    private final int swipeThreshold = 100;
-    private final int swipeVelocityThreshold = 100;
+    private static final int swipeThreshold = 100;
+    private static final int swipeVelocityThreshold = 100;
 
     GestureDetector gestureDetectorProfile = new GestureDetector(this);
 

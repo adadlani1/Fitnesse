@@ -1,6 +1,7 @@
 package and.coursework.fitnesse;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
@@ -12,6 +13,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Comment;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class PerformedActivity extends AppCompatActivity implements GestureDetector.OnGestureListener{
@@ -20,6 +35,11 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
     private static final float SWIPE_VELOCITY_THRESHOLD = 100;
 
     GestureDetector gestureDetectorProfile = new GestureDetector(this);
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+
+    List<Activity> activityList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +48,42 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Fitness");
 
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        assert mUser != null;
+        String userUid = mUser.getUid();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userUid).child("Activities");
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    activityList.clear();
+                    for (DataSnapshot dss: dataSnapshot.getChildren()){
+                        Activity activity = dss.getValue(Activity.class);
+                        activityList.add(activity);
+                    }
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    for (Activity activity: activityList){
+
+                        stringBuilder.append(activity.getDescription()).append(", ");
+
+                    }
+                    Log.d("Anmo", stringBuilder.toString());
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
