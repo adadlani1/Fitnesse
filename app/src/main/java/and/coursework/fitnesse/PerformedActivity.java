@@ -3,15 +3,26 @@ package and.coursework.fitnesse;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.NavUtils;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,40 +50,56 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
 
+    RecyclerView recyclerView;
+
     List<Activity> activityList = new ArrayList<>();
+
+    Context context;
+    CardView cardView;
+    RelativeLayout.LayoutParams layoutParams;
+    TextView textView;
+    RelativeLayout relativeLayout;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_performed);
 
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Fitness");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("All Activities");
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         assert mUser != null;
         String userUid = mUser.getUid();
+        progressBar = findViewById(R.id.allActivitiesProgressBar);
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userUid).child("Activities");
+
+        relativeLayout = findViewById(R.id.relativeLayout);
+        context = getApplicationContext();
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                progressBar.setVisibility(View.VISIBLE);
                 if (dataSnapshot.exists()){
                     activityList.clear();
                     for (DataSnapshot dss: dataSnapshot.getChildren()){
                         Activity activity = dss.getValue(Activity.class);
                         activityList.add(activity);
                     }
-                    StringBuilder stringBuilder = new StringBuilder();
 
-                    for (Activity activity: activityList){
+                    progressBar.setVisibility(View.INVISIBLE);
 
-                        stringBuilder.append(activity.getDescription()).append(", ");
-
+                    if (activityList.size()!= 0) {
+                        ActivityAdaptor adapter = new ActivityAdaptor(getApplicationContext(), activityList);
+                        recyclerView.setAdapter(adapter);
                     }
-                    Log.d("Anmo", stringBuilder.toString());
-
                 }
             }
 
@@ -180,5 +207,28 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
     public boolean onTouchEvent(MotionEvent event) {
         gestureDetectorProfile.onTouchEvent(event);
         return super.onTouchEvent(event);
+    }
+
+    void createCardProgrammatically(Activity activity){
+        cardView = new CardView(context);
+
+        layoutParams = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+        cardView.setRadius(15);
+        cardView.setCardBackgroundColor(Color.MAGENTA);
+        cardView.setPadding(25, 25, 25, 25);
+
+
+        textView.setLayoutParams(layoutParams);
+        textView.setText(activity.getActivity());
+
+        textView.setGravity(Gravity.CENTER);
+
+        cardView.addView(textView);
+
+        relativeLayout.addView(cardView);
     }
 }

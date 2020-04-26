@@ -1,11 +1,22 @@
 package and.coursework.fitnesse;
 
+import java.util.Date;
+
 public class Activity {
     private String activity;
     private String minutes;
     private String longitude;
     private String latitude;
     private String description;
+    private Date dateAdded;
+
+    public Date getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(Date dateAdded) {
+        this.dateAdded = dateAdded;
+    }
 
     public String getActivity() {
         return activity;
