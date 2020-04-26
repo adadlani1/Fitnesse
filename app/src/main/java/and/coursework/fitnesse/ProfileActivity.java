@@ -48,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         name = findViewById(R.id.Name);
 
         signOut = findViewById(R.id.signoutButton);
-        Button saveChanges = findViewById(R.id.saveChangesButton);
+        final Button saveChanges = findViewById(R.id.saveChangesButton);
 
         CheckBox verified = findViewById(R.id.verifiedBox);
 
@@ -77,9 +77,7 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                String newName = getNewName();
-                updateProfile(newName);
+                saveChanges();
             }
         });
 
@@ -87,6 +85,14 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         getSupportActionBar().setTitle("Profile");
 
 
+    }
+
+    private void saveChanges() {
+        progressBar.setVisibility(View.VISIBLE);
+        String newName = getNewName();
+        updateProfile(newName);
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        overridePendingTransition(100, R.anim.fade_in);
     }
 
     @Override
@@ -190,6 +196,7 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
     }
 
     private void onSwipeUp() {
+        saveChanges();
     }
 
     private void onSwipeBottom() {

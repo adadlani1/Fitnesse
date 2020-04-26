@@ -107,10 +107,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                saveInformationToFirebase();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(100, R.anim.fade_in);
+                saveActivityInformation();
             }
         });
 
@@ -216,7 +213,14 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     }
 
     private void onSwipeUp() {
+        saveActivityInformation();
+    }
 
+    private void saveActivityInformation() {
+        progressBar.setVisibility(View.VISIBLE);
+        saveInformationToFirebase();
+        startActivity(new Intent(getApplicationContext(), PerformedActivity.class));
+        overridePendingTransition(100, R.anim.fade_in);
     }
 
     private void onSwipeLeft() {
