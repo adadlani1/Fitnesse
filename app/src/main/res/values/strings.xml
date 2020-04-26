@@ -18,6 +18,7 @@
     <string name="add_activity">Add Activity</string>
     <string name="activity">Activity</string>
     <string name="date">Date</string>
+    <string name="no_activities">You currently have no saved activities. Please press the + icon to get started!</string>
 
     <string-array name="activities_array">
         <item>Boxercise</item>

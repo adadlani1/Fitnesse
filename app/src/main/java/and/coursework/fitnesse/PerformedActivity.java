@@ -55,9 +55,8 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
     List<Activity> activityList = new ArrayList<>();
 
     Context context;
-    CardView cardView;
     RelativeLayout.LayoutParams layoutParams;
-    TextView textView;
+    TextView noActivitiesTextView;
     RelativeLayout relativeLayout;
     ProgressBar progressBar;
 
@@ -72,7 +71,11 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
         mUser = mAuth.getCurrentUser();
         assert mUser != null;
         String userUid = mUser.getUid();
+
         progressBar = findViewById(R.id.allActivitiesProgressBar);
+        noActivitiesTextView = findViewById(R.id.noActivities);
+
+        noActivitiesTextView.setVisibility(View.INVISIBLE);
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userUid).child("Activities");
 
@@ -89,8 +92,8 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
                 progressBar.setVisibility(View.VISIBLE);
                 if (dataSnapshot.exists()){
                     activityList.clear();
-                    for (DataSnapshot dss: dataSnapshot.getChildren()){
-                        Activity activity = dss.getValue(Activity.class);
+                    for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                        Activity activity = snapshot.getValue(Activity.class);
                         activityList.add(activity);
                     }
 
@@ -100,6 +103,9 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
                         ActivityAdaptor adapter = new ActivityAdaptor(getApplicationContext(), activityList);
                         recyclerView.setAdapter(adapter);
                     }
+                } else {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    noActivitiesTextView.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -207,28 +213,5 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
     public boolean onTouchEvent(MotionEvent event) {
         gestureDetectorProfile.onTouchEvent(event);
         return super.onTouchEvent(event);
-    }
-
-    void createCardProgrammatically(Activity activity){
-        cardView = new CardView(context);
-
-        layoutParams = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-
-        cardView.setRadius(15);
-        cardView.setCardBackgroundColor(Color.MAGENTA);
-        cardView.setPadding(25, 25, 25, 25);
-
-
-        textView.setLayoutParams(layoutParams);
-        textView.setText(activity.getActivity());
-
-        textView.setGravity(Gravity.CENTER);
-
-        cardView.addView(textView);
-
-        relativeLayout.addView(cardView);
     }
 }

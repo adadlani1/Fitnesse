@@ -1,14 +1,11 @@
 package and.coursework.fitnesse;
 
-import android.Manifest;
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,18 +20,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NavUtils;
 
-import com.google.android.gms.location.LocationRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Objects;
-
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class AddActivity extends AppCompatActivity implements GestureDetector.OnGestureListener, LocationListener {
     private static final double DECIMAL_PLACES_LOCATION = 100000.0;
@@ -62,6 +57,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String userUID;
+    private Calendar calendar;
 
 
     @Override
@@ -119,18 +115,26 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         String minutesExercised = minutes.getText().toString();
         String description = descriptionText.getText().toString();
 
-        Log.d("Longitude:", longitudeStr);
+        String date = getDate();
 
         activity.setActivity(activityChosen);
         activity.setMinutes(minutesExercised);
         activity.setDescription(description);
         activity.setLatitude(latitudeStr);
         activity.setLongitude(longitudeStr);
+        activity.setDateAdded(date);
 
         user.setActivities(activityChosen);
         mDatabase.push().setValue(activity);
 
         Toast.makeText(AddActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+    }
+
+    private String getDate() {
+        calendar = Calendar.getInstance();
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(calendar.getTime());
     }
 
     @Override
