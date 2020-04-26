@@ -57,7 +57,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
         else if (activity.getActivity().equals("Badminton"))
             holder.activityImage.setImageResource(R.drawable.badminton);
         else if (activity.getActivity().equals("Basketball"))
-            holder.activityImage.setImageResource(R.drawable.badminton);
+            holder.activityImage.setImageResource(R.drawable.basketball);
         else if (activity.getActivity().equals("Cricket"))
             holder.activityImage.setImageResource(R.drawable.cricket);
         else if (activity.getActivity().equals("Crossfit"))
@@ -98,7 +98,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
             super(itemView);
 
             textViewActivity = itemView.findViewById(R.id.activity);
-            textViewLocation = itemView.findViewById(R.id.location);
+            textViewLocation = itemView.findViewById(R.id.description);
             textViewDate = itemView.findViewById(R.id.date);
             textViewMinutes = itemView.findViewById(R.id.minutes);
             activityImage = itemView.findViewById(R.id.activityImage);

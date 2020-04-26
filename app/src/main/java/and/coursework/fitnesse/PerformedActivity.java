@@ -37,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Comment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -99,6 +100,7 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
                     progressBar.setVisibility(View.INVISIBLE);
 
                     if (activityList.size()!= 0) {
+                        Collections.reverse(activityList);
                         ActivityAdaptor adapter = new ActivityAdaptor(getApplicationContext(), activityList);
                         recyclerView.setAdapter(adapter);
                     }
