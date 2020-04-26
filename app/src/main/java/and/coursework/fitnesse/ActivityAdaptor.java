@@ -48,6 +48,37 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
         holder.textViewLocation.setText(activity.getDescription());
         holder.textViewDate.setText("Date: "+ activity.getDateAdded());
         holder.textViewMinutes.setText("Minutes Active: " + activity.getMinutes());
+        setImageOfActivity(activity, holder);
+    }
+
+    private void setImageOfActivity(Activity activity, ProductViewHolder holder) {
+        if (activity.getActivity().equals("Boxercise"))
+            holder.activityImage.setImageResource(R.drawable.boxing);
+        else if (activity.getActivity().equals("Badminton"))
+            holder.activityImage.setImageResource(R.drawable.badminton);
+        else if (activity.getActivity().equals("Basketball"))
+            holder.activityImage.setImageResource(R.drawable.badminton);
+        else if (activity.getActivity().equals("Cricket"))
+            holder.activityImage.setImageResource(R.drawable.cricket);
+        else if (activity.getActivity().equals("Crossfit"))
+            holder.activityImage.setImageResource(R.drawable.crossfit);
+        else if (activity.getActivity().equals("Football"))
+            holder.activityImage.setImageResource(R.drawable.football);
+        else if (activity.getActivity().equals("High Intensity Interval Training (HIIT)"))
+            holder.activityImage.setImageResource(R.drawable.hiit);
+        else if (activity.getActivity().equals("Other"))
+            holder.activityImage.setImageResource(R.drawable.other);
+        else if (activity.getActivity().equals("Running"))
+            holder.activityImage.setImageResource(R.drawable.running);
+        else if (activity.getActivity().equals("Strength Training"))
+            holder.activityImage.setImageResource(R.drawable.strength_training);
+        else if (activity.getActivity().equals("Walking"))
+            holder.activityImage.setImageResource(R.drawable.walking);
+        else if (activity.getActivity().equals("Weightlifting"))
+            holder.activityImage.setImageResource(R.drawable.weightlifting);
+        else if (activity.getActivity().equals("Workout"))
+            holder.activityImage.setImageResource(R.drawable.workout);
+
 
     }
 

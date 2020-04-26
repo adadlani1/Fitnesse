@@ -55,7 +55,6 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
     List<Activity> activityList = new ArrayList<>();
 
     Context context;
-    RelativeLayout.LayoutParams layoutParams;
     TextView noActivitiesTextView;
     RelativeLayout relativeLayout;
     ProgressBar progressBar;
@@ -104,6 +103,7 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
                         recyclerView.setAdapter(adapter);
                     }
                 } else {
+                    activityList.clear();
                     progressBar.setVisibility(View.INVISIBLE);
                     noActivitiesTextView.setVisibility(View.VISIBLE);
                 }

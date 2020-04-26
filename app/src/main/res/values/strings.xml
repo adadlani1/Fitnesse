@@ -21,17 +21,17 @@
     <string name="no_activities">You currently have no saved activities. Please press the + icon to get started!</string>
 
     <string-array name="activities_array">
-        <item>Boxercise</item>
-        <item>Weightlifting</item>
-        <item>Strength Training</item>
-        <item>Crossfit</item>
-        <item>High Intensity Interval Training (HIIT)</item>
-        <item>Interval Training</item>
-        <item>Running</item>
-        <item>Walking</item>
         <item>Badminton</item>
+        <item>Basketball</item>
+        <item>Boxercise</item>
         <item>Cricket</item>
+        <item>Crossfit</item>
         <item>Football</item>
+        <item>High Intensity Interval Training (HIIT)</item>
+        <item>Running</item>
+        <item>Strength Training</item>
+        <item>Walking</item>
+        <item>Weightlifting</item>
         <item>Workout</item>
         <item>Other</item>
     </string-array>
