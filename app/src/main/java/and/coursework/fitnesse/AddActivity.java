@@ -46,34 +46,38 @@ import java.util.Calendar;
 import java.util.Objects;
 
 public class AddActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
+    /*Constants*/
     private static final double DECIMAL_PLACES_LOCATION = 100000.0;
     private static final int PERMISSION_ID = 44;
-
     private final int SWIPE_THRESHOLD = 100;
     private final int SWIPE_VELOCITY_THRESHOLD = 100;
 
-    GestureDetector gestureDetector;
+    /*For Gestures*/
+    private GestureDetector gestureDetector;
 
-    LocationManager locationManager;
-
+    /*String variable for location*/
     private String longitudeStr;
     private String latitudeStr;
+    private FusedLocationProviderClient mFusedLocationClient;
 
+    /*Variables used in XML file*/
     private ProgressBar progressBar;
-
     private EditText descriptionText;
     private EditText minutes;
-
     private Spinner activities;
 
-    User user;
-    Activity activity;
+    /*Variable for objects*/
+    private User user;
+    private Activity activity;
+
+    /*Accessing Firebase Variables*/
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
-    private String userUID;
+
+    /*Variables to save entered values*/
     private Calendar calendar;
-    private FusedLocationProviderClient mFusedLocationClient;
+    private String userUID;
     private String minutesExercised;
     private String description;
     private String activityChosen;
@@ -81,38 +85,37 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        gestureDetector = new GestureDetector(this, this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Add Activity");
 
+        /*Saving the display items to variables*/
         progressBar = findViewById(R.id.addActivityProgressBar);
         descriptionText = findViewById(R.id.descriptionEditText);
         minutes = findViewById(R.id.minutesEditText);
         activities = findViewById(R.id.activitiesChooser);
+        Button saveButton = findViewById(R.id.saveButton);
 
         progressBar.setVisibility(View.INVISIBLE);
 
-
+        /*Initialising objects*/
         user = new User();
         activity = new Activity();
+        gestureDetector = new GestureDetector(this, this);
 
+        /*Getting Firebase Information*/
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-
         assert mUser != null;
         userUID = mUser.getUid();
-
-
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userUID).child("Activities");
 
+        /*Getting Location information*/
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
 
-        showCoordinates(false);
-
-        Button saveButton = findViewById(R.id.saveButton);
+        /*When Save Button is Clicked*/
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +125,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     }
 
+    /*Method checks if all of the required boxes are filled in*/
     private void validation() {
         minutesExercised = minutes.getText().toString();
         description = descriptionText.getText().toString();
@@ -133,6 +137,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
             saveActivityInformation();
     }
 
+    /*Saves information into activity object and then adds that activity to Database*/
     private void saveInformationToFirebase() {
         progressBar.setVisibility(View.VISIBLE);
         String date = getDate();
@@ -147,9 +152,11 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         user.setActivities(activityChosen);
         mDatabase.push().setValue(activity);
 
+        /*Message shown to user that */
         Toast.makeText(AddActivity.this, "Saved", Toast.LENGTH_SHORT).show();
     }
 
+    /*Gets Current date */
     private String getDate() {
         calendar = Calendar.getInstance();
 
@@ -157,12 +164,14 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         return dateFormat.format(calendar.getTime());
     }
 
+    /*Adds a custom Action Bar from a different xml file in menu*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.add_activity, menu);
         return true;
     }
 
+    /*Adds a Back button on Action Bar to go back to parent page*/
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -202,6 +211,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     }
 
+    /*Calculates which direction the swipe is and decides on which method to call*/
     @Override
     public boolean onFling(MotionEvent downEvent, MotionEvent moveEvent, float velocityX, float velocityY) {
 
@@ -236,23 +246,26 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     private void onSwipeBottom() {
     }
 
+    /*Swipe up means save information. Validation method called*/
     private void onSwipeUp() {
         validation();
-    }
-
-    private void saveActivityInformation() {
-        progressBar.setVisibility(View.VISIBLE);
-        saveInformationToFirebase();
-        startActivity(new Intent(getApplicationContext(), PerformedActivity.class));
-        overridePendingTransition(100, R.anim.fade_in);
     }
 
     private void onSwipeLeft() {
 
     }
 
+    /*Swipe Right means go back to previous page*/
     private void onSwipeRight() {
         startActivity(new Intent(this, MainActivity.class));
+        overridePendingTransition(100, R.anim.fade_in);
+    }
+
+    /*Saves information and goes back to parent page*/
+    private void saveActivityInformation() {
+        progressBar.setVisibility(View.VISIBLE);
+        saveInformationToFirebase();
+        startActivity(new Intent(getApplicationContext(), PerformedActivity.class));
         overridePendingTransition(100, R.anim.fade_in);
     }
 
@@ -262,6 +275,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         return super.onTouchEvent(event);
     }
 
+    /*Shows coordinates onto the page*/
     private void showCoordinates(Boolean locAvailable) {
         TextView locationView = findViewById(R.id.locationTextView);
         String locationText;
@@ -287,6 +301,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     }
 
+    /*Requests if the permission has been enabled or not*/
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -297,6 +312,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         }
     }
 
+    /*gets the last recorded location by the phone*/
     @SuppressLint("MissingPermission")
     private void getLastLocation() {
         if (checkPermissions()) {
@@ -309,6 +325,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
                                 if (location == null) {
                                     requestNewLocationData();
                                 } else {
+                                    /*gets location and assigns value to strings*/
                                     double roundLongitude = Math.round(location.getLongitude() * DECIMAL_PLACES_LOCATION) / DECIMAL_PLACES_LOCATION;
                                     double roundLatitude = Math.round(location.getLatitude() * DECIMAL_PLACES_LOCATION) / DECIMAL_PLACES_LOCATION;
                                     latitudeStr = String.valueOf(roundLatitude);
@@ -319,6 +336,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
                         }
                 );
             } else {
+                /*Starts Location settings if location disabled*/
                 Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
@@ -329,6 +347,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     }
 
 
+    /*Gets new Location Data*/
     @SuppressLint("MissingPermission")
     private void requestNewLocationData() {
 
@@ -346,6 +365,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     }
 
+    /*Requests permissions to access Location*/
     private void requestPermissions() {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -354,6 +374,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         );
     }
 
+    /*Method when there is a location present*/
     private LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -366,6 +387,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         }
     };
 
+    /*Checks if the permission has been given*/
     private boolean checkPermissions() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -375,13 +397,15 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         return false;
     }
 
+    /*Checks if the location is enabled on the phone*/
     private boolean isLocationEnabled() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         assert locationManager != null;
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
                 LocationManager.NETWORK_PROVIDER);
     }
 
+    /*checks if required fields are filled in*/
     private void checkIfFieldsFilledIn() {
         TextView blankFields = findViewById(R.id.blankFieldsErrorTextView);
         blankFields.setVisibility(View.VISIBLE);
@@ -391,8 +415,6 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
             descriptionText.setError("Please Enter More Information About Your Activity.");
         if (activityChosen.equals("Select"))
             activities.setBackgroundColor(Color.RED);
-
-
     }
 
 
