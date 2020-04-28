@@ -116,22 +116,25 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                minutesExercised = minutes.getText().toString();
-                description = descriptionText.getText().toString();
-
-                if (minutesExercised.equals("") || description.equals("")) {
-                    checkIfFieldsFilledIn();
-                } else
-                    saveActivityInformation();
+                validation();
             }
         });
 
     }
 
-    private void saveInformationToFirebase() {
-        progressBar.setVisibility(View.VISIBLE);
+    private void validation() {
+        minutesExercised = minutes.getText().toString();
+        description = descriptionText.getText().toString();
         activityChosen = activities.getSelectedItem().toString();
 
+        if (minutesExercised.equals("") || description.equals("") || activityChosen.equals("Select")) {
+            checkIfFieldsFilledIn();
+        } else
+            saveActivityInformation();
+    }
+
+    private void saveInformationToFirebase() {
+        progressBar.setVisibility(View.VISIBLE);
         String date = getDate();
 
         activity.setActivity(activityChosen);
@@ -234,13 +237,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     }
 
     private void onSwipeUp() {
-        minutesExercised = minutes.getText().toString();
-        description = descriptionText.getText().toString();
-
-        if (minutesExercised.equals("") || description.equals("")) {
-            checkIfFieldsFilledIn();
-        } else
-            saveActivityInformation();
+        validation();
     }
 
     private void saveActivityInformation() {
@@ -392,6 +389,8 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
             minutes.setError("Please Enter the Number of Minutes.");
         if (description.equals(""))
             descriptionText.setError("Please Enter More Information About Your Activity.");
+        if (activityChosen.equals("Select"))
+            activities.setBackgroundColor(Color.RED);
 
 
     }

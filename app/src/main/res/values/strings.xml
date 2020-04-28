@@ -21,6 +21,7 @@
     <string name="no_activities">You currently have no saved activities. Please press the + icon to get started!</string>
 
     <string-array name="activities_array">
+        <item>Select</item>
         <item>Badminton</item>
         <item>Basketball</item>
         <item>Boxercise</item>
