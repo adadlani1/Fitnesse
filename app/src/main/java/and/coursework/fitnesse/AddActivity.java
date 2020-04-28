@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -73,6 +74,9 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     private String userUID;
     private Calendar calendar;
     private FusedLocationProviderClient mFusedLocationClient;
+    private String minutesExercised;
+    private String description;
+    private String activityChosen;
 
 
     @Override
@@ -89,6 +93,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         activities = findViewById(R.id.activitiesChooser);
 
         progressBar.setVisibility(View.INVISIBLE);
+
 
         user = new User();
         activity = new Activity();
@@ -111,7 +116,13 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveActivityInformation();
+                minutesExercised = minutes.getText().toString();
+                description = descriptionText.getText().toString();
+
+                if (minutesExercised.equals("") || description.equals("")) {
+                    checkIfFieldsFilledIn();
+                } else
+                    saveActivityInformation();
             }
         });
 
@@ -119,9 +130,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     private void saveInformationToFirebase() {
         progressBar.setVisibility(View.VISIBLE);
-        String activityChosen = activities.getSelectedItem().toString();
-        String minutesExercised = minutes.getText().toString();
-        String description = descriptionText.getText().toString();
+        activityChosen = activities.getSelectedItem().toString();
 
         String date = getDate();
 
@@ -225,7 +234,13 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     }
 
     private void onSwipeUp() {
-        saveActivityInformation();
+        minutesExercised = minutes.getText().toString();
+        description = descriptionText.getText().toString();
+
+        if (minutesExercised.equals("") || description.equals("")) {
+            checkIfFieldsFilledIn();
+        } else
+            saveActivityInformation();
     }
 
     private void saveActivityInformation() {
@@ -266,8 +281,27 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (checkPermissions()) {
+            getLastLocation();
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_ID) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            }
+        }
+    }
+
     @SuppressLint("MissingPermission")
-    private void getLastLocation(){
+    private void getLastLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
                 mFusedLocationClient.getLastLocation().addOnCompleteListener(
@@ -299,7 +333,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
 
     @SuppressLint("MissingPermission")
-    private void requestNewLocationData(){
+    private void requestNewLocationData() {
 
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -313,6 +347,14 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
                 Looper.myLooper()
         );
 
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION},
+                PERMISSION_ID
+        );
     }
 
     private LocationCallback mLocationCallback = new LocationCallback() {
@@ -336,14 +378,6 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         return false;
     }
 
-    private void requestPermissions() {
-        ActivityCompat.requestPermissions(
-                this,
-                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
-                PERMISSION_ID
-        );
-    }
-
     private boolean isLocationEnabled() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         assert locationManager != null;
@@ -351,22 +385,14 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
                 LocationManager.NETWORK_PROVIDER);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_ID) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLastLocation();
-            }
-        }
-    }
+    private void checkIfFieldsFilledIn() {
+        TextView blankFields = findViewById(R.id.blankFieldsErrorTextView);
+        blankFields.setVisibility(View.VISIBLE);
+        if (minutesExercised.equals(""))
+            minutes.setError("Please Enter the Number of Minutes.");
+        if (description.equals(""))
+            descriptionText.setError("Please Enter More Information About Your Activity.");
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        if (checkPermissions()) {
-            getLastLocation();
-        }
 
     }
 
