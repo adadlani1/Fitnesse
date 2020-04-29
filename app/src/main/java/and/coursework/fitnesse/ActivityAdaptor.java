@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -39,46 +40,61 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(ProductViewHolder holder, int position) {
+    public void onBindViewHolder(final ProductViewHolder holder, int position) {
         //getting the product of the specified position
-        Activity activity = activityList.get(position);
+        final Activity activity = activityList.get(position);
 
         //binding the data with the viewholder views
         holder.textViewActivity.setText(activity.getActivity());
         holder.textViewLocation.setText(activity.getDescription());
         holder.textViewDate.setText("Date: "+ activity.getDateAdded());
         holder.textViewMinutes.setText("Minutes Active: " + activity.getMinutes());
+
         setImageOfActivity(activity, holder);
     }
 
     private void setImageOfActivity(Activity activity, ProductViewHolder holder) {
-        if (activity.getActivity().equals("Boxercise"))
-            holder.activityImage.setImageResource(R.drawable.boxing);
-        else if (activity.getActivity().equals("Badminton"))
-            holder.activityImage.setImageResource(R.drawable.badminton);
-        else if (activity.getActivity().equals("Basketball"))
-            holder.activityImage.setImageResource(R.drawable.basketball);
-        else if (activity.getActivity().equals("Cricket"))
-            holder.activityImage.setImageResource(R.drawable.cricket);
-        else if (activity.getActivity().equals("Crossfit"))
-            holder.activityImage.setImageResource(R.drawable.crossfit);
-        else if (activity.getActivity().equals("Football"))
-            holder.activityImage.setImageResource(R.drawable.football);
-        else if (activity.getActivity().equals("High Intensity Interval Training (HIIT)"))
-            holder.activityImage.setImageResource(R.drawable.hiit);
-        else if (activity.getActivity().equals("Other"))
-            holder.activityImage.setImageResource(R.drawable.other);
-        else if (activity.getActivity().equals("Running"))
-            holder.activityImage.setImageResource(R.drawable.running);
-        else if (activity.getActivity().equals("Strength Training"))
-            holder.activityImage.setImageResource(R.drawable.strength_training);
-        else if (activity.getActivity().equals("Walking"))
-            holder.activityImage.setImageResource(R.drawable.walking);
-        else if (activity.getActivity().equals("Weightlifting"))
-            holder.activityImage.setImageResource(R.drawable.weightlifting);
-        else if (activity.getActivity().equals("Workout"))
-            holder.activityImage.setImageResource(R.drawable.workout);
-
+        switch (activity.getActivity()) {
+            case "Boxercise":
+                holder.activityImage.setImageResource(R.drawable.boxing);
+                break;
+            case "Badminton":
+                holder.activityImage.setImageResource(R.drawable.badminton);
+                break;
+            case "Basketball":
+                holder.activityImage.setImageResource(R.drawable.basketball);
+                break;
+            case "Cricket":
+                holder.activityImage.setImageResource(R.drawable.cricket);
+                break;
+            case "Crossfit":
+                holder.activityImage.setImageResource(R.drawable.crossfit);
+                break;
+            case "Football":
+                holder.activityImage.setImageResource(R.drawable.football);
+                break;
+            case "High Intensity Interval Training (HIIT)":
+                holder.activityImage.setImageResource(R.drawable.hiit);
+                break;
+            case "Other":
+                holder.activityImage.setImageResource(R.drawable.other);
+                break;
+            case "Running":
+                holder.activityImage.setImageResource(R.drawable.running);
+                break;
+            case "Strength Training":
+                holder.activityImage.setImageResource(R.drawable.strength_training);
+                break;
+            case "Walking":
+                holder.activityImage.setImageResource(R.drawable.walking);
+                break;
+            case "Weightlifting":
+                holder.activityImage.setImageResource(R.drawable.weightlifting);
+                break;
+            case "Workout":
+                holder.activityImage.setImageResource(R.drawable.workout);
+                break;
+        }
 
     }
 
@@ -93,6 +109,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
 
         TextView textViewActivity, textViewLocation, textViewDate, textViewMinutes;
         ImageView activityImage;
+        CardView cardView;
 
         ProductViewHolder(View itemView) {
             super(itemView);
@@ -102,6 +119,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
             textViewDate = itemView.findViewById(R.id.date);
             textViewMinutes = itemView.findViewById(R.id.minutes);
             activityImage = itemView.findViewById(R.id.activityImage);
+            cardView = itemView.findViewById(R.id.cardViewActivity);
 
         }
     }

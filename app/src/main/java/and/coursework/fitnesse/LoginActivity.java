@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     private static final String TAG = "EmailPassword";
@@ -100,10 +100,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (currentUser != null) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }
