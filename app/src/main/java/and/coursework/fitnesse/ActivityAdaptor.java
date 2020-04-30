@@ -44,10 +44,12 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
         //getting the product of the specified position
         final Activity activity = activityList.get(position);
 
+        String date = activity.getDayAdded() + "/" + activity.getMonthAdded() + "/" + activity.getYearAdded();
+
         //binding the data with the viewholder views
         holder.textViewActivity.setText(activity.getActivity());
         holder.textViewLocation.setText(activity.getDescription());
-        holder.textViewDate.setText("Date: "+ activity.getDateAdded());
+        holder.textViewDate.setText("Date: "+ date);
         holder.textViewMinutes.setText("Minutes Active: " + activity.getMinutes());
 
         setImageOfActivity(activity, holder);

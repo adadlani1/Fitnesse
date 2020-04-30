@@ -6,14 +6,32 @@ public class Activity {
     private String longitude;
     private String latitude;
     private String description;
-    private String dateAdded;
+    private String monthAdded;
+    private String yearAdded;
+    private String dayAdded;
 
-    public String getDateAdded() {
-        return dateAdded;
+    public String getDayAdded() {
+        return dayAdded;
     }
 
-    public void setDateAdded(String dateAdded) {
-        this.dateAdded = dateAdded;
+    public void setDayAdded(String dayAdded) {
+        this.dayAdded = dayAdded;
+    }
+
+    public String getMonthAdded() {
+        return monthAdded;
+    }
+
+    public void setMonthAdded(String monthAdded) {
+        this.monthAdded = monthAdded;
+    }
+
+    public String getYearAdded() {
+        return yearAdded;
+    }
+
+    public void setYearAdded(String yearAdded) {
+        this.yearAdded = yearAdded;
     }
 
     public String getActivity() {

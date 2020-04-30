@@ -43,6 +43,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 public class AddActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
@@ -140,14 +141,18 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     /*Saves information into activity object and then adds that activity to Database*/
     private void saveInformationToFirebase() {
         progressBar.setVisibility(View.VISIBLE);
-        String date = getDate();
+        String day = getDate("dd");
+        String month = getDate("MM");
+        String year = getDate("yyyy");
 
         activity.setActivity(activityChosen);
         activity.setMinutes(minutesExercised);
         activity.setDescription(description);
         activity.setLatitude(latitudeStr);
         activity.setLongitude(longitudeStr);
-        activity.setDateAdded(date);
+        activity.setMonthAdded(month);
+        activity.setYearAdded(year);
+        activity.setDayAdded(day);
 
         user.setActivities(activityChosen);
         mDatabase.push().setValue(activity);
@@ -157,11 +162,11 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     }
 
     /*Gets Current date */
-    private String getDate() {
-        calendar = Calendar.getInstance();
+    private String getDate(String pattern) {
 
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        return dateFormat.format(calendar.getTime());
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
     /*Adds a custom Action Bar from a different xml file in menu*/
