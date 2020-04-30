@@ -34,7 +34,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(context);
-        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.list_layout, null);
+        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.activity_layout, null);
         return new ProductViewHolder(view);
     }
 
