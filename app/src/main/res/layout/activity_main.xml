@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/LastMonthImage"
                 android:layout_width="98dp"
-                android:layout_height="39dp"
+                android:layout_height="29dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
@@ -52,7 +52,7 @@
             <ImageView
                 android:id="@+id/nextMonthImage"
                 android:layout_width="98dp"
-                android:layout_height="39dp"
+                android:layout_height="29dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="10dp"
@@ -60,9 +60,10 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />
 
-            <lecho.lib.hellocharts.view.ColumnChartView
+            <lecho.lib.hellocharts.view.LineChartView
+                android:id="@+id/lineChart"
                 android:layout_width="match_parent"
-                android:layout_height="334dp"
+                android:layout_height="300dp"
                 android:layout_below="@+id/monthTextView"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="10dp"

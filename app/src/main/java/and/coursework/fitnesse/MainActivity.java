@@ -3,6 +3,7 @@ package and.coursework.fitnesse;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,10 +31,19 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
+import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.model.Viewport;
+import lecho.lib.hellocharts.view.LineChartView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,15 +79,15 @@ public class MainActivity extends AppCompatActivity {
         monthTextView = findViewById(R.id.monthTextView);
         previousMonth = findViewById(R.id.LastMonthImage);
         nextMonth = findViewById(R.id.nextMonthImage);
-
+        LineChartView chartView = findViewById(R.id.lineChart);
         context = getApplicationContext();
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         progressBar.setVisibility(View.VISIBLE);
+        chartView.setVisibility(View.INVISIBLE);
 
         currentMonthSelected = getCurrentMonth();
-        Log.d("Anmol", currentMonthSelected);
         currentMonthSelectedName = getMonth(Integer.parseInt(getCurrentMonth()));
         updateTextView();
         loadActivities();
@@ -115,9 +126,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ProfileActivity.class));
                 return true;
 
-            case R.id.add_friend:
-                startActivity(new Intent(this, AddFriendActivity.class));
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -149,11 +157,14 @@ public class MainActivity extends AppCompatActivity {
                     if (activityList.size() != 0) {
                         ActivityAdaptor adapter = new ActivityAdaptor(getApplicationContext(), activityList);
                         recyclerView.setAdapter(adapter);
+                        showResultsOnChart();
                     } else{
                         Activity noActivities = new Activity();
                         noActivities.setActivity("No Activity in This Month");
                         activityList.add(noActivities);
                         ActivityAdaptor adaptor = new ActivityAdaptor(getApplicationContext(), activityList);
+                        recyclerView.setAdapter(adaptor);
+
                     }
                 }
             }
@@ -164,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     @SuppressLint("SetTextI18n")
     private void updateTextView() {
         monthTextView.setText(currentMonthSelectedName + " 2020");
@@ -176,9 +188,87 @@ public class MainActivity extends AppCompatActivity {
     private void updateMonth(int monthInt) {
         currentMonthSelectedName = getMonth(monthInt);
         currentMonthSelected = "0" + monthInt;
-        Log.d("ANMOL", currentMonthSelected);
-        Log.d("ANMOL", currentMonthSelectedName);
         loadActivities();
         updateTextView();
+    }
+
+    private void showResultsOnChart() {
+        LineChartView lineChartView = findViewById(R.id.lineChart);
+        lineChartView.setInteractive(true);
+
+        List<String> axisData = getXAxisData();
+
+        List<Integer> yAxisData = getYAxisData(axisData);
+
+
+        List yAxisValues = new ArrayList();
+        List axisValues = new ArrayList();
+
+
+        Line line = new Line(yAxisValues).setColor(Color.parseColor("#100db4"));
+
+        for (int i = 0; i < axisData.size(); i++) {
+            axisValues.add(i, new AxisValue(i).setLabel(axisData.get(i)));
+        }
+
+        for (int i = 0; i < yAxisData.size(); i++) {
+            yAxisValues.add(new PointValue(i, yAxisData.get(i)));
+        }
+
+        List lines = new ArrayList();
+        lines.add(line);
+
+        LineChartData data = new LineChartData();
+        data.setLines(lines);
+
+        Axis axis = new Axis();
+        axis.setValues(axisValues);
+        axis.setTextSize(16);
+        axis.setName("Day of Month");
+        axis.setTextColor(Color.parseColor("#10e6fc"));
+        data.setAxisXBottom(axis);
+
+        Axis yAxis = new Axis();
+        yAxis.setName("Activity (Mins)");
+        yAxis.setTextColor(Color.parseColor("#10e6fc"));
+        yAxis.setTextSize(16);
+        data.setAxisYLeft(yAxis);
+
+        lineChartView.setLineChartData(data);
+        Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
+        viewport.top = Collections.max(yAxisData);
+        lineChartView.setMaximumViewport(viewport);
+        lineChartView.setCurrentViewport(viewport);
+
+        lineChartView.setVisibility(View.VISIBLE);
+
+    }
+
+    private List<Integer> getYAxisData(List<String> axisData) {
+        List<Integer> data = new ArrayList<>();
+
+        for (String day : axisData){
+            int minutes = 0;
+            for (Activity activity: activityList){
+                if (activity.getDayAdded().equals(day)){
+                    minutes += Integer.parseInt(activity.getMinutes());
+                }
+            }
+            data.add(minutes);
+        }
+
+        return data;
+    }
+
+    private List<String> getXAxisData() {
+        LocalDate date = LocalDate.of(2020, Integer.parseInt(currentMonthSelected), 01);
+        int monthSize = date.lengthOfMonth();
+
+        List<String> days = new ArrayList<>();
+
+        for (int i = 1; i <= monthSize; i++) {
+            days.add(String.valueOf(i));
+        }
+        return days;
     }
 }
