@@ -6,16 +6,12 @@
         android:title="@string/activities"
         android:icon="@drawable/sport_bottle_png"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/add_friend"
-        android:title="@string/add_friends"
-        android:icon="@drawable/ic_person_add_black_24dp"
-        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/profile"
         android:title="@string/profile"
-        app:showAsAction="never" />
+        android:icon="@drawable/ic_person_white_24dp"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/about"
