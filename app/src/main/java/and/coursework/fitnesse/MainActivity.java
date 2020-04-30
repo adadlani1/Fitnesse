@@ -44,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.profile:
                 startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+
+            case R.id.add_friend:
+                startActivity(new Intent(this, AddFriendActivity.class));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

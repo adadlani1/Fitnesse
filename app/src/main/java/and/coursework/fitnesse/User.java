@@ -2,10 +2,19 @@ package and.coursework.fitnesse;
 
 public class User {
     private String Name;
+    private String Email;
     private String Activities;
 
     public User(){
 
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
     }
 
     public String getName() {

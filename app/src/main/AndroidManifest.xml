@@ -12,8 +12,10 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PerformedActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".AddFriendActivity"></activity>
+        <activity
+            android:name=".PerformedActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".AddActivity"
             android:parentActivityName=".PerformedActivity" />

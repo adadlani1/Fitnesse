@@ -15,6 +15,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
@@ -22,8 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
 
-    private EditText emailField;
-    private EditText passwordField;
+    private EditText emailField, passwordField, nameField;
 
     private ProgressBar progressBar;
 
@@ -36,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         emailField = findViewById(R.id.emailText);
         passwordField = findViewById(R.id.password);
+        nameField = findViewById(R.id.nameText);
 
         Button signUpButton = findViewById(R.id.signUpButton);
 
@@ -49,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 String email = emailField.getText().toString().trim();
                 String password = passwordField.getText().toString().trim();
+                String name = nameField.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
                     emailField.setError("Email is Required");
@@ -57,13 +62,13 @@ public class RegisterActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(password))
                     passwordField.setError("Password is Required");
 
-
-                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(name)) {
                     progressBar.setVisibility(View.VISIBLE);
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                createNewUser(Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getUser()));
                                 Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
                                 onBackPressed();
                             } else {
@@ -77,6 +82,32 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void createNewUser(FirebaseUser newUser) {
+
+        String email = newUser.getEmail();
+        String name = nameField.getText().toString();
+        String userID = newUser.getUid();
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(name)
+                .build();
+        newUser.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                task.isSuccessful();
+            }
+        });
+
+        newUser.sendEmailVerification();
+
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Email");
+        mDatabase.push().setValue(email);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Name");
+        mDatabase.push().setValue(name);
 
     }
 }

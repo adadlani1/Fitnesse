@@ -23,6 +23,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
@@ -136,6 +138,10 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
                 }
             }
         });
+
+        String userID = mUser.getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Name");
+        mDatabase.setValue(newName);
     }
 
     @Override
