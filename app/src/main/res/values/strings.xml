@@ -22,6 +22,10 @@
     <string name="add_friends">Add Friends</string>
     <string name="name">Name</string>
     <string name="no_activity">No Activity</string>
+    <string name="please_enter_values_in_highlighted_fields">Please Enter Values in Highlighted Fields.</string>
+    <string name="effort_level">Effort Level:</string>
+    <string name="minimal_effort">Minimal Effort</string>
+    <string name="maximum_effort">Maximum Effort</string>
 
     <string-array name="activities_array">
         <item>Select</item>
