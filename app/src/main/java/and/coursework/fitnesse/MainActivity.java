@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -201,13 +202,12 @@ public class MainActivity extends AppCompatActivity {
         for (String day : axisData) {
             int minutes = 0;
             for (Activity activity : activityList) {
-                if (activity.getDayAdded().equals(day)) {
+                if (Integer.parseInt(activity.getDayAdded()) == Integer.parseInt(day)) {
                     minutes += Integer.parseInt(activity.getMinutes());
                 }
             }
             data.add(minutes);
         }
-
         return data;
     }
 
