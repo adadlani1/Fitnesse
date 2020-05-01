@@ -19,7 +19,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,6 +68,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     private EditText descriptionText;
     private EditText minutes;
     private Spinner activities;
+    private SeekBar effortLevel;
 
     /*Variable for objects*/
     private User user;
@@ -76,8 +79,6 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
 
-    /*Variables to save entered values*/
-    private Calendar calendar;
     private String userUID;
     private String minutesExercised;
     private String description;
@@ -96,7 +97,9 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         descriptionText = findViewById(R.id.descriptionEditText);
         minutes = findViewById(R.id.minutesEditText);
         activities = findViewById(R.id.activitiesChooser);
-        Button saveButton = findViewById(R.id.saveButton);
+        effortLevel = findViewById(R.id.effortLevelSlider);
+        ImageView saveButton = findViewById(R.id.saveButton);
+        ImageView backButton = findViewById(R.id.backArrow);
 
         progressBar.setVisibility(View.INVISIBLE);
 
@@ -117,17 +120,15 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         getLastLocation();
 
         /*When Save Button is Clicked*/
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                validation();
-            }
-        });
+        saveButton.setOnClickListener(v -> validation());
+
+        backButton.setOnClickListener(v -> goBackToMainPage());
 
     }
 
     /*Method checks if all of the required boxes are filled in*/
     private void validation() {
+        Toast.makeText(getApplicationContext(), effortLevel.getProgress(), Toast.LENGTH_SHORT).show();
         minutesExercised = minutes.getText().toString();
         description = descriptionText.getText().toString();
         activityChosen = activities.getSelectedItem().toString();
@@ -261,10 +262,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     }
 
     /*Swipe Right means go back to previous page*/
-    private void onSwipeRight() {
-        startActivity(new Intent(this, MainActivity.class));
-        overridePendingTransition(100, R.anim.fade_in);
-    }
+    private void onSwipeRight() {goBackToMainPage();}
 
     /*Saves information and goes back to parent page*/
     private void saveActivityInformation() {
@@ -422,5 +420,8 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
             activities.setBackgroundColor(Color.RED);
     }
 
-
+    private void goBackToMainPage(){
+        startActivity(new Intent(this, MainActivity.class));
+        overridePendingTransition(100, R.anim.fade_in);
+    }
 }

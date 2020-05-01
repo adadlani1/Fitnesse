@@ -71,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
         ImageView previousMonth = findViewById(R.id.LastMonthImage);
         ImageView nextMonth = findViewById(R.id.nextMonthImage);
         LineChartView chartView = findViewById(R.id.lineChart);
+        TextView welcomeMsg = findViewById(R.id.welcome);
+
+        welcomeMsg.setText("Welcome " + mUser.getDisplayName());
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

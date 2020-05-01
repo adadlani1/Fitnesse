@@ -26,6 +26,7 @@
     <string name="effort_level">Effort Level:</string>
     <string name="minimal_effort">Minimal Effort</string>
     <string name="maximum_effort">Maximum Effort</string>
+    <string name="welcome">Welcome</string>
 
     <string-array name="activities_array">
         <item>Select</item>
