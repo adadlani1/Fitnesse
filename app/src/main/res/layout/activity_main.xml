@@ -135,6 +135,16 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp" />
 
+    <ImageView
+        android:id="@+id/addActivityImageView"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_below="@id/space"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="2dp"
+        app:srcCompat="@drawable/ic_add_white_24dp" />
+
     <ProgressBar
         android:id="@+id/progressBarMainPage"
         style="?android:attr/progressBarStyle"
@@ -151,7 +161,7 @@
         android:id="@+id/recyclerViewMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/space"
+        android:layout_below="@+id/addActivityImageView"
         android:layout_marginTop="0dp" />
 
 

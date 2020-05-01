@@ -1,18 +1,14 @@
 package and.coursework.fitnesse;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,7 +31,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -76,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView previousMonth = findViewById(R.id.LastMonthImage);
         ImageView nextMonth = findViewById(R.id.nextMonthImage);
         ImageView account = findViewById(R.id.accountImageView);
+        ImageView addActivity = findViewById(R.id.addActivityImageView);
         LineChartView chartView = findViewById(R.id.lineChart);
         TextView welcomeMsg = findViewById(R.id.welcome);
 
@@ -92,7 +88,10 @@ public class MainActivity extends AppCompatActivity {
         updateTextView();
         loadActivities();
 
-        account.setOnClickListener(v -> goToProfileActivity());
+        addActivity.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), AddActivity.class)));
+
+        account.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ProfileActivity.class)));
+
         previousMonth.setOnClickListener(v -> {
             int monthInt = Integer.parseInt(currentMonthSelected);
             monthInt -= 1;
@@ -106,25 +105,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-    private void goToProfileActivity() {
-        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-    }
-
-    /*@Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.about:
-                return true;
-
-            case R.id.activity:
-                startActivity(new Intent(this, PerformedActivity.class));
-                return true;
-
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
-
 
     /*Gets Current Month */
     private String getCurrentMonth() {

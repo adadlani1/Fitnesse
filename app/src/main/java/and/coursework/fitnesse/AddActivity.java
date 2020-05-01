@@ -93,8 +93,6 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Add Activity");
 
         /*Saving the display items to variables*/
         progressBar = findViewById(R.id.addActivityProgressBar);
@@ -132,7 +130,8 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     /*Method checks if all of the required boxes are filled in*/
     private void validation() {
-        Toast.makeText(getApplicationContext(), effortLevel.getProgress(), Toast.LENGTH_SHORT).show();
+        String effortLevelStr = String.valueOf(effortLevel.getProgress());
+        Toast.makeText(getApplicationContext(), effortLevelStr, Toast.LENGTH_SHORT).show();
         minutesExercised = minutes.getText().toString();
         description = descriptionText.getText().toString();
         activityChosen = activities.getSelectedItem().toString();
