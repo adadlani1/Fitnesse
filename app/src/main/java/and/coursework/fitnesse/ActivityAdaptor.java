@@ -16,7 +16,6 @@ import java.util.List;
 
 public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.ProductViewHolder> {
 
-
     //this context we will use to inflate the layout
     private Context context;
 
@@ -40,19 +39,29 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(final ProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ProductViewHolder holder, int position) {
         //getting the product of the specified position
         final Activity activity = activityList.get(position);
 
-        String date = activity.getDayAdded() + "/" + activity.getMonthAdded() + "/" + activity.getYearAdded();
+        if (activity.getActivity().equals("No Activity In This Month")) {
 
-        //binding the data with the viewholder views
-        holder.textViewActivity.setText(activity.getActivity());
-        holder.textViewLocation.setText(activity.getDescription());
-        holder.textViewDate.setText("Date: "+ date);
-        holder.textViewMinutes.setText("Minutes Active: " + activity.getMinutes());
+            holder.activityImage.setImageResource(R.drawable.cross);
+            holder.textViewLocation.setText("Please click the Water Bottle at the top to add an activity");
+            holder.textViewActivity.setText(activity.getActivity());
+            holder.textViewDate.setVisibility(View.GONE);
+            holder.textViewMinutes.setVisibility(View.GONE);
+        } else {
 
-        setImageOfActivity(activity, holder);
+            String date = activity.getDayAdded() + "/" + activity.getMonthAdded() + "/" + activity.getYearAdded();
+
+            //binding the data with the viewholder views
+            holder.textViewActivity.setText(activity.getActivity());
+            holder.textViewLocation.setText(activity.getDescription());
+            holder.textViewDate.setText("Date: " + date);
+            holder.textViewMinutes.setText("Minutes Active: " + activity.getMinutes());
+
+            setImageOfActivity(activity, holder);
+        }
     }
 
     private void setImageOfActivity(Activity activity, ProductViewHolder holder) {

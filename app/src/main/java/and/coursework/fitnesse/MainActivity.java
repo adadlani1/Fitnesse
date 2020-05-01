@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -94,13 +92,13 @@ public class MainActivity extends AppCompatActivity {
 
         previousMonth.setOnClickListener(v -> {
             int monthInt = Integer.parseInt(currentMonthSelected);
-            monthInt-=1;
+            monthInt -= 1;
             updateMonth(monthInt);
         });
 
         nextMonth.setOnClickListener(v -> {
             int monthInt = Integer.parseInt(currentMonthSelected);
-            monthInt+=1;
+            monthInt += 1;
             updateMonth(monthInt);
         });
 
@@ -142,36 +140,30 @@ public class MainActivity extends AppCompatActivity {
     private void loadActivities() {
         Query query = mDatabase.orderByChild("monthAdded").equalTo((currentMonthSelected));
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null){
+                    activityList.clear();
+                    showNoResults();
+                }
                 if (dataSnapshot.exists()) {
                     activityList.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Activity activity = snapshot.getValue(Activity.class);
                         activityList.add(activity);
                     }
-
                     progressBar.setVisibility(View.INVISIBLE);
-
                     if (activityList.size() != 0) {
                         ActivityAdaptor adapter = new ActivityAdaptor(getApplicationContext(), activityList);
                         recyclerView.setAdapter(adapter);
                         showResultsOnChart();
-                    } else{
-                        Activity noActivities = new Activity();
-                        noActivities.setActivity("No Activity in This Month");
-                        activityList.add(noActivities);
-                        ActivityAdaptor adaptor = new ActivityAdaptor(getApplicationContext(), activityList);
-                        recyclerView.setAdapter(adaptor);
-
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
@@ -182,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String getMonth(int month) {
-        return new DateFormatSymbols().getMonths()[month-1];
+        return new DateFormatSymbols().getMonths()[month - 1];
     }
 
     private void updateMonth(int monthInt) {
@@ -196,61 +188,43 @@ public class MainActivity extends AppCompatActivity {
         LineChartView lineChartView = findViewById(R.id.lineChart);
         lineChartView.setInteractive(true);
 
-        List<String> axisData = getXAxisData();
-
-        List<Integer> yAxisData = getYAxisData(axisData);
-
-
-        List yAxisValues = new ArrayList();
-        List axisValues = new ArrayList();
+        List<String> xAxisData = getXAxisData();
+        List<Integer> yAxisData = getYAxisData(xAxisData);
 
 
-        Line line = new Line(yAxisValues).setColor(Color.parseColor("#100db4"));
+        List<lecho.lib.hellocharts.model.PointValue> yAxisDayOfMonth = new ArrayList<>();
+        List<AxisValue> xAxisMinuteValues = new ArrayList<>();
 
-        for (int i = 0; i < axisData.size(); i++) {
-            axisValues.add(i, new AxisValue(i).setLabel(axisData.get(i)));
+
+        Line minutesLine = new Line(yAxisDayOfMonth).setColor(Color.parseColor("#100db4"));
+
+        for (int i = 0; i < xAxisData.size(); i++) {
+            xAxisMinuteValues.add(i, new AxisValue(i).setLabel(xAxisData.get(i)));
         }
 
-        for (int i = 0; i < yAxisData.size(); i++) {
-            yAxisValues.add(new PointValue(i, yAxisData.get(i)));
+        int day = 0;
+        for (int Minutes: yAxisData) {
+            yAxisDayOfMonth.add(new PointValue(day, Minutes));
+            day++;
         }
 
-        List lines = new ArrayList();
-        lines.add(line);
+        List<Line> lineArrayList = new ArrayList<>();
+        lineArrayList.add(minutesLine);
 
-        LineChartData data = new LineChartData();
-        data.setLines(lines);
+        LineChartData lineChartData = new LineChartData();
+        lineChartData.setLines(lineArrayList);
 
-        Axis axis = new Axis();
-        axis.setValues(axisValues);
-        axis.setTextSize(16);
-        axis.setName("Day of Month");
-        axis.setTextColor(Color.parseColor("#10e6fc"));
-        data.setAxisXBottom(axis);
-
-        Axis yAxis = new Axis();
-        yAxis.setName("Activity (Mins)");
-        yAxis.setTextColor(Color.parseColor("#10e6fc"));
-        yAxis.setTextSize(16);
-        data.setAxisYLeft(yAxis);
-
-        lineChartView.setLineChartData(data);
-        Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-        viewport.top = Collections.max(yAxisData);
-        lineChartView.setMaximumViewport(viewport);
-        lineChartView.setCurrentViewport(viewport);
-
-        lineChartView.setVisibility(View.VISIBLE);
+        initialiseChart(xAxisMinuteValues, lineChartData, lineChartView);
 
     }
 
     private List<Integer> getYAxisData(List<String> axisData) {
         List<Integer> data = new ArrayList<>();
 
-        for (String day : axisData){
+        for (String day : axisData) {
             int minutes = 0;
-            for (Activity activity: activityList){
-                if (activity.getDayAdded().equals(day)){
+            for (Activity activity : activityList) {
+                if (activity.getDayAdded().equals(day)) {
                     minutes += Integer.parseInt(activity.getMinutes());
                 }
             }
@@ -261,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<String> getXAxisData() {
-        LocalDate date = LocalDate.of(2020, Integer.parseInt(currentMonthSelected), 01);
+        LocalDate date = LocalDate.of(2020, Integer.parseInt(currentMonthSelected), 1);
         int monthSize = date.lengthOfMonth();
 
         List<String> days = new ArrayList<>();
@@ -270,5 +244,37 @@ public class MainActivity extends AppCompatActivity {
             days.add(String.valueOf(i));
         }
         return days;
+    }
+
+    private void initialiseChart(List<AxisValue> xAxisMinuteValues, LineChartData lineChartData, LineChartView lineChartView) {
+        Axis xAxis = new Axis();
+        xAxis.setValues(xAxisMinuteValues);
+        xAxis.setTextSize(16);
+        xAxis.setName("Day of Month");
+        xAxis.setTextColor(Color.parseColor("#10e6fc"));
+        lineChartData.setAxisXBottom(xAxis);
+
+        Axis yAxis = new Axis();
+        yAxis.setTextSize(16);
+        yAxis.setName("Activity (Mins)");
+        yAxis.setTextColor(Color.parseColor("#10e6fc"));
+        lineChartData.setAxisYLeft(yAxis);
+
+        lineChartView.setLineChartData(lineChartData);
+        Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
+        lineChartView.setMaximumViewport(viewport);
+        lineChartView.setCurrentViewport(viewport);
+
+        lineChartView.setVisibility(View.VISIBLE);
+    }
+
+    private void showNoResults() {
+        Activity noActivities = new Activity();
+        noActivities.setActivity("No Activity In This Month");
+        activityList.add(noActivities);
+        ActivityAdaptor adaptor = new ActivityAdaptor(getApplicationContext(), activityList);
+        recyclerView.setAdapter(adaptor);
+        LineChartView chartView = findViewById(R.id.lineChart);
+        chartView.setVisibility(View.INVISIBLE);
     }
 }
