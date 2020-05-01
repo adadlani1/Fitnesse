@@ -31,7 +31,6 @@ import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -45,16 +44,10 @@ import lecho.lib.hellocharts.view.LineChartView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
     private DatabaseReference mDatabase;
-    private RelativeLayout relativeLayout;
-    private Context context;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView monthTextView;
-    private ImageView previousMonth;
-    private ImageView nextMonth;
 
     private List<Activity> activityList = new ArrayList<>();
     private String currentMonthSelected;
@@ -67,18 +60,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        assert mUser != null;
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid()).child("Activities");
 
-        relativeLayout = findViewById(R.id.relativeLayoutMainPage);
         recyclerView = findViewById(R.id.recyclerViewMain);
         progressBar = findViewById(R.id.progressBarMainPage);
         monthTextView = findViewById(R.id.monthTextView);
-        previousMonth = findViewById(R.id.LastMonthImage);
-        nextMonth = findViewById(R.id.nextMonthImage);
+        ImageView previousMonth = findViewById(R.id.LastMonthImage);
+        ImageView nextMonth = findViewById(R.id.nextMonthImage);
         LineChartView chartView = findViewById(R.id.lineChart);
-        context = getApplicationContext();
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -246,18 +238,19 @@ public class MainActivity extends AppCompatActivity {
         return days;
     }
 
+    private void initialiseAxis(Axis axis, String nameOfAxis){
+        axis.setTextSize(16);
+        axis.setName(nameOfAxis);
+        axis.setTextColor(Color.parseColor("#08AFFF"));
+    }
     private void initialiseChart(List<AxisValue> xAxisMinuteValues, LineChartData lineChartData, LineChartView lineChartView) {
         Axis xAxis = new Axis();
         xAxis.setValues(xAxisMinuteValues);
-        xAxis.setTextSize(16);
-        xAxis.setName("Day of Month");
-        xAxis.setTextColor(Color.parseColor("#08AFFF"));
+        initialiseAxis(xAxis, "Day of Month");
         lineChartData.setAxisXBottom(xAxis);
 
         Axis yAxis = new Axis();
-        yAxis.setTextSize(16);
-        yAxis.setName("Activity (Mins)");
-        yAxis.setTextColor(Color.parseColor("#08AFFF"));
+        initialiseAxis(yAxis, "Activity (mins)");
         lineChartData.setAxisYLeft(yAxis);
 
         lineChartView.setLineChartData(lineChartData);
