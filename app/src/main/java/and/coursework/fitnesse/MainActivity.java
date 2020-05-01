@@ -251,13 +251,13 @@ public class MainActivity extends AppCompatActivity {
         xAxis.setValues(xAxisMinuteValues);
         xAxis.setTextSize(16);
         xAxis.setName("Day of Month");
-        xAxis.setTextColor(Color.parseColor("#10e6fc"));
+        xAxis.setTextColor(Color.parseColor("#08AFFF"));
         lineChartData.setAxisXBottom(xAxis);
 
         Axis yAxis = new Axis();
         yAxis.setTextSize(16);
         yAxis.setName("Activity (Mins)");
-        yAxis.setTextColor(Color.parseColor("#10e6fc"));
+        yAxis.setTextColor(Color.parseColor("#08AFFF"));
         lineChartData.setAxisYLeft(yAxis);
 
         lineChartView.setLineChartData(lineChartData);
