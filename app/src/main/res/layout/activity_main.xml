@@ -40,6 +40,15 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:textColor="@android:color/primary_text_dark" />
 
+            <ImageView
+                android:id="@+id/accountImageView"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="1dp"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_account_circle_white_24dp" />
+
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
@@ -50,9 +59,10 @@
         android:layout_height="2dp"
         android:layout_below="@id/topNaviCardViewMain" />
 
+
     <androidx.cardview.widget.CardView
         android:id="@+id/monthAndChartCardView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="400dp"
         android:layout_below="@id/betweenSpace"
         app:cardCornerRadius="10dp">

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -33,6 +35,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -70,8 +75,10 @@ public class MainActivity extends AppCompatActivity {
         monthTextView = findViewById(R.id.monthTextView);
         ImageView previousMonth = findViewById(R.id.LastMonthImage);
         ImageView nextMonth = findViewById(R.id.nextMonthImage);
+        ImageView account = findViewById(R.id.accountImageView);
         LineChartView chartView = findViewById(R.id.lineChart);
         TextView welcomeMsg = findViewById(R.id.welcome);
+
 
         welcomeMsg.setText("Welcome " + mUser.getDisplayName());
 
@@ -85,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         updateTextView();
         loadActivities();
 
+        account.setOnClickListener(v -> goToProfileActivity());
         previousMonth.setOnClickListener(v -> {
             int monthInt = Integer.parseInt(currentMonthSelected);
             monthInt -= 1;
@@ -99,13 +107,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_page, menu);
-        return true;
+    private void goToProfileActivity() {
+        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
     }
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.about:
@@ -115,13 +121,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, PerformedActivity.class));
                 return true;
 
-            case R.id.profile:
-                startActivity(new Intent(this, ProfileActivity.class));
-                return true;
-
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 
     /*Gets Current Month */

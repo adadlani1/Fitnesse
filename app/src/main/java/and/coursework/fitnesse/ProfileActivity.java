@@ -69,23 +69,9 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         } else
             verified.setChecked(false);
 
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOutClicked();
-            }
-        });
+        signOut.setOnClickListener(v -> signOutClicked());
 
-        saveChanges.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveChanges();
-            }
-        });
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Profile");
-
+        saveChanges.setOnClickListener(v -> saveChanges());
 
     }
 
@@ -95,22 +81,6 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         updateProfile(newName);
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
         overridePendingTransition(100, R.anim.fade_in);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.add_activity, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
-            overridePendingTransition(100, R.anim.fade_in);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private String getNewName() {
