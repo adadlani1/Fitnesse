@@ -2,10 +2,12 @@ package and.coursework.fitnesse;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,7 +48,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
         if (activity.getActivity().equals("No Activity In This Month")) {
 
             holder.activityImage.setImageResource(R.drawable.cross);
-            holder.textViewLocation.setText("Please click the Water Bottle at the top to add an activity");
+            holder.textViewLocation.setText("Please click the Button above to add an activity");
             holder.textViewActivity.setText(activity.getActivity());
             holder.textViewDate.setVisibility(View.GONE);
             holder.textViewMinutes.setVisibility(View.GONE);
@@ -61,6 +63,27 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
             holder.textViewMinutes.setText("Minutes Active: " + activity.getMinutes());
 
             setImageOfActivity(activity, holder);
+            showEffortLevel(activity, holder);
+        }
+    }
+
+    private void showEffortLevel(Activity activity, ProductViewHolder holder) {
+        switch (activity.getEffortLevel()){
+            case 0:
+                holder.relativeLayout.setBackgroundColor(Color.parseColor("#FF9166"));
+                break;
+            case 1:
+                holder.relativeLayout.setBackgroundColor(Color.parseColor("#EBC68A"));
+                break;
+            case 2:
+                holder.relativeLayout.setBackgroundColor(Color.parseColor("#FFF08C"));
+                break;
+            case 3:
+                holder.relativeLayout.setBackgroundColor(Color.parseColor("#D9EB67"));
+                break;
+            case 4:
+                holder.relativeLayout.setBackgroundColor(Color.parseColor("#A9EB57"));
+                break;
         }
     }
 
@@ -121,6 +144,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
         TextView textViewActivity, textViewLocation, textViewDate, textViewMinutes;
         ImageView activityImage;
         CardView cardView;
+        RelativeLayout relativeLayout;
 
         ProductViewHolder(View itemView) {
             super(itemView);
@@ -131,6 +155,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
             textViewMinutes = itemView.findViewById(R.id.minutes);
             activityImage = itemView.findViewById(R.id.activityImage);
             cardView = itemView.findViewById(R.id.cardViewActivity);
+            relativeLayout = itemView.findViewById(R.id.relativeLayoutCard);
 
         }
     }

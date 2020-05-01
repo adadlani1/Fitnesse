@@ -18,6 +18,7 @@
         app:cardCornerRadius="10dp">
 
         <RelativeLayout
+            android:id="@+id/relativeLayoutCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hapticFeedbackEnabled="true"
