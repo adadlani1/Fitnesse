@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
@@ -43,6 +45,8 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
@@ -79,8 +83,6 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         progressBar.setVisibility(View.VISIBLE);
         String newName = getNewName();
         updateProfile(newName);
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        overridePendingTransition(100, R.anim.fade_in);
     }
 
     private String getNewName() {
@@ -98,14 +100,13 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
                 .setDisplayName(newName)
                 .build();
 
-        mUser.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(ProfileActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.INVISIBLE);
+        mUser.updateProfile(profileUpdates).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(ProfileActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.INVISIBLE);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                overridePendingTransition(100, R.anim.fade_in);
 
-                }
             }
         });
 
@@ -182,8 +183,7 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
     }
 
     private void onSwipeRight() {
-        startActivity(new Intent(this, MainActivity.class));
-        overridePendingTransition(100 , R.anim.fade_in);
+        saveChanges();
     }
 
     @Override
