@@ -85,6 +85,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     private String minutesExercised;
     private String description;
     private String activityChosen;
+    private int effortLevelValue;
 
 
     @Override
@@ -130,11 +131,10 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     /*Method checks if all of the required boxes are filled in*/
     private void validation() {
-        String effortLevelStr = String.valueOf(effortLevel.getProgress());
-        Toast.makeText(getApplicationContext(), effortLevelStr, Toast.LENGTH_SHORT).show();
         minutesExercised = minutes.getText().toString();
         description = descriptionText.getText().toString();
         activityChosen = activities.getSelectedItem().toString();
+        effortLevelValue = effortLevel.getProgress();
 
         if (minutesExercised.equals("") || description.equals("") || activityChosen.equals("Select")) {
             checkIfFieldsFilledIn();
@@ -157,6 +157,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         activity.setMonthAdded(month);
         activity.setYearAdded(year);
         activity.setDayAdded(day);
+        activity.setEffortLevel(effortLevelValue);
 
         user.setActivities(activityChosen);
         mDatabase.push().setValue(activity);

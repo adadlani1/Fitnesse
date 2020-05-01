@@ -9,6 +9,7 @@ public class Activity {
     private String monthAdded;
     private String yearAdded;
     private String dayAdded;
+    private int effortLevel;
 
     public String getDayAdded() {
         return dayAdded;
@@ -72,5 +73,13 @@ public class Activity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getEffortLevel() {
+        return effortLevel;
+    }
+
+    public void setEffortLevel(int effortLevel) {
+        this.effortLevel = effortLevel;
     }
 }
