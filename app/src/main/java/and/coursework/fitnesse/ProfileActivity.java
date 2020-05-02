@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         signOut = findViewById(R.id.signoutButton);
         final Button saveChanges = findViewById(R.id.saveChangesButton);
 
-        CheckBox verified = findViewById(R.id.verifiedBox);
+        ImageView verified = findViewById(R.id.verifiedBox);
 
         progressBar = findViewById(R.id.progressBar);
 
@@ -69,9 +70,9 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         name.setText(mUser.getDisplayName());
 
         if (mUser.isEmailVerified()) {
-            verified.setChecked(true);
+            verified.setVisibility(View.VISIBLE);
         } else
-            verified.setChecked(false);
+            verified.setVisibility(View.INVISIBLE);
 
         signOut.setOnClickListener(v -> signOutClicked());
 

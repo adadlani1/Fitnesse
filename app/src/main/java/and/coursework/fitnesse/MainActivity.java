@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private String currentYearSelected;
     private String currentMonthSelectedName;
 
+    private FirebaseUser mUser;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser mUser = mAuth.getCurrentUser();
+        mUser = mAuth.getCurrentUser();
         assert mUser != null;
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid()).child("Activities");
 
@@ -79,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         TextView welcomeMsg = findViewById(R.id.welcome);
 
 
-        welcomeMsg.setText("Welcome " + mUser.getDisplayName());
+        welcomeMsg.setText(mUser.getDisplayName());
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -94,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
         currentMonthSelectedName = getMonthName(Integer.parseInt(getCurrent("MM")));
         updateTextView();
         loadActivities();
+
+        showVerfied();
 
         checkIfCurrentTimeIsShownToUser();
 
@@ -129,6 +133,14 @@ public class MainActivity extends AppCompatActivity {
             checkIfCurrentTimeIsShownToUser();
         });
 
+    }
+
+    private void showVerfied() {
+        ImageView verified = findViewById(R.id.verifiedImage);
+        if (mUser.isEmailVerified()) {
+            verified.setVisibility(View.VISIBLE);
+        } else
+            verified.setVisibility(View.INVISIBLE);
     }
 
     private void checkIfCurrentTimeIsShownToUser() {
