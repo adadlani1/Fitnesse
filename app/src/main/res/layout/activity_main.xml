@@ -151,7 +151,7 @@
         android:layout_below="@id/space"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="5dp"
         app:srcCompat="@drawable/ic_add_white_24dp" />
 
     <ProgressBar
@@ -177,9 +177,9 @@
         android:id="@+id/listOfAllActivities"
         android:layout_width="33dp"
         android:layout_height="33dp"
-        android:layout_marginEnd="5dp"
         android:layout_below="@id/space"
-        android:layout_toStartOf="@+id/addActivityImageView"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
         app:srcCompat="@drawable/ic_list_white_24dp" />
 
 
