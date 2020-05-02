@@ -28,6 +28,7 @@
     <string name="maximum_effort">Maximum Effort</string>
     <string name="welcome">Welcome</string>
     <string name="month">Month</string>
+    <string name="all_activities">All Activities</string>
 
     <string-array name="activities_array">
         <item>Select</item>

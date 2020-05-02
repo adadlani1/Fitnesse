@@ -7,14 +7,69 @@
     android:layout_height="match_parent"
     tools:context=".PerformedActivity">
 
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/topNaviCardViewPerformed"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:cardBackgroundColor="#000000"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/backArrow"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_arrow_back_white24dp" />
+
+            <TextView
+                android:id="@+id/performedActivitiesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="127dp"
+                android:text="@string/all_activities"
+                android:textAlignment="center"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/primary_text_dark" />
+
+            <ImageView
+                android:id="@+id/add_activity"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="1dp"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_add_white_24dp" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
     <ProgressBar
         android:id="@+id/allActivitiesProgressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="178dp"
+        android:layout_marginBottom="558dp" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/topNaviCardViewPerformed"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
