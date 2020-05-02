@@ -173,5 +173,14 @@
         android:layout_below="@+id/addActivityImageView"
         android:layout_marginTop="0dp" />
 
+    <ImageView
+        android:id="@+id/listOfAllActivities"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_marginEnd="5dp"
+        android:layout_below="@id/space"
+        android:layout_toStartOf="@+id/addActivityImageView"
+        app:srcCompat="@drawable/ic_list_white_24dp" />
+
 
 </RelativeLayout>

@@ -60,8 +60,6 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_performed);
 
-        Objects.requireNonNull(getSupportActionBar()).setTitle("All Activities");
-
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         assert mUser != null;

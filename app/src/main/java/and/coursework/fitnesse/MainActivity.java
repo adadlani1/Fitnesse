@@ -77,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
         ImageView previousMonth = findViewById(R.id.LastMonthImage);
         ImageView account = findViewById(R.id.accountImageView);
         ImageView addActivity = findViewById(R.id.addActivityImageView);
+        ImageView viewActivities = findViewById(R.id.listOfAllActivities);
         LineChartView chartView = findViewById(R.id.lineChart);
         TextView welcomeMsg = findViewById(R.id.welcome);
-
 
         welcomeMsg.setText(mUser.getDisplayName());
 
@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         showVerfied();
 
         checkIfCurrentTimeIsShownToUser();
+
+        viewActivities.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PerformedActivity.class)));
 
         addActivity.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), AddActivity.class)));
 
