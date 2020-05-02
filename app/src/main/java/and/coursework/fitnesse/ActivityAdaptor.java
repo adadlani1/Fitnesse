@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.ProductViewHolder> {
@@ -47,8 +49,14 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
 
         if (activity.getActivity().equals("No Activity In This Month")) {
 
+            String month = "0" + getDate("MM");
+            String year = getDate("yyyy");
+
             holder.activityImage.setImageResource(R.drawable.cross);
-            holder.textViewLocation.setText("Please click the Button above to add an activity");
+            if (month.equals(activity.getMonthAdded()) && year.equals(activity.getYearAdded()))
+                holder.textViewLocation.setText("Please click the Button above to add an activity");
+            else
+                holder.textViewLocation.setVisibility(View.GONE);
             holder.textViewActivity.setText(activity.getActivity());
             holder.textViewDate.setVisibility(View.GONE);
             holder.textViewMinutes.setVisibility(View.GONE);
@@ -65,6 +73,12 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
             setImageOfActivity(activity, holder);
             showEffortLevel(activity, holder);
         }
+    }
+
+    private String getDate(String time) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(time);
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
     private void showEffortLevel(Activity activity, ProductViewHolder holder) {

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -47,11 +46,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView monthTextView;
+    private ImageView nextMonth;
 
     private List<Activity> activityList = new ArrayList<>();
+    private String currentMonth;
     private String currentMonthSelected;
+    private String currentYear;
+    private String currentYearSelected;
     private String currentMonthSelectedName;
-
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -69,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewMain);
         progressBar = findViewById(R.id.progressBarMainPage);
         monthTextView = findViewById(R.id.monthTextView);
+        nextMonth = findViewById(R.id.nextMonthImage);
         ImageView previousMonth = findViewById(R.id.LastMonthImage);
-        ImageView nextMonth = findViewById(R.id.nextMonthImage);
         ImageView account = findViewById(R.id.accountImageView);
         ImageView addActivity = findViewById(R.id.addActivityImageView);
         LineChartView chartView = findViewById(R.id.lineChart);
@@ -84,10 +86,16 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         chartView.setVisibility(View.INVISIBLE);
 
-        currentMonthSelected = getCurrentMonth();
-        currentMonthSelectedName = getMonth(Integer.parseInt(getCurrentMonth()));
+        currentYear = getCurrent("yyyy");
+        currentYearSelected = currentYear;
+
+        currentMonth = getCurrent("MM");
+        currentMonthSelected = currentMonth;
+        currentMonthSelectedName = getMonthName(Integer.parseInt(getCurrent("MM")));
         updateTextView();
         loadActivities();
+
+        checkIfCurrentTimeIsShownToUser();
 
         addActivity.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), AddActivity.class)));
 
@@ -95,22 +103,45 @@ public class MainActivity extends AppCompatActivity {
 
         previousMonth.setOnClickListener(v -> {
             int monthInt = Integer.parseInt(currentMonthSelected);
+            int yearInt = Integer.parseInt(currentYearSelected);
             monthInt -= 1;
-            updateMonth(monthInt);
+            if (monthInt > 0) {
+                updateMonth(monthInt);
+            } else {
+                monthInt = 12;
+                currentYearSelected = String.valueOf(yearInt - 1);
+                updateMonth(monthInt);
+            }
+            checkIfCurrentTimeIsShownToUser();
         });
 
         nextMonth.setOnClickListener(v -> {
             int monthInt = Integer.parseInt(currentMonthSelected);
+            int yearInt = Integer.parseInt(currentYearSelected);
             monthInt += 1;
-            updateMonth(monthInt);
+            if ( monthInt < 13) {
+                updateMonth(monthInt);
+            } else if (monthInt == 13){
+                currentYearSelected = String.valueOf(yearInt + 1);
+                monthInt = 1;
+                updateMonth(monthInt);
+            }
+            checkIfCurrentTimeIsShownToUser();
         });
 
     }
 
-    /*Gets Current Month */
-    private String getCurrentMonth() {
+    private void checkIfCurrentTimeIsShownToUser() {
+        if (currentMonthSelected.equals(currentMonth) && currentYearSelected.equals(currentYear)){
+            nextMonth.setVisibility(View.INVISIBLE);
+        } else
+            nextMonth.setVisibility(View.VISIBLE);
 
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
+    }
+
+    /*Gets Current Time */
+    private String getCurrent(String time) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(time);
         Date date = new Date();
         return dateFormat.format(date);
     }
@@ -148,16 +179,19 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void updateTextView() {
-        monthTextView.setText(currentMonthSelectedName + " 2020");
+        monthTextView.setText(currentMonthSelectedName + " " + currentYearSelected);
     }
 
-    public String getMonth(int month) {
+    public String getMonthName(int month) {
         return new DateFormatSymbols().getMonths()[month - 1];
     }
 
     private void updateMonth(int monthInt) {
-        currentMonthSelectedName = getMonth(monthInt);
-        currentMonthSelected = "0" + monthInt;
+        currentMonthSelectedName = getMonthName(monthInt);
+        if (monthInt > 9){
+            currentMonthSelected = String.valueOf(monthInt);
+        } else
+            currentMonthSelected = "0" + monthInt;
         loadActivities();
         updateTextView();
     }
