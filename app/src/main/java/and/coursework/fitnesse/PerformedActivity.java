@@ -3,8 +3,6 @@ package and.coursework.fitnesse;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +30,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class PerformedActivity extends AppCompatActivity implements GestureDetector.OnGestureListener{
@@ -94,7 +91,6 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
                     progressBar.setVisibility(View.INVISIBLE);
 
                     if (activityList.size()!= 0) {
-                        Collections.reverse(activityList);
                         List<String> uniqueActivities = findUniqueActivities(activityList);
                         List<ActivityCategory> activityCategoriesList = analyseAndGetOverallCategoryInformation(activityList, uniqueActivities);
                         CategoryAdaptor adapter = new CategoryAdaptor(getApplicationContext(), activityCategoriesList);

@@ -40,7 +40,7 @@ public class ActivityCategory {
         this.name = name;
     }
 
-    public static Comparator<ActivityCategory> numberOfActivitesComparator = (o1, o2) -> {
+    public static Comparator<ActivityCategory> numberOfActivitiesComparator = (o1, o2) -> {
         Integer categoryNumberOfActivities1 = o1.getFrequency();
         Integer categoryNumberOfActivities2 = o2.getFrequency();
 

@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.Produc
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final ProductViewHolder holder, int position) {
-        Collections.sort(activityCategoriesList, ActivityCategory.numberOfActivitesComparator);
+        Collections.sort(activityCategoriesList, ActivityCategory.numberOfActivitiesComparator);
         //getting the product of the specified position
         final ActivityCategory activityCategory = activityCategoriesList.get(position);
 
