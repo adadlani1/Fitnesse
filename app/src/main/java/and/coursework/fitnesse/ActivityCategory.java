@@ -1,5 +1,7 @@
 package and.coursework.fitnesse;
 
+import java.util.Comparator;
+
 public class ActivityCategory {
     private String name;
     private int frequency;
@@ -37,4 +39,11 @@ public class ActivityCategory {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static Comparator<ActivityCategory> numberOfActivitesComparator = (o1, o2) -> {
+        Integer categoryNumberOfActivities1 = o1.getFrequency();
+        Integer categoryNumberOfActivities2 = o2.getFrequency();
+
+        return categoryNumberOfActivities1.compareTo(categoryNumberOfActivities2);
+    };
 }
