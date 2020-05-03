@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,8 +32,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class PerformedActivity extends AppCompatActivity implements GestureDetector.OnGestureListener{
 
@@ -94,7 +95,9 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
 
                     if (activityList.size()!= 0) {
                         Collections.reverse(activityList);
-                        ActivityAdaptor adapter = new ActivityAdaptor(getApplicationContext(), activityList);
+                        List<String> uniqueActivities = findUniqueActivities(activityList);
+                        List<ActivityCategory> activityCategoriesList = analyseAndGetOverallCategoryInformation(activityList, uniqueActivities);
+                        CategoryAdaptor adapter = new CategoryAdaptor(getApplicationContext(), activityCategoriesList);
                         recyclerView.setAdapter(adapter);
                     }
                 } else {
@@ -188,6 +191,12 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
         return result;
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        gestureDetectorProfile.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
     private void onSwipeUp() {
     }
 
@@ -202,9 +211,55 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
         overridePendingTransition(100 , R.anim.fade_in);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        gestureDetectorProfile.onTouchEvent(event);
-        return super.onTouchEvent(event);
+    private List<String> findUniqueActivities(List<Activity> activityList) {
+        List<String> differentActivities = new ArrayList<>();
+        for (Activity activity: activityList){
+            if (!differentActivities.contains(activity.getActivity())){
+                differentActivities.add(activity.getActivity());
+            }
+        }
+        return differentActivities;
+    }
+
+    private List<ActivityCategory> analyseAndGetOverallCategoryInformation(List<Activity> activityList, List<String> uniqueActivities) {
+        List<ActivityCategory> uniqueActivityAnalysis = new ArrayList<>();
+        for (String activityName : uniqueActivities){
+            ActivityCategory activityCategory = new ActivityCategory();
+            activityCategory.setName(activityName);
+            int frequency = findFrequencyOfActivity(activityList, activityName);
+            activityCategory.setFrequency(frequency);
+            int averageMinutes = findAverage(activityList, activityName, frequency, "minutes");
+            activityCategory.setAverageMinutes(averageMinutes);
+            int averageEffortLevel = findAverage(activityList, activityName, frequency, "effort level");
+            activityCategory.setAverageEffortLevel(averageEffortLevel);
+            uniqueActivityAnalysis.add(activityCategory);
+        }
+
+        return uniqueActivityAnalysis;
+    }
+
+    private int findAverage(List<Activity> activityList, String activityName, int frequency, String attribute) {
+        int total = 0;
+        for (Activity activity : activityList){
+            String savedActivityNameInDatabase = activity.getActivity();
+            if (savedActivityNameInDatabase.equals(activityName)){
+                if (attribute.equals("minutes"))
+                    total += Integer.parseInt(activity.getMinutes());
+                else if (attribute.equals("effort level"))
+                    total += activity.getEffortLevel();
+            }
+        }
+
+        return total/frequency;
+    }
+
+    private int findFrequencyOfActivity(List<Activity> activityList, String activityName) {
+        int frequencyOfActivity = 0;
+        for (Activity activity : activityList){
+            String savedActivityNameInDatabase = activity.getActivity();
+            if (savedActivityNameInDatabase.equals(activityName))
+                frequencyOfActivity+=1;
+        }
+        return frequencyOfActivity;
     }
 }

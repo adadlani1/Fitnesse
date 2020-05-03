@@ -29,6 +29,9 @@
     <string name="welcome">Welcome</string>
     <string name="month">Month</string>
     <string name="all_activities">All Activities</string>
+    <string name="average_effort_level">Average Effort Level</string>
+    <string name="average_minutes">Average Minutes</string>
+    <string name="number">Number</string>
 
     <string-array name="activities_array">
         <item>Select</item>

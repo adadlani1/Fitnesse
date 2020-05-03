@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewActivityCategories"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        app:cardCornerRadius="10dp">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutCardCategories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hapticFeedbackEnabled="true"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/activityImageCategories"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:padding="4dp" />
+
+            <TextView
+                android:id="@+id/activityCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@id/activityImageCategories"
+                android:text="@string/activity"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/averageEffortLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/activityCategory"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@id/activityImageCategories"
+                android:text="@string/average_effort_level"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/averageMinutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/averageEffortLevel"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@id/activityImageCategories"
+                android:text="@string/average_minutes"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/frequency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/averageMinutes"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@id/activityImageCategories"
+                android:text="@string/number"
+                android:textStyle="bold"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
