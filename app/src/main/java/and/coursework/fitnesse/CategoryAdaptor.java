@@ -46,7 +46,6 @@ public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.Produc
     @Override
     public void onBindViewHolder(@NonNull final ProductViewHolder holder, int position) {
         Collections.sort(activityCategoriesList, ActivityCategory.numberOfActivitesComparator);
-        Collections.reverse(activityCategoriesList);
         //getting the product of the specified position
         final ActivityCategory activityCategory = activityCategoriesList.get(position);
 

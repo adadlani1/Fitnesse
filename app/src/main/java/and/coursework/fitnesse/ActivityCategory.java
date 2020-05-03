@@ -44,6 +44,6 @@ public class ActivityCategory {
         Integer categoryNumberOfActivities1 = o1.getFrequency();
         Integer categoryNumberOfActivities2 = o2.getFrequency();
 
-        return categoryNumberOfActivities1.compareTo(categoryNumberOfActivities2);
+        return categoryNumberOfActivities2.compareTo(categoryNumberOfActivities1);
     };
 }
