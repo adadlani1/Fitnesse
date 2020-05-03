@@ -2,13 +2,17 @@ package and.coursework.fitnesse;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -60,6 +64,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
             holder.textViewActivity.setText(activity.getActivity());
             holder.textViewDate.setVisibility(View.GONE);
             holder.textViewMinutes.setVisibility(View.GONE);
+
         } else {
 
             String date = activity.getDayAdded() + "/" + activity.getMonthAdded() + "/" + activity.getYearAdded();
@@ -72,6 +77,22 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
 
             setImageOfActivity(activity, holder);
             showEffortLevel(activity, holder);
+
+            holder.cardView.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), ViewActivityMapsActivity.class);
+                intent.putExtra("activity",  activity.getActivity());
+                intent.putExtra("dayAdded",  activity.getDayAdded());
+                intent.putExtra("monthAdded",  activity.getMonthAdded());
+                intent.putExtra("yearAdded",  activity.getYearAdded());
+                intent.putExtra("description",  activity.getDescription());
+                intent.putExtra("effortLevel",  String.valueOf(activity.getEffortLevel()));
+                intent.putExtra("latitude",  activity.getLatitude());
+                intent.putExtra("longitude",  activity.getLongitude());
+                intent.putExtra("minutes",  activity.getMinutes());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                v.getContext().startActivity(intent);
+
+            });
         }
     }
 

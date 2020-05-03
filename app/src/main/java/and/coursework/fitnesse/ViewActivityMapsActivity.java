@@ -1,47 +1,123 @@
 package and.coursework.fitnesse;
 
-import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class ViewActivityMapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import java.util.Objects;
 
-    private GoogleMap mMap;
+public class ViewActivityMapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private MapView mMapView;
+    private String activity;
+    private String effortLevel;
+    private Double longitude;
+    private Double latitude;
+    private String description;
+    private String minutes;
+    private String yearAdded;
+    private String monthAdded;
+    private String dayAdded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+        Bundle mapViewBundle = null;
+        if (savedInstanceState != null){
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        }
+
+        mMapView = findViewById(R.id.user_list_map);
+        mMapView.onCreate(mapViewBundle);
+
+        mMapView.getMapAsync(this);
+
+        getIncomingIntent();
+
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
+        if (mapViewBundle == null) {
+            mapViewBundle = new Bundle();
+            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
+        }
+
+        mMapView.onSaveInstanceState(mapViewBundle);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mMapView.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mMapView.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        mMapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mMapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Activity Location"));
+        googleMap.setMyLocationEnabled(true);
+    }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    private void getIncomingIntent(){
+        if (getIntent().hasExtra("activity")){
+            instantiateActivity();
+        }
+    }
+
+    private void instantiateActivity() {
+         activity = ( getIntent().getStringExtra("activity"));
+         effortLevel = (getIntent().getStringExtra("effortLevel"));
+        longitude = Double.valueOf((Objects.requireNonNull(getIntent().getStringExtra("longitude"))));
+        latitude = Double.valueOf((Objects.requireNonNull(getIntent().getStringExtra("latitude"))));
+         description = ( getIntent().getStringExtra("description"));
+        minutes = ( getIntent().getStringExtra("minutes"));
+        yearAdded = ( getIntent().getStringExtra("year"));
+        monthAdded = ( getIntent().getStringExtra("month"));
+        dayAdded = ( getIntent().getStringExtra("day"));
     }
 }
+
