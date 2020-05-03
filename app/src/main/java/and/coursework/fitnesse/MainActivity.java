@@ -1,6 +1,9 @@
 package and.coursework.fitnesse;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -29,6 +32,7 @@ import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -101,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
         checkIfCurrentTimeIsShownToUser();
 
+        setAlarmManagerTo6PMDaily();
+
         viewActivities.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PerformedActivity.class)));
 
         addActivity.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), AddActivity.class)));
@@ -154,12 +160,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*Gets Current Time */
+
     private String getCurrent(String time) {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(time);
         Date date = new Date();
         return dateFormat.format(date);
     }
-
     private void loadActivities() {
         Query query = mDatabase.orderByChild("monthAdded").equalTo((currentMonthSelected));
 
@@ -276,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
         axis.setName(nameOfAxis);
         axis.setTextColor(Color.parseColor("#08AFFF"));
     }
+
     private void initialiseChart(List<AxisValue> xAxisMinuteValues, LineChartData lineChartData, LineChartView lineChartView) {
         Axis xAxis = new Axis();
         xAxis.setValues(xAxisMinuteValues);
@@ -293,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
 
         lineChartView.setVisibility(View.VISIBLE);
     }
-
     private void showNoResults() {
         Activity noActivities = new Activity();
         noActivities.setActivity("No Activity In This Month");
@@ -302,5 +308,20 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adaptor);
         LineChartView chartView = findViewById(R.id.lineChart);
         chartView.setVisibility(View.INVISIBLE);
+    }
+
+    private void setAlarmManagerTo6PMDaily() {
+        Context context = getApplicationContext();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 18);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        assert alarmManager != null;
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }
