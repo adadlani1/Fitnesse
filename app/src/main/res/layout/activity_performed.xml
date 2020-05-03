@@ -40,8 +40,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="127dp"
-                android:text="@string/all_activities"
                 android:textAlignment="center"
+                android:text="@string/activity_analysis"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:textColor="@android:color/primary_text_dark" />
 

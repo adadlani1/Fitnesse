@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -65,6 +66,8 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
 
         progressBar = findViewById(R.id.allActivitiesProgressBar);
         noActivitiesTextView = findViewById(R.id.noActivities);
+        ImageView backArrow = findViewById(R.id.backArrowAllActivities);
+        ImageView addActivity = findViewById(R.id.addActivityAllActivities);
 
         noActivitiesTextView.setVisibility(View.INVISIBLE);
 
@@ -108,6 +111,14 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
 
             }
         });
+
+
+        backArrow.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            overridePendingTransition(100, R.anim.fade_in);
+        });
+
+        addActivity.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), AddActivity.class)));
 
     }
 

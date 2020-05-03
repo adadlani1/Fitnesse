@@ -32,6 +32,8 @@
     <string name="average_effort_level">Average Effort Level</string>
     <string name="average_minutes">Average Minutes</string>
     <string name="number">Number</string>
+    <string name="each_activity_analysis">Each Activity Analysis</string>
+    <string name="activity_analysis">Activity Analysis</string>
 
     <string-array name="activities_array">
         <item>Select</item>
