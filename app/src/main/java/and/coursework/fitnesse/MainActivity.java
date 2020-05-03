@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         checkIfCurrentTimeIsShownToUser();
 
-        setAlarmManagerTo6PMDaily();
+        setTimeForNotification();
 
         viewActivities.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PerformedActivity.class)));
 
@@ -310,16 +310,19 @@ public class MainActivity extends AppCompatActivity {
         chartView.setVisibility(View.INVISIBLE);
     }
 
-    private void setAlarmManagerTo6PMDaily() {
-        Context context = getApplicationContext();
+    private void setTimeForNotification() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 18);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
+        broadcastNotification(calendar);
+    }
+
+    private void broadcastNotification(Calendar calendar) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent,0);
 
         assert alarmManager != null;
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
