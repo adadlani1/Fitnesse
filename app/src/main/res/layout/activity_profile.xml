@@ -7,6 +7,16 @@
     tools:context=".activity.ProfileActivity">
 
     <Button
+        android:id="@+id/saveChangesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="92dp"
+        android:text="@string/save_changes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Email" />
+
+    <Button
         android:id="@+id/signoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,21 +30,11 @@
         app:layout_constraintTop_toBottomOf="@+id/saveChangesButton"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/saveChangesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="Save Changes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Email" />
-
     <EditText
         android:id="@+id/Name"
         android:layout_width="322dp"
         android:layout_height="48dp"
-        android:layout_marginStart="17dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="72dp"
         android:layout_marginBottom="16dp"
@@ -50,7 +50,7 @@
         android:id="@+id/Email"
         android:layout_width="322dp"
         android:layout_height="48dp"
-        android:layout_marginStart="17dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="72dp"
         android:clickable="false"
@@ -62,7 +62,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Name" />
+        app:layout_constraintTop_toBottomOf="@+id/Name"
+        tools:ignore="TextFields" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -89,4 +90,15 @@
         app:layout_constraintStart_toEndOf="@+id/Email"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_verified_user_black_24dp" />
+
+    <CheckBox
+        android:id="@+id/notificationsCheckBox"
+        android:layout_width="322dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/notifications"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        app:layout_constraintTop_toBottomOf="@+id/Email" />
 </androidx.constraintlayout.widget.ConstraintLayout>
