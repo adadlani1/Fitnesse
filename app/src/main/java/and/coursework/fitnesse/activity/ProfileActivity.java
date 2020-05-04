@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import and.coursework.fitnesse.R;
+import and.coursework.fitnesse.manager.PreferenceManager;
 
 public class ProfileActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
     private static final int swipeThreshold = 100;
@@ -36,6 +38,7 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
     ProgressBar progressBar;
     TextView email;
     TextView name;
+    CheckBox notificationsCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +51,11 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         name = findViewById(R.id.Name);
 
         signOut = findViewById(R.id.signoutButton);
-        final Button saveChanges = findViewById(R.id.saveChangesButton);
+        final Button saveChangesButton = findViewById(R.id.saveChangesButton);
 
         ImageView verified = findViewById(R.id.verifiedBox);
-
         progressBar = findViewById(R.id.progressBar);
+        notificationsCheckBox = findViewById(R.id.notificationsCheckBox);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -67,9 +70,14 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         } else
             verified.setVisibility(View.INVISIBLE);
 
+        if (new PreferenceManager(this).areNotificationsEnabled()){
+            notificationsCheckBox.setChecked(true);
+        } else
+            notificationsCheckBox.setChecked(false);
+
         signOut.setOnClickListener(v -> signOutClicked());
 
-        saveChanges.setOnClickListener(v -> saveChanges());
+        saveChangesButton.setOnClickListener(v -> saveChanges());
 
     }
 
@@ -107,6 +115,8 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         String userID = mUser.getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Name");
         mDatabase.setValue(newName);
+
+        saveNotificationPreference(notificationsCheckBox.isChecked());
     }
 
     @Override
@@ -184,5 +194,9 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
     public boolean onTouchEvent(MotionEvent event) {
         gestureDetectorProfile.onTouchEvent(event);
         return super.onTouchEvent(event);
+    }
+
+    private void saveNotificationPreference(boolean enabled) {
+        new PreferenceManager(this).saveNotificationPreference(enabled);
     }
 }

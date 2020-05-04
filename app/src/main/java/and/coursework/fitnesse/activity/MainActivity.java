@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +39,7 @@ import java.util.List;
 
 import and.coursework.fitnesse.R;
 import and.coursework.fitnesse.adaptor.ActivityAdaptor;
+import and.coursework.fitnesse.manager.PreferenceManager;
 import and.coursework.fitnesse.objects.Activity;
 import and.coursework.fitnesse.receiver.AlertReceiver;
 import lecho.lib.hellocharts.model.Axis;
@@ -109,7 +111,10 @@ public class MainActivity extends AppCompatActivity {
 
         checkIfCurrentTimeIsShownToUser();
 
-        setTimeForNotification();
+        if (new PreferenceManager(this).areNotificationsEnabled()){
+            setTimeForNotification();
+        }
+
 
         viewActivities.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PerformedActivity.class)));
 
@@ -316,8 +321,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setTimeForNotification() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 18);
-        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 16);
+        calendar.set(Calendar.MINUTE, 6);
         calendar.set(Calendar.SECOND, 0);
 
         broadcastNotification(calendar);

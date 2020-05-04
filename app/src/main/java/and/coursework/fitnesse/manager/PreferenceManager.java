@@ -2,6 +2,7 @@ package and.coursework.fitnesse.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class PreferenceManager {
 
@@ -11,11 +12,16 @@ public class PreferenceManager {
         this.context = context;
     }
 
-    private void saveNotificationPreference(boolean notificationsPreference){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("areNotificationsEnabled", Context.MODE_PRIVATE);
+    public void saveNotificationPreference(boolean notificationsPreference){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Notifications", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("Notifications", notificationsPreference);
+        editor.putBoolean("areNotificationsEnabled", notificationsPreference);
         editor.apply();
+    }
+
+    public boolean areNotificationsEnabled(){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Notifications", Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("areNotificationsEnabled", false);
     }
 
 }
