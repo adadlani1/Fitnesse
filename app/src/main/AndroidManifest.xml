@@ -17,13 +17,17 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".services.FirebaseBackgroundService"
+            android:enabled="true"
+            android:exported="true" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
         <meta-data
             android:name="com.google.android.gms.17.0.0"
             android:value="@integer/google_play_services_version" />
-
 
         <activity
             android:name=".activity.ViewActivityMapsActivity"

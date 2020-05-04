@@ -167,7 +167,7 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
     }
 
     /*Gets Current date */
-    private String getDate(String pattern) {
+    public static String getDate(String pattern) {
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         Date date = new Date();

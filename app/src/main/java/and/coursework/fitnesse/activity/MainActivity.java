@@ -1,8 +1,6 @@
 package and.coursework.fitnesse.activity;
 
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -33,7 +31,6 @@ import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +38,7 @@ import and.coursework.fitnesse.R;
 import and.coursework.fitnesse.adaptor.ActivityAdaptor;
 import and.coursework.fitnesse.manager.PreferenceManager;
 import and.coursework.fitnesse.objects.Activity;
-import and.coursework.fitnesse.receiver.AlertReceiver;
+import and.coursework.fitnesse.services.FirebaseBackgroundService;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
@@ -112,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
         checkIfCurrentTimeIsShownToUser();
 
         if (new PreferenceManager(this).areNotificationsEnabled()){
-            setTimeForNotification();
+            Intent intent = new Intent(MainActivity.this, FirebaseBackgroundService.class);
+            startService(intent);
         }
 
 
@@ -319,21 +317,4 @@ public class MainActivity extends AppCompatActivity {
         chartView.setVisibility(View.INVISIBLE);
     }
 
-    private void setTimeForNotification() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 16);
-        calendar.set(Calendar.MINUTE, 6);
-        calendar.set(Calendar.SECOND, 0);
-
-        broadcastNotification(calendar);
-    }
-
-    private void broadcastNotification(Calendar calendar) {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent,0);
-
-        assert alarmManager != null;
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-    }
 }
