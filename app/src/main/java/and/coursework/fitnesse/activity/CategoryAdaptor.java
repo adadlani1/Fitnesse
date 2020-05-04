@@ -1,4 +1,4 @@
-package and.coursework.fitnesse;
+package and.coursework.fitnesse.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import and.coursework.fitnesse.R;
 
 public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.ProductViewHolder> {
 

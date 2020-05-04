@@ -1,4 +1,4 @@
-package and.coursework.fitnesse;
+package and.coursework.fitnesse.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -36,6 +36,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import and.coursework.fitnesse.R;
+import and.coursework.fitnesse.adaptor.ActivityAdaptor;
+import and.coursework.fitnesse.objects.Activity;
+import and.coursework.fitnesse.receiver.AlertReceiver;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;

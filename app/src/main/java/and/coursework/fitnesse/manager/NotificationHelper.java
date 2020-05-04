@@ -1,4 +1,4 @@
-package and.coursework.fitnesse;
+package and.coursework.fitnesse.manager;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.ContextWrapper;
 
 import androidx.core.app.NotificationCompat;
+
+import and.coursework.fitnesse.R;
 
 public class NotificationHelper extends ContextWrapper {
     public static final String channel1ID = "channel1ID";

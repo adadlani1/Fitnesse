@@ -1,4 +1,4 @@
-package and.coursework.fitnesse;
+package and.coursework.fitnesse.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +16,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Locale;
 import java.util.Objects;
+
+import and.coursework.fitnesse.R;
 
 public class ViewActivityMapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 

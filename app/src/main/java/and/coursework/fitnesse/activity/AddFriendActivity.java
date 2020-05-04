@@ -1,4 +1,4 @@
-package and.coursework.fitnesse;
+package and.coursework.fitnesse.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+
+import and.coursework.fitnesse.R;
 
 public class AddFriendActivity extends AppCompatActivity {
 

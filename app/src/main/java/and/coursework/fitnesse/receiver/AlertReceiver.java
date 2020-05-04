@@ -1,10 +1,12 @@
-package and.coursework.fitnesse;
+package and.coursework.fitnesse.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
+
+import and.coursework.fitnesse.manager.NotificationHelper;
 
 public class AlertReceiver extends BroadcastReceiver {
     @Override

@@ -1,4 +1,4 @@
-package and.coursework.fitnesse;
+package and.coursework.fitnesse.objects;
 
 public class Activity {
     private String activity;

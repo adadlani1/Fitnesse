@@ -26,31 +26,31 @@
 
 
         <activity
-            android:name=".ViewActivityMapsActivity"
+            android:name=".activity.ViewActivityMapsActivity"
             android:label="@string/title_activity_view_maps" />
         <activity
-            android:name=".AddFriendActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".activity.AddFriendActivity"
+            android:parentActivityName=".activity.MainActivity" />
         <activity
-            android:name=".PerformedActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".activity.PerformedActivity"
+            android:parentActivityName=".activity.MainActivity" />
         <activity
-            android:name=".AddActivity"
-            android:parentActivityName=".PerformedActivity" />
+            android:name=".activity.AddActivity"
+            android:parentActivityName=".activity.PerformedActivity" />
         <activity
-            android:name=".ProfileActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".LoginActivity">
+            android:name=".activity.ProfileActivity"
+            android:parentActivityName=".activity.MainActivity" />
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.RegisterActivity" />
 
-        <receiver android:name=".AlertReceiver" />
+        <receiver android:name=".receiver.AlertReceiver" />
     </application>
 
 </manifest>

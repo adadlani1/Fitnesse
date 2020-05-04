@@ -1,4 +1,4 @@
-package and.coursework.fitnesse;
+package and.coursework.fitnesse.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
+
+import and.coursework.fitnesse.R;
 
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;

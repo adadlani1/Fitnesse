@@ -1,4 +1,4 @@
-package and.coursework.fitnesse;
+package and.coursework.fitnesse.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,8 +30,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import and.coursework.fitnesse.R;
+import and.coursework.fitnesse.objects.Activity;
 
 public class PerformedActivity extends AppCompatActivity implements GestureDetector.OnGestureListener{
 

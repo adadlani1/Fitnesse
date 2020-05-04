@@ -1,18 +1,15 @@
-package and.coursework.fitnesse;
+package and.coursework.fitnesse.adaptor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -21,6 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import and.coursework.fitnesse.R;
+import and.coursework.fitnesse.activity.ViewActivityMapsActivity;
+import and.coursework.fitnesse.objects.Activity;
 
 public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.ProductViewHolder> {
 
