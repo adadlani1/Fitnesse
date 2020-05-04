@@ -2,6 +2,8 @@ package and.coursework.fitnesse;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,6 +14,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class ViewActivityMapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -102,6 +105,11 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
         googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Activity Location"));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15.0f));
         googleMap.setMyLocationEnabled(true);
+        googleMap.setOnMapLongClickListener(latLng -> {
+            String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            startActivity(intent);
+        });
     }
 
     private void getIncomingIntent() {
