@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,7 +35,7 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
         Bundle mapViewBundle = null;
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
 
@@ -99,25 +100,26 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Activity Location"));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15.0f));
         googleMap.setMyLocationEnabled(true);
     }
 
-    private void getIncomingIntent(){
-        if (getIntent().hasExtra("activity")){
+    private void getIncomingIntent() {
+        if (getIntent().hasExtra("activity") && getIntent().hasExtra("effortLevel")) {
             instantiateActivity();
         }
     }
 
     private void instantiateActivity() {
-         activity = ( getIntent().getStringExtra("activity"));
-         effortLevel = (getIntent().getStringExtra("effortLevel"));
+        activity = getIntent().getStringExtra("activity");
+        effortLevel = getIntent().getStringExtra("effortLevel");
         longitude = Double.valueOf((Objects.requireNonNull(getIntent().getStringExtra("longitude"))));
         latitude = Double.valueOf((Objects.requireNonNull(getIntent().getStringExtra("latitude"))));
-         description = ( getIntent().getStringExtra("description"));
-        minutes = ( getIntent().getStringExtra("minutes"));
-        yearAdded = ( getIntent().getStringExtra("year"));
-        monthAdded = ( getIntent().getStringExtra("month"));
-        dayAdded = ( getIntent().getStringExtra("day"));
+        description = getIntent().getStringExtra("description");
+        minutes = getIntent().getStringExtra("minutes");
+        yearAdded = getIntent().getStringExtra("year");
+        monthAdded = getIntent().getStringExtra("month");
+        dayAdded = getIntent().getStringExtra("day");
     }
 }
 
