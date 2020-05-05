@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView account = findViewById(R.id.accountImageView);
         ImageView addActivity = findViewById(R.id.addActivityImageView);
         ImageView viewActivities = findViewById(R.id.listOfAllActivities);
+        ImageView openSpotify = findViewById(R.id.music);
         LineChartView chartView = findViewById(R.id.lineChart);
         TextView welcomeMsg = findViewById(R.id.welcome);
 
@@ -119,6 +122,12 @@ public class MainActivity extends AppCompatActivity {
         addActivity.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), AddActivity.class)));
 
         account.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ProfileActivity.class)));
+
+        openSpotify.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("spotify:playlist:37i9dQZF1DWSWA2pLcO5dt"));
+            this.startActivity(intent);
+            Toast.makeText(getApplicationContext(), "We recommend listening to music while exercising!", Toast.LENGTH_SHORT).show();
+        });
 
         previousMonth.setOnClickListener(v -> {
             int monthInt = Integer.parseInt(currentMonthSelected);
