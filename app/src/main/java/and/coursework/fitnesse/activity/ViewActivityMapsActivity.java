@@ -59,7 +59,10 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
         getIncomingIntent();
 
         ImageView backArrow = findViewById(R.id.backArrowViewActivity);
-        backArrow.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), MainActivity.class)));
+        backArrow.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            overridePendingTransition(100, R.anim.fade_in);
+        });
 
     }
 
