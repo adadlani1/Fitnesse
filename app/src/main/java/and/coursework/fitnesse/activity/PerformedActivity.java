@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import and.coursework.fitnesse.R;
+import and.coursework.fitnesse.adaptor.CategoryAdaptor;
 import and.coursework.fitnesse.objects.Activity;
 import and.coursework.fitnesse.objects.ActivityCategory;
 
