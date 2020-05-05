@@ -54,5 +54,6 @@
     <string name="title_activity_view_maps">Map</string>
     <string name="notifications">Notifications</string>
     <string name="save_changes">Save Changes</string>
+    <string name="view_activity">View Activity</string>
 
 </resources>

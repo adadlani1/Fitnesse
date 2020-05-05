@@ -2,10 +2,15 @@ package and.coursework.fitnesse.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,6 +40,8 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -50,6 +57,9 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
         mMapView.getMapAsync(this);
 
         getIncomingIntent();
+
+        ImageView backArrow = findViewById(R.id.backArrowViewActivity);
+        backArrow.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), MainActivity.class)));
 
     }
 
@@ -107,11 +117,6 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
         googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Activity Location"));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15.0f));
         googleMap.setMyLocationEnabled(true);
-        googleMap.setOnMapLongClickListener(latLng -> {
-            String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-            startActivity(intent);
-        });
     }
 
     private void getIncomingIntent() {
@@ -127,9 +132,26 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
         latitude = Double.valueOf((Objects.requireNonNull(getIntent().getStringExtra("latitude"))));
         description = getIntent().getStringExtra("description");
         minutes = getIntent().getStringExtra("minutes");
-        yearAdded = getIntent().getStringExtra("year");
-        monthAdded = getIntent().getStringExtra("month");
-        dayAdded = getIntent().getStringExtra("day");
+        yearAdded = getIntent().getStringExtra("yearAdded");
+        monthAdded = getIntent().getStringExtra("monthAdded");
+        dayAdded = getIntent().getStringExtra("dayAdded");
+
+        showInformationInActivity();
     }
+
+    @SuppressLint("SetTextI18n")
+    private void showInformationInActivity() {
+        TextView activityTextView = findViewById(R.id.activityNameTextView);
+        TextView descriptionTextView = findViewById(R.id.descriptionTextView);
+        TextView minutesTextView = findViewById(R.id.minutesTextView);
+        TextView dateTextView = findViewById(R.id.dateAddedTextView);
+
+        activityTextView.setText(activity);
+        descriptionTextView.setText("Description: " + description);
+        minutesTextView.setText( minutes + " Minutes Active");
+        dateTextView.setText(dayAdded + "/" + monthAdded + "/" + yearAdded);
+
+    }
+
 }
 
