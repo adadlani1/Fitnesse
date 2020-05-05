@@ -39,7 +39,7 @@
                 android:layout_height="25dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
-                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="126dp"
                 android:layout_marginTop="13dp"
                 android:layout_marginBottom="12dp"
@@ -69,49 +69,121 @@
 
             <TextView
                 android:id="@+id/activityNameTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="TextView"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                android:textColor="#000000" />
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="@string/activity"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                android:textColor="@color/colorPrimary" />
 
             <TextView
                 android:id="@+id/descriptionTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/activityNameTextView"
+                android:layout_below="@id/showDateTextView"
                 android:layout_marginStart="10dp"
-                android:text="TextView"
-                android:textColor="#000000"/>
+                android:layout_marginTop="20dp"
+                android:text="@string/description"
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/minutesTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/descriptionTextView"
+                android:layout_below="@id/activityNameTextView"
                 android:layout_marginStart="10dp"
-                android:text="TextView"
-                android:textColor="#000000"/>
+                android:text="@string/duration"
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/dateAddedTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/minutesTextView"
+                android:layout_below="@+id/showMinutesTextView"
                 android:layout_marginStart="10dp"
-                android:text="TextView"
-                android:textColor="#000000"/>
+                android:layout_marginTop="20dp"
+                android:text="@string/date"
+                android:textColor="#000000" />
 
             <com.google.android.gms.maps.MapView
+                android:layout_marginTop="10dp"
                 android:id="@+id/user_list_map"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/dateAddedTextView"
+                android:layout_below="@id/ratingBar"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="0dp" />
+
+            <TextView
+                android:id="@+id/showMinutesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/minutesTextView"
+                android:layout_marginStart="10dp"
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/showDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dateAddedTextView"
+                android:layout_marginStart="10dp"
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/minutesTextView"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="23dp"
+                android:layout_toEndOf="@id/showMinutesTextView"
+                android:text="@string/mins"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/showDescriptionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/descriptionTextView"
+                android:layout_marginStart="10dp"
+                android:text="TextView"
+
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="46dp"
+                android:layout_below="@+id/effortLevelTextView"
+                android:layout_alignParentStart="false"
+                android:layout_alignParentLeft="false"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:progressTint="@color/colorPrimary"
+                android:stepSize="1" />
+
+            <TextView
+                android:id="@+id/effortLevelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/showDescriptionTextView"
+                android:text="@string/effort_level"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:textColor="#000000" />
 
         </RelativeLayout>
 

@@ -145,15 +145,19 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
     @SuppressLint("SetTextI18n")
     private void showInformationInActivity() {
         TextView activityTextView = findViewById(R.id.activityNameTextView);
-        TextView descriptionTextView = findViewById(R.id.descriptionTextView);
-        TextView minutesTextView = findViewById(R.id.minutesTextView);
-        TextView dateTextView = findViewById(R.id.dateAddedTextView);
+        TextView descriptionTextView = findViewById(R.id.showDescriptionTextView);
+        TextView minutesTextView = findViewById(R.id.showMinutesTextView);
+        TextView dateTextView = findViewById(R.id.showDateTextView);
+        RatingBar ratingBar = findViewById(R.id.ratingBar);
+
+        String monthAddedName = MainActivity.getMonthName(Integer.parseInt(monthAdded));
 
         activityTextView.setText(activity);
-        descriptionTextView.setText("Description: " + description);
-        minutesTextView.setText( minutes + " Minutes Active");
-        dateTextView.setText(dayAdded + "/" + monthAdded + "/" + yearAdded);
-
+        descriptionTextView.setText(description);
+        minutesTextView.setText(minutes);
+        dateTextView.setText(dayAdded + " " + monthAddedName + " " + yearAdded);
+        ratingBar.setNumStars(Integer.parseInt(effortLevel) + 1);
+        ratingBar.setRating(Integer.parseInt(effortLevel) + 1);
     }
 
 }

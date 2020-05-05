@@ -16,8 +16,8 @@
     <string name="description">Description:</string>
     <string name="save">Save</string>
     <string name="add_activity">Add Activity</string>
-    <string name="activity">Activity</string>
-    <string name="date">Date</string>
+    <string name="activity">Activity:</string>
+    <string name="date">Date:</string>
     <string name="no_activities">You currently have no saved activities. Please press the + icon to get started!</string>
     <string name="add_friends">Add Friends</string>
     <string name="name">Name</string>
@@ -55,5 +55,7 @@
     <string name="notifications">Notifications</string>
     <string name="save_changes">Save Changes</string>
     <string name="view_activity">View Activity</string>
+    <string name="duration">Duration:</string>
+    <string name="mins">mins</string>
 
 </resources>

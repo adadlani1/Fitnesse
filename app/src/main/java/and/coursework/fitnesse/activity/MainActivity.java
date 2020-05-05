@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         monthTextView.setText(currentMonthSelectedName + " " + currentYearSelected);
     }
 
-    public String getMonthName(int month) {
+    public static String getMonthName(int month) {
         return new DateFormatSymbols().getMonths()[month - 1];
     }
 
