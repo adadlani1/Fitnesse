@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import and.coursework.fitnesse.R;
+import and.coursework.fitnesse.objects.ActivityCategory;
 
 public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.ProductViewHolder> {
 

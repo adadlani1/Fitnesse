@@ -34,6 +34,7 @@ import java.util.List;
 
 import and.coursework.fitnesse.R;
 import and.coursework.fitnesse.objects.Activity;
+import and.coursework.fitnesse.objects.ActivityCategory;
 
 public class PerformedActivity extends AppCompatActivity implements GestureDetector.OnGestureListener{
 
