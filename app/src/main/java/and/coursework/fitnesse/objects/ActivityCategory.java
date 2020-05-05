@@ -1,4 +1,4 @@
-package and.coursework.fitnesse.activity;
+package and.coursework.fitnesse.objects;
 
 import java.util.Comparator;
 
