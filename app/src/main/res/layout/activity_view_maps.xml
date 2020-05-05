@@ -54,11 +54,11 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/infoCardView"
         android:layout_width="match_parent"
-        android:layout_height="376dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/topNaviMapsCardView"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="10dp">
@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:fontFamily="sans-serif-smallcaps"
+                android:fontFamily="sans-serif"
                 android:text="@string/activity"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display2"
@@ -107,15 +107,6 @@
                 android:text="@string/date"
                 android:textColor="#000000" />
 
-            <com.google.android.gms.maps.MapView
-                android:layout_marginTop="10dp"
-                android:id="@+id/user_list_map"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ratingBar"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="0dp" />
-
             <TextView
                 android:id="@+id/showMinutesTextView"
                 android:layout_width="wrap_content"
@@ -135,7 +126,7 @@
                 android:layout_marginStart="10dp"
                 android:text="TextView"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textColor="@color/colorPrimary"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <TextView
@@ -173,20 +164,39 @@
                 android:isIndicator="true"
                 android:numStars="5"
                 android:progressTint="@color/colorPrimary"
-                android:stepSize="1" />
+                android:stepSize="1"
+                android:layout_marginBottom="10dp"/>
 
             <TextView
                 android:id="@+id/effortLevelTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/showDescriptionTextView"
-                android:text="@string/effort_level"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
+                android:text="@string/effort_level"
                 android:textColor="#000000" />
 
         </RelativeLayout>
 
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/infoCardView"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        app:cardCornerRadius="10dp">
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/user_list_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ratingBar"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp" />
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
