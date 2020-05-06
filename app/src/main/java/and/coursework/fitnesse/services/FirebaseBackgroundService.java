@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import and.coursework.fitnesse.activity.AddActivity;
+import and.coursework.fitnesse.manager.PreferenceManager;
 import and.coursework.fitnesse.objects.Activity;
 import and.coursework.fitnesse.receiver.AlertReceiver;
 
@@ -109,9 +110,11 @@ public class FirebaseBackgroundService extends Service {
     }
 
     private void setTimeForNotification() {
+        int hour = new PreferenceManager(this).getNotificationHour();
+        int minute = new PreferenceManager(this).getNotificationMinutes();
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 17);
-        calendar.set(Calendar.MINUTE, 21);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
 
         broadcastNotification(calendar);
