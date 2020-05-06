@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profileRelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.ProfileActivity">
@@ -49,8 +50,8 @@
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="0dp"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="0dp"
                 app:srcCompat="@drawable/ic_info_black_24dp" />
 
         </RelativeLayout>
@@ -77,10 +78,10 @@
         android:id="@+id/Name"
         android:layout_width="322dp"
         android:layout_height="48dp"
+        android:layout_below="@id/topNaviProfileCardView"
         android:layout_marginStart="10dp"
         android:inputType="textPersonName"
-        android:layout_below="@id/topNaviProfileCardView"
-        android:text="Name"/>
+        android:text="Name" />
 
     <TextView
         android:id="@+id/Email"
@@ -107,9 +108,9 @@
         android:id="@+id/verifiedBox"
         android:layout_width="33dp"
         android:layout_height="33dp"
-        android:layout_toEndOf="@id/Email"
-        android:layout_marginLeft="10dp"
         android:layout_below="@id/Name"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@id/Email"
         app:srcCompat="@drawable/ic_verified_user_black_24dp" />
 
     <CheckBox
