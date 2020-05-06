@@ -37,12 +37,8 @@ import and.coursework.fitnesse.adaptor.CategoryAdaptor;
 import and.coursework.fitnesse.objects.Activity;
 import and.coursework.fitnesse.objects.ActivityCategory;
 
-public class PerformedActivity extends AppCompatActivity implements GestureDetector.OnGestureListener{
+public class PerformedActivity extends AppCompatActivity{
 
-    private static final float SWIPE_THRESHOLD = 100;
-    private static final float SWIPE_VELOCITY_THRESHOLD = 100;
-
-    GestureDetector gestureDetectorProfile = new GestureDetector(this);
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
@@ -145,81 +141,6 @@ public class PerformedActivity extends AppCompatActivity implements GestureDetec
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent downEvent, MotionEvent moveEvent, float velocityX, float velocityY) {
-
-        boolean result = false;
-        float diffY = moveEvent.getY() - downEvent.getY();
-        float diffX = moveEvent.getX() - downEvent.getX();
-
-        if (Math.abs(diffX) > Math.abs(diffY)){
-            // right or left swipe
-            if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD){
-                if (diffX > 0)
-                    onSwipeRight();
-                else
-                    onSwipeLeft();
-                result = true;
-            }
-        } else{
-            // up or down swipe
-            if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD){
-                if (diffY > 0)
-                    onSwipeBottom();
-                else
-                    onSwipeUp();
-                result = true;
-            }
-        }
-
-        return result;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        gestureDetectorProfile.onTouchEvent(event);
-        return super.onTouchEvent(event);
-    }
-
-    private void onSwipeUp() {
-    }
-
-    private void onSwipeBottom() {
-    }
-
-    private void onSwipeLeft() {
-    }
-
-    private void onSwipeRight() {
-        startActivity(new Intent(this, MainActivity.class));
-        overridePendingTransition(100 , R.anim.fade_in);
     }
 
     private List<String> findUniqueActivities(List<Activity> activityList) {

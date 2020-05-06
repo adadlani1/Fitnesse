@@ -2,6 +2,7 @@ package and.coursework.fitnesse.adaptor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,20 +14,16 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import and.coursework.fitnesse.R;
+import and.coursework.fitnesse.activity.MainActivity;
+import and.coursework.fitnesse.listeners.OnSwipeTouchListener;
 import and.coursework.fitnesse.objects.ActivityCategory;
 
 public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.ProductViewHolder> {
-
-    //this context we will use to inflate the layout
     private Context context;
-
-    //we are storing all the products in a list
     private List<ActivityCategory> activityCategoriesList;
 
     //getting the context and product list with constructor
@@ -38,7 +35,7 @@ public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.Produc
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //inflating and returning our view holder
+        //inflating and returning the view holder
         LayoutInflater inflater = LayoutInflater.from(context);
         @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.activity_categories_layout, null);
         return new ProductViewHolder(view);
@@ -56,7 +53,17 @@ public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.Produc
         holder.textViewAverageMinutes.setText("Average Minutes: "+ activityCategory.getAverageMinutes());
         holder.textViewFrequency.setText("No. of Activities: "+ activityCategory.getFrequency());
         setImageOfActivity(activityCategory, holder);
+        setUpSwipeGestures(holder);
 
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setUpSwipeGestures(ProductViewHolder holder) {
+        holder.cardView.setOnTouchListener(new OnSwipeTouchListener(context){
+            public void onSwipeRight() {
+                context.startActivity(new Intent(context, MainActivity.class));
+            }
+        });
     }
 
     private void setImageOfActivity(ActivityCategory activity, CategoryAdaptor.ProductViewHolder holder) {
