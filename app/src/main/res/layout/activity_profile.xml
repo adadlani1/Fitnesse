@@ -42,6 +42,7 @@
                 android:layout_height="25dp"
                 android:layout_centerInParent="true"
                 android:text="@string/profile"
+                android:textAlignment="center"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/primary_text_dark" />
 
@@ -57,22 +58,6 @@
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
-
-    <Button
-        android:id="@+id/saveChangesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/progressBar"
-        android:layout_centerHorizontal="true"
-        android:text="@string/save_changes" />
-
-    <Button
-        android:id="@+id/signoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/saveChangesButton"
-        android:layout_centerHorizontal="true"
-        android:text="@string/signout_btn" />
 
     <EditText
         android:id="@+id/Name"

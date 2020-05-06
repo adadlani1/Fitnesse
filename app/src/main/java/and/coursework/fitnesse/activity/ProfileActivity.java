@@ -29,7 +29,6 @@ import and.coursework.fitnesse.manager.PreferenceManager;
 
 public class ProfileActivity extends AppCompatActivity{
 
-    Button signOut;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     ProgressBar progressBar;
@@ -48,13 +47,12 @@ public class ProfileActivity extends AppCompatActivity{
 
         email = findViewById(R.id.Email);
         name = findViewById(R.id.Name);
-        signOut = findViewById(R.id.signoutButton);
         progressBar = findViewById(R.id.progressBar);
         notificationsCheckBox = findViewById(R.id.notificationsCheckBox);
         timePicker = findViewById(R.id.timePicker);
-        Button saveChangesButton = findViewById(R.id.saveChangesButton);
         ImageView verified = findViewById(R.id.verifiedBox);
         ImageView aboutImageView = findViewById(R.id.about);
+        ImageView backArrow = findViewById(R.id.backArrowProfile);
         RelativeLayout relativeLayout = findViewById(R.id.profileRelativeLayout);
 
         timePicker.setIs24HourView(true);
@@ -81,9 +79,7 @@ public class ProfileActivity extends AppCompatActivity{
             timePicker.setVisibility(View.GONE);
         }
 
-        signOut.setOnClickListener(v -> signOutClicked());
-
-        saveChangesButton.setOnClickListener(v -> saveChanges());
+        backArrow.setOnClickListener(v -> saveChanges());
 
         aboutImageView.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),
                 AboutActivity.class)));
@@ -98,12 +94,8 @@ public class ProfileActivity extends AppCompatActivity{
         });
 
         relativeLayout.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()){
-            public void onSwipeTop() {
-                saveChanges();
-            }
             public void onSwipeRight() {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(100, R.anim.fade_in);
+                saveChanges();
             }
             public void onSwipeLeft() {
                 startActivity(new Intent(getApplicationContext(), AboutActivity.class));
