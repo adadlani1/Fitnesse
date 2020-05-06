@@ -87,10 +87,8 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
 
         saveChangesButton.setOnClickListener(v -> saveChanges());
 
-        aboutImageView.setOnClickListener(v -> {
-            startActivity(new Intent(getApplicationContext(), AboutActivity.class));
-            overridePendingTransition(100, R.anim.fade_in);
-        });
+        aboutImageView.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),
+                AboutActivity.class)));
 
         notificationsCheckBox.setOnClickListener(v -> {
             if (notificationsCheckBox.isEnabled()){
