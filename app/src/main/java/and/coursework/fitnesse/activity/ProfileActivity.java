@@ -1,7 +1,6 @@
 package and.coursework.fitnesse.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -52,14 +51,13 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
 
         email = findViewById(R.id.Email);
         name = findViewById(R.id.Name);
-
         signOut = findViewById(R.id.signoutButton);
-        final Button saveChangesButton = findViewById(R.id.saveChangesButton);
-
-        ImageView verified = findViewById(R.id.verifiedBox);
         progressBar = findViewById(R.id.progressBar);
         notificationsCheckBox = findViewById(R.id.notificationsCheckBox);
         timePicker = findViewById(R.id.timePicker);
+        Button saveChangesButton = findViewById(R.id.saveChangesButton);
+        ImageView verified = findViewById(R.id.verifiedBox);
+        ImageView aboutImageView = findViewById(R.id.about);
 
         timePicker.setIs24HourView(true);
         progressBar.setVisibility(View.INVISIBLE);
@@ -74,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         if (mUser.isEmailVerified()) {
             verified.setVisibility(View.VISIBLE);
         } else
-            verified.setVisibility(View.INVISIBLE);
+            verified.setVisibility(View.GONE);
 
         if (new PreferenceManager(this).areNotificationsEnabled()){
             notificationsCheckBox.setChecked(true);
@@ -88,6 +86,11 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         signOut.setOnClickListener(v -> signOutClicked());
 
         saveChangesButton.setOnClickListener(v -> saveChanges());
+
+        aboutImageView.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), AboutActivity.class));
+            overridePendingTransition(100, R.anim.fade_in);
+        });
 
         notificationsCheckBox.setOnClickListener(v -> {
             if (notificationsCheckBox.isEnabled()){
