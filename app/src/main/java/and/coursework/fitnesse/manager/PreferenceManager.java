@@ -24,4 +24,21 @@ public class PreferenceManager {
         return sharedPreferences.getBoolean("areNotificationsEnabled", false);
     }
 
+    public void saveNotificationTimePreference(int hour, int minutes){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Notifications", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("notificationHour", hour);
+        editor.putInt("notificationMinutes", minutes);
+        editor.apply();
+    }
+
+    public int getNotificationHour(){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Notifications", Context.MODE_PRIVATE);
+        return sharedPreferences.getInt("notificationHour", 0);
+    }
+
+    public int getNotificationMinutes(){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Notifications", Context.MODE_PRIVATE);
+        return sharedPreferences.getInt("notificationMinutes", 0);
+    }
 }

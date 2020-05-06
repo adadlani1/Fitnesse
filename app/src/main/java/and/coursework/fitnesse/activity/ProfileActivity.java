@@ -1,6 +1,7 @@
 package and.coursework.fitnesse.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -13,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +41,7 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
     TextView email;
     TextView name;
     CheckBox notificationsCheckBox;
+    TimePicker timePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +59,15 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         ImageView verified = findViewById(R.id.verifiedBox);
         progressBar = findViewById(R.id.progressBar);
         notificationsCheckBox = findViewById(R.id.notificationsCheckBox);
+        timePicker = findViewById(R.id.timePicker);
+
+        timePicker.setIs24HourView(true);
+        progressBar.setVisibility(View.INVISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
-        progressBar.setVisibility(View.INVISIBLE);
-
+        assert mUser != null;
         email.setText(mUser.getEmail());
         name.setText(mUser.getDisplayName());
 
@@ -72,13 +78,23 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
 
         if (new PreferenceManager(this).areNotificationsEnabled()){
             notificationsCheckBox.setChecked(true);
-        } else
+            timePicker.setVisibility(View.VISIBLE);
+            setSavedNotificationTimeToTimePicker();
+        } else{
             notificationsCheckBox.setChecked(false);
+            timePicker.setVisibility(View.GONE);
+        }
 
         signOut.setOnClickListener(v -> signOutClicked());
 
         saveChangesButton.setOnClickListener(v -> saveChanges());
 
+        notificationsCheckBox.setOnClickListener(v -> {
+            if (notificationsCheckBox.isEnabled()){
+                timePicker.setVisibility(View.VISIBLE);
+                setSavedNotificationTimeToTimePicker();
+            }
+        });
     }
 
     private void saveChanges() {
@@ -117,6 +133,7 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         mDatabase.setValue(newName);
 
         saveNotificationPreference(notificationsCheckBox.isChecked());
+        getSavedNotificationTime();
     }
 
     @Override
@@ -198,5 +215,23 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
 
     private void saveNotificationPreference(boolean enabled) {
         new PreferenceManager(this).saveNotificationPreference(enabled);
+    }
+
+    private void getSavedNotificationTime() {
+        int hour = timePicker.getHour();
+        int minutes = timePicker.getMinute();
+        saveNotificationTimePreference(hour, minutes);
+    }
+
+    private void saveNotificationTimePreference(int hour, int minutes) {
+        new PreferenceManager(this).saveNotificationTimePreference(hour, minutes);
+    }
+
+    private void setSavedNotificationTimeToTimePicker() {
+        int hour = new PreferenceManager(this).getNotificationHour();
+        int mins = new PreferenceManager(this).getNotificationMinutes();
+
+        timePicker.setHour(hour);
+        timePicker.setMinute(mins);
     }
 }
