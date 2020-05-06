@@ -38,6 +38,7 @@ import java.util.List;
 
 import and.coursework.fitnesse.R;
 import and.coursework.fitnesse.adaptor.ActivityAdaptor;
+import and.coursework.fitnesse.listeners.OnSwipeTouchListener;
 import and.coursework.fitnesse.manager.PreferenceManager;
 import and.coursework.fitnesse.objects.Activity;
 import and.coursework.fitnesse.services.FirebaseBackgroundService;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseUser mUser;
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -130,33 +131,51 @@ public class MainActivity extends AppCompatActivity {
         });
 
         previousMonth.setOnClickListener(v -> {
-            int monthInt = Integer.parseInt(currentMonthSelected);
-            int yearInt = Integer.parseInt(currentYearSelected);
-            monthInt -= 1;
-            if (monthInt > 0) {
-                updateMonth(monthInt);
-            } else {
-                monthInt = 12;
-                currentYearSelected = String.valueOf(yearInt - 1);
-                updateMonth(monthInt);
-            }
-            checkIfCurrentTimeIsShownToUser();
+            previousMonthInfoRequested();
         });
 
         nextMonth.setOnClickListener(v -> {
-            int monthInt = Integer.parseInt(currentMonthSelected);
-            int yearInt = Integer.parseInt(currentYearSelected);
-            monthInt += 1;
-            if ( monthInt < 13) {
-                updateMonth(monthInt);
-            } else if (monthInt == 13){
-                currentYearSelected = String.valueOf(yearInt + 1);
-                monthInt = 1;
-                updateMonth(monthInt);
-            }
-            checkIfCurrentTimeIsShownToUser();
+            nextMonthInfoRequested();
         });
 
+        chartView.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()){
+            public void onSwipeRight() {
+                previousMonthInfoRequested();
+            }
+            public void onSwipeLeft() {
+                if (!currentMonthSelected.equals(currentMonth) || !currentYearSelected.equals(currentYear)) {
+                    nextMonthInfoRequested();
+                }
+            }
+        });
+    }
+
+    private void previousMonthInfoRequested() {
+        int monthInt = Integer.parseInt(currentMonthSelected);
+        int yearInt = Integer.parseInt(currentYearSelected);
+        monthInt -= 1;
+        if (monthInt > 0) {
+            updateMonth(monthInt);
+        } else {
+            monthInt = 12;
+            currentYearSelected = String.valueOf(yearInt - 1);
+            updateMonth(monthInt);
+        }
+        checkIfCurrentTimeIsShownToUser();
+    }
+
+    private void nextMonthInfoRequested() {
+        int monthInt = Integer.parseInt(currentMonthSelected);
+        int yearInt = Integer.parseInt(currentYearSelected);
+        monthInt += 1;
+        if ( monthInt < 13) {
+            updateMonth(monthInt);
+        } else if (monthInt == 13){
+            currentYearSelected = String.valueOf(yearInt + 1);
+            monthInt = 1;
+            updateMonth(monthInt);
+        }
+        checkIfCurrentTimeIsShownToUser();
     }
 
     private void showVerfied() {
