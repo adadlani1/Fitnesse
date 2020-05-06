@@ -82,14 +82,17 @@
         android:layout_below="@id/topNaviProfileCardView"
         android:text="Name"/>
 
-    <EditText
+    <TextView
         android:id="@+id/Email"
-        android:layout_width="322dp"
-        android:layout_height="48dp"
-        android:inputType="textPersonName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/Name"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:inputType="textPersonName"
         android:text="@string/email_hint"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textSize="18sp"
         tools:ignore="TextFields" />
 
     <ProgressBar
@@ -105,16 +108,18 @@
         android:layout_width="33dp"
         android:layout_height="33dp"
         android:layout_toEndOf="@id/Email"
+        android:layout_marginLeft="10dp"
         android:layout_below="@id/Name"
         app:srcCompat="@drawable/ic_verified_user_black_24dp" />
 
     <CheckBox
         android:id="@+id/notificationsCheckBox"
-        android:layout_width="322dp"
-        android:layout_marginStart="10dp"
-        android:layout_height="46dp"
-        android:text="@string/notifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/Email"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/notifications"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
     <TimePicker

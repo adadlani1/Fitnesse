@@ -93,6 +93,8 @@ public class ProfileActivity extends AppCompatActivity implements GestureDetecto
         notificationsCheckBox.setOnClickListener(v -> {
             if (notificationsCheckBox.isEnabled()){
                 timePicker.setVisibility(View.VISIBLE);
+                Toast.makeText(getApplicationContext(), "Please set the time you would like to " +
+                        "be reminded to complete your daily activity", Toast.LENGTH_SHORT).show();
                 setSavedNotificationTimeToTimePicker();
             }
         });
