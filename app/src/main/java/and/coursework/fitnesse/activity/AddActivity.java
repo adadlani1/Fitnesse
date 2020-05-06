@@ -11,10 +11,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -28,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NavUtils;
 
@@ -36,8 +35,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -47,18 +44,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import and.coursework.fitnesse.R;
+import and.coursework.fitnesse.listeners.OnSwipeTouchListener;
 import and.coursework.fitnesse.objects.Activity;
 import and.coursework.fitnesse.objects.User;
 
-public class AddActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
+public class AddActivity extends AppCompatActivity {
     /*Constants*/
     private static final double DECIMAL_PLACES_LOCATION = 100000.0;
     private static final int PERMISSION_ID = 44;
-    private final int SWIPE_THRESHOLD = 100;
-    private final int SWIPE_VELOCITY_THRESHOLD = 100;
 
-    /*For Gestures*/
-    private GestureDetector gestureDetector;
 
     /*String variable for location*/
     private String longitudeStr;
@@ -78,16 +72,13 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
 
     /*Accessing Firebase Variables*/
     private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
 
-    private String userUID;
     private String minutesExercised;
     private String description;
     private String activityChosen;
     private int effortLevelValue;
 
-
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -103,19 +94,19 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         effortLevel = findViewById(R.id.effortLevelSlider);
         ImageView saveButton = findViewById(R.id.saveButton);
         ImageView backButton = findViewById(R.id.backArrow);
+        ConstraintLayout constraintLayout = findViewById(R.id.consraintLayoutAddActivity);
 
         progressBar.setVisibility(View.INVISIBLE);
 
         /*Initialising objects*/
         user = new User();
         activity = new Activity();
-        gestureDetector = new GestureDetector(this, this);
 
         /*Getting Firebase Information*/
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser mUser = mAuth.getCurrentUser();
         assert mUser != null;
-        userUID = mUser.getUid();
+        String userUID = mUser.getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userUID).child("Activities");
 
         /*Getting Location information*/
@@ -126,6 +117,16 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         saveButton.setOnClickListener(v -> validation());
 
         backButton.setOnClickListener(v -> goBackToMainPage());
+
+        constraintLayout.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()){
+            /*Swipe up means save information. Validation method called*/
+            public void onSwipeTop() {
+                validation();
+            }
+
+            /*Swipe Right means go back to previous page*/
+            public void onSwipeRight() {goBackToMainPage();}
+        });
 
     }
 
@@ -192,94 +193,12 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         return super.onOptionsItemSelected(item);
     }
 
-    /*
-     *  Gesture Detector Methods
-     * */
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
-
-    /*Calculates which direction the swipe is and decides on which method to call*/
-    @Override
-    public boolean onFling(MotionEvent downEvent, MotionEvent moveEvent, float velocityX, float velocityY) {
-
-        boolean result = false;
-        float diffY = moveEvent.getY() - downEvent.getY();
-        float diffX = moveEvent.getX() - downEvent.getX();
-
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-            // right or left swipe
-            if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                if (diffX > 0)
-                    onSwipeRight();
-                else
-                    onSwipeLeft();
-                result = true;
-            }
-        } else {
-            // up or down swipe
-            if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                if (diffY > 0)
-                    onSwipeBottom();
-                else
-                    onSwipeUp();
-                result = true;
-            }
-        }
-
-
-        return result;
-    }
-
-    private void onSwipeBottom() {
-    }
-
-    /*Swipe up means save information. Validation method called*/
-    private void onSwipeUp() {
-        validation();
-    }
-
-    private void onSwipeLeft() {
-
-    }
-
-    /*Swipe Right means go back to previous page*/
-    private void onSwipeRight() {goBackToMainPage();}
-
     /*Saves information and goes back to parent page*/
     private void saveActivityInformation() {
         progressBar.setVisibility(View.VISIBLE);
         saveInformationToFirebase();
         startActivity(new Intent(getApplicationContext(), PerformedActivity.class));
         overridePendingTransition(100, R.anim.fade_in);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        gestureDetector.onTouchEvent(event);
-        return super.onTouchEvent(event);
     }
 
     /*Shows coordinates onto the page*/
@@ -325,20 +244,17 @@ public class AddActivity extends AppCompatActivity implements GestureDetector.On
         if (checkPermissions()) {
             if (isLocationEnabled()) {
                 mFusedLocationClient.getLastLocation().addOnCompleteListener(
-                        new OnCompleteListener<Location>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Location> task) {
-                                Location location = task.getResult();
-                                if (location == null) {
-                                    requestNewLocationData();
-                                } else {
-                                    /*gets location and assigns value to strings*/
-                                    double roundLongitude = Math.round(location.getLongitude() * DECIMAL_PLACES_LOCATION) / DECIMAL_PLACES_LOCATION;
-                                    double roundLatitude = Math.round(location.getLatitude() * DECIMAL_PLACES_LOCATION) / DECIMAL_PLACES_LOCATION;
-                                    latitudeStr = String.valueOf(roundLatitude);
-                                    longitudeStr = String.valueOf(roundLongitude);
-                                    showCoordinates(true);
-                                }
+                        task -> {
+                            Location location = task.getResult();
+                            if (location == null) {
+                                requestNewLocationData();
+                            } else {
+                                /*gets location and assigns value to strings*/
+                                double roundLongitude = Math.round(location.getLongitude() * DECIMAL_PLACES_LOCATION) / DECIMAL_PLACES_LOCATION;
+                                double roundLatitude = Math.round(location.getLatitude() * DECIMAL_PLACES_LOCATION) / DECIMAL_PLACES_LOCATION;
+                                latitudeStr = String.valueOf(roundLatitude);
+                                longitudeStr = String.valueOf(roundLongitude);
+                                showCoordinates(true);
                             }
                         }
                 );
