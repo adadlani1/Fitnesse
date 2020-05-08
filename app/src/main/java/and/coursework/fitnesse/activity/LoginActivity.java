@@ -26,9 +26,6 @@ import and.coursework.fitnesse.R;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-
-    private static final String TAG = "EmailPassword";
-
     private EditText emailField;
     private EditText passwordField;
 
