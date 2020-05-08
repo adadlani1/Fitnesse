@@ -53,38 +53,32 @@ public class RegisterActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.INVISIBLE);
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        signUpButton.setOnClickListener(v -> {
 
-                String email = emailField.getText().toString().trim();
-                String password = passwordField.getText().toString().trim();
-                String name = nameField.getText().toString();
+            String email = emailField.getText().toString().trim();
+            String password = passwordField.getText().toString().trim();
+            String name = nameField.getText().toString();
 
-                if (TextUtils.isEmpty(email)) {
-                    emailField.setError("Email is Required");
-                }
+            if (TextUtils.isEmpty(email)) {
+                emailField.setError("Email is Required");
+            }
 
-                if (TextUtils.isEmpty(password))
-                    passwordField.setError("Password is Required");
+            if (TextUtils.isEmpty(password))
+                passwordField.setError("Password is Required");
 
-                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(name)) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                createNewUser(Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getUser()));
-                                Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
-                                onBackPressed();
-                            } else {
-                                Toast.makeText(RegisterActivity.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.INVISIBLE);
-                            }
+            if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(name)) {
+                progressBar.setVisibility(View.VISIBLE);
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        createNewUser(Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getUser()));
+                        Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
 
-                        }
-                    });
-                }
+                });
             }
         });
 
@@ -100,20 +94,15 @@ public class RegisterActivity extends AppCompatActivity {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
                 .build();
-        newUser.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                task.isSuccessful();
-            }
-        });
+        newUser.updateProfile(profileUpdates).addOnCompleteListener(Task::isSuccessful);
 
         newUser.sendEmailVerification();
 
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Email");
-        mDatabase.push().setValue(email);
+        mDatabase.setValue(email);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userID).child("Name");
-        mDatabase.push().setValue(name);
+        mDatabase.setValue(name);
 
     }
 }
