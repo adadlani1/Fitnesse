@@ -9,6 +9,8 @@ import androidx.core.app.NotificationCompat;
 import and.coursework.fitnesse.manager.NotificationHelper;
 
 public class AlertReceiver extends BroadcastReceiver {
+
+    /*Builds the notification and sends it out to the phone*/
     @Override
     public void onReceive(Context context, Intent intent) {
         NotificationHelper notificationHelper = new NotificationHelper(context);
