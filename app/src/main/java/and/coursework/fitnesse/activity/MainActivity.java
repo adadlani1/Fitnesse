@@ -1,6 +1,7 @@
 package and.coursework.fitnesse.activity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         checkIfCurrentMonthIsShownToUser();
 
         /*Firebase checking service is called so notifications can be triggered*/
-        if (new PreferenceManager(this).areNotificationsEnabled()){
+        if (new PreferenceManager(this).areNotificationsEnabled()) {
             Intent intent = new Intent(MainActivity.this, FirebaseBackgroundService.class);
             startService(intent);
         }
@@ -136,16 +137,29 @@ public class MainActivity extends AppCompatActivity {
         nextMonth.setOnClickListener(v -> nextMonthInfoRequested());
 
         /*Gestures on the chart*/
-        chartView.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()){
+        chartView.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
             public void onSwipeRight() {
                 previousMonthInfoRequested();
             }
+
             public void onSwipeLeft() {
                 if (!currentMonthSelected.equals(currentMonth) || !currentYearSelected.equals(currentYear)) {
                     nextMonthInfoRequested();
                 }
             }
         });
+    }
+
+    /*Confirmation dialog when back button pressed*/
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm exit")
+                .setMessage("Are you sure you want to exit the application?")
+                .setPositiveButton("YES", (dialog, id) -> this.finishAffinity())
+                .setNegativeButton("NO", (dialog, id) -> dialog.cancel())
+                .setCancelable(false)
+                .show();
     }
 
     /*Initialises firebase variables and database*/
@@ -156,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*Initialises Views in the XML document*/
-    private void initialiseViews(){
+    private void initialiseViews() {
         recyclerView = findViewById(R.id.recyclerViewMain);
         progressBar = findViewById(R.id.progressBarMainPage);
         monthTextView = findViewById(R.id.monthTextView);
@@ -190,9 +204,9 @@ public class MainActivity extends AppCompatActivity {
         int monthInt = Integer.parseInt(currentMonthSelected);
         int yearInt = Integer.parseInt(currentYearSelected);
         monthInt += 1;
-        if ( monthInt < 13) {
+        if (monthInt < 13) {
             updateMonth(monthInt);
-        } else if (monthInt == 13){
+        } else if (monthInt == 13) {
             currentYearSelected = String.valueOf(yearInt + 1);
             monthInt = 1;
             updateMonth(monthInt);
@@ -211,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
     /*Checks if the month shown on page is current month*/
     private void checkIfCurrentMonthIsShownToUser() {
-        if (currentMonthSelected.equals(currentMonth) && currentYearSelected.equals(currentYear)){
+        if (currentMonthSelected.equals(currentMonth) && currentYearSelected.equals(currentYear)) {
             nextMonth.setVisibility(View.INVISIBLE);
         } else
             nextMonth.setVisibility(View.VISIBLE);
@@ -232,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null){
+                if (dataSnapshot.getValue() == null) {
                     activityList.clear();
                     /*if there is no activity in the month this method is called*/
                     showNoResults();
@@ -274,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
     /*Gets selected month and load activities for the month*/
     private void updateMonth(int monthInt) {
         currentMonthSelectedName = getMonthName(monthInt);
-        if (monthInt > 9){
+        if (monthInt > 9) {
             currentMonthSelected = String.valueOf(monthInt);
         } else
             currentMonthSelected = "0" + monthInt;
@@ -303,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*Sets the y axis labels*/
         int day = 0;
-        for (int Minutes: yAxisData) {
+        for (int Minutes : yAxisData) {
             yAxisDayOfMonth.add(new PointValue(day, Minutes));
             day++;
         }
@@ -349,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*initialises axis by setting variable values*/
-    private void initialiseAxis(Axis axis, String nameOfAxis){
+    private void initialiseAxis(Axis axis, String nameOfAxis) {
         axis.setTextSize(16);
         axis.setName(nameOfAxis);
         axis.setTextColor(Color.parseColor("#08AFFF"));
