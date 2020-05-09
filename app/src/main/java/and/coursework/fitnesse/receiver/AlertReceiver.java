@@ -12,7 +12,7 @@ public class AlertReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         NotificationHelper notificationHelper = new NotificationHelper(context);
-        NotificationCompat.Builder notificationBuilder = notificationHelper.getChannelNotification("LAZY SHIT", "Time to be active");
+        NotificationCompat.Builder notificationBuilder = notificationHelper.getChannelNotification("Exercise Time!", "You haven't been active today");
         notificationHelper.getManager().notify(1, notificationBuilder.build());
     }
 }

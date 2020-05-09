@@ -21,9 +21,11 @@ public class NotificationHelper extends ContextWrapper {
         createChannels();
     }
 
+    /*Creates the channels and enables certain features*/
     private void createChannels() {
         NotificationChannel channel = new NotificationChannel(channel1ID, channel1Name, NotificationManager.IMPORTANCE_DEFAULT);
         channel.enableLights(true);
+        channel.setLockscreenVisibility(1);
         channel.enableVibration(true);
         channel.setLightColor(R.color.colorPrimary);
         channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
@@ -31,6 +33,7 @@ public class NotificationHelper extends ContextWrapper {
         getManager().createNotificationChannel(channel);
     }
 
+    /*Initiates Notification manager to start the notification service*/
     public NotificationManager getManager(){
         if (notificationManager == null){
             notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -38,6 +41,7 @@ public class NotificationHelper extends ContextWrapper {
         return notificationManager;
     }
 
+    /*Builds the notification and calls the receiver*/
     public NotificationCompat.Builder getChannelNotification(String title, String message){
         return new NotificationCompat.Builder(getApplicationContext(), channel1ID)
                 .setContentTitle(title)
