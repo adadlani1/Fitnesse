@@ -6,7 +6,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +28,7 @@ import and.coursework.fitnesse.manager.PreferenceManager;
 import and.coursework.fitnesse.objects.Activity;
 import and.coursework.fitnesse.receiver.AlertReceiver;
 
+/*A background service that checks the database for additions to the Activities of the user*/
 public class FirebaseBackgroundService extends Service {
     private DatabaseReference mDatabase;
 
@@ -51,21 +51,23 @@ public class FirebaseBackgroundService extends Service {
 
     }
 
+    /*Checks the database if new activity has been added*/
     private void hasNewActivityBeenAddedToday() {
 
         String day = AddActivity.getDate("dd");
-
 
         Query queryOrderedByDay = mDatabase.orderByChild("dayAdded").equalTo(day);
 
         List<Activity> activityList = queryEventListener(queryOrderedByDay);
         List<Activity> todaysActivities = checkForActivityToday(activityList);
 
+        /*If no activities today are present*/
         if (todaysActivities.size() == 0){
             sendNotifications();
         }
     }
 
+    /*Checks all of the activities and finds activities completed today*/
     private List<Activity> checkForActivityToday(List<Activity> activityList) {
         String month = AddActivity.getDate("MM");
         String year = AddActivity.getDate("yyyy");
@@ -80,6 +82,7 @@ public class FirebaseBackgroundService extends Service {
         return todaysActivities;
     }
 
+    /*Gets results from the database*/
     private List<Activity> queryEventListener(Query query) {
         List<Activity> activityList = new ArrayList<>();
         query.addValueEventListener(new ValueEventListener() {
@@ -109,6 +112,7 @@ public class FirebaseBackgroundService extends Service {
         setTimeForNotification();
     }
 
+    /*Time is set for the notification depending on what the user entered in Profile page*/
     private void setTimeForNotification() {
         int hour = new PreferenceManager(this).getNotificationHour();
         int minute = new PreferenceManager(this).getNotificationMinutes();
@@ -121,7 +125,7 @@ public class FirebaseBackgroundService extends Service {
     }
 
 
-
+    /*Broadcasts notification and sends it daily*/
     private void broadcastNotification(Calendar calendar) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
