@@ -1,17 +1,15 @@
 package and.coursework.fitnesse.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,7 +18,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Locale;
 import java.util.Objects;
 
 import and.coursework.fitnesse.R;
@@ -52,9 +49,9 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
 
+        /*initialises mapView */
         mMapView = findViewById(R.id.user_list_map);
         mMapView.onCreate(mapViewBundle);
-
         mMapView.getMapAsync(this);
 
         getIncomingIntent();
@@ -67,8 +64,9 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
 
     }
 
+    /*Methods required as we implemented OnMapReadyCallback*/
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
@@ -116,6 +114,7 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
         mMapView.onLowMemory();
     }
 
+    /*Sets the latitude and longitude of the activity clicked on and zooms to that location*/
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Activity Location"));
@@ -123,6 +122,7 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
         googleMap.setMyLocationEnabled(true);
     }
 
+    /*Gets incoming intent*/
     private void getIncomingIntent() {
         if (getIntent().hasExtra("activity") && getIntent().hasExtra("effortLevel")) {
             instantiateActivity();
@@ -143,6 +143,7 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
         showInformationInActivity();
     }
 
+    /*Shows information from intent to activity*/
     @SuppressLint("SetTextI18n")
     private void showInformationInActivity() {
         TextView activityTextView = findViewById(R.id.activityNameTextView);
