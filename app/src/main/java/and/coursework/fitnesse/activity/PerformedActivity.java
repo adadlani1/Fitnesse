@@ -3,10 +3,8 @@ package and.coursework.fitnesse.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -40,17 +38,14 @@ import and.coursework.fitnesse.objects.ActivityCategory;
 public class PerformedActivity extends AppCompatActivity{
 
     private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
+    private List<Activity> activityList = new ArrayList<>();
 
-    RecyclerView recyclerView;
-
-    List<Activity> activityList = new ArrayList<>();
-
-    Context context;
-    TextView noActivitiesTextView;
-    RelativeLayout relativeLayout;
-    ProgressBar progressBar;
+    /*Views*/
+    private RecyclerView recyclerView;
+    private TextView noActivitiesTextView;
+    private ProgressBar progressBar;
+    private ImageView backArrow;
+    private ImageView addActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,27 +54,115 @@ public class PerformedActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_performed);
 
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
+        /*Variables Initialised*/
+        initialiseVariables();
+        initialiseFirebase();
+
+        getActivitiesFromDatabase();
+
+        backArrow.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            overridePendingTransition(100, R.anim.fade_in);
+        });
+
+        addActivity.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), AddActivity.class)));
+
+    }
+
+    /*Firebase variables initialised*/
+    private void initialiseFirebase() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser mUser = mAuth.getCurrentUser();
         assert mUser != null;
         String userUid = mUser.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("Users").child(userUid).child("Activities");
+    }
 
+    /*Views initialised*/
+    private void initialiseVariables() {
         progressBar = findViewById(R.id.allActivitiesProgressBar);
         noActivitiesTextView = findViewById(R.id.noActivities);
-        ImageView backArrow = findViewById(R.id.backArrowAllActivities);
-        ImageView addActivity = findViewById(R.id.addActivityAllActivities);
+        backArrow = findViewById(R.id.backArrowAllActivities);
+        addActivity = findViewById(R.id.addActivityAllActivities);
 
-        noActivitiesTextView.setVisibility(View.INVISIBLE);
-
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userUid).child("Activities");
-
-        relativeLayout = findViewById(R.id.relativeLayout);
-        context = getApplicationContext();
+        RelativeLayout relativeLayout = findViewById(R.id.relativeLayout);
+        Context context = getApplicationContext();
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        noActivitiesTextView.setVisibility(View.INVISIBLE);
+    }
+
+    /*Finds unique activities saved by user in database*/
+    private List<String> findUniqueActivities(List<Activity> activityList) {
+        List<String> differentActivities = new ArrayList<>();
+        for (Activity activity: activityList){
+            if (!differentActivities.contains(activity.getActivity())){
+                differentActivities.add(activity.getActivity());
+            }
+        }
+        return differentActivities;
+    }
+
+    /*Analyses the information provided by the database, returns a list of categories with
+    * information about each unique activity*/
+    private List<ActivityCategory> analyseAndGetOverallCategoryInformation(List<Activity> activityList, List<String> uniqueActivities) {
+        List<ActivityCategory> uniqueActivityAnalysis = new ArrayList<>();
+        for (String activityName : uniqueActivities){
+            ActivityCategory activityCategory = new ActivityCategory();
+            activityCategory.setName(activityName);
+
+            /*Finds frequency of the activity*/
+            int frequency = findFrequencyOfActivity(activityList, activityName);
+            activityCategory.setFrequency(frequency);
+
+            /*Finds average minutes exercised for the activity*/
+            int averageMinutes = findAverage(activityList, activityName, frequency, "minutes");
+            activityCategory.setAverageMinutes(averageMinutes);
+
+            /*Finds average effort level for the exercise*/
+            int averageEffortLevel = findAverage(activityList, activityName, frequency, "effort level");
+            activityCategory.setAverageEffortLevel(averageEffortLevel);
+
+            /*Adds the activity details to the list*/
+            uniqueActivityAnalysis.add(activityCategory);
+        }
+
+        return uniqueActivityAnalysis;
+    }
+
+    /*Finds average when details passed*/
+    private int findAverage(List<Activity> activityList, String activityName, int frequency, String attribute) {
+        int total = 0;
+        for (Activity activity : activityList){
+            String savedActivityNameInDatabase = activity.getActivity();
+            if (savedActivityNameInDatabase.equals(activityName)){
+                if (attribute.equals("minutes"))
+                    total += Integer.parseInt(activity.getMinutes());
+                else if (attribute.equals("effort level"))
+                    total += activity.getEffortLevel();
+            }
+        }
+
+        return total/frequency;
+    }
+
+    /*Finds frequency of the activity name*/
+    private int findFrequencyOfActivity(List<Activity> activityList, String activityName) {
+        int frequencyOfActivity = 0;
+        for (Activity activity : activityList){
+            String savedActivityNameInDatabase = activity.getActivity();
+            if (savedActivityNameInDatabase.equals(activityName))
+                frequencyOfActivity+=1;
+        }
+        return frequencyOfActivity;
+    }
+
+    /*Gets all of the activities performed by user from the database*/
+    private void getActivitiesFromDatabase() {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -93,8 +176,11 @@ public class PerformedActivity extends AppCompatActivity{
 
                     progressBar.setVisibility(View.INVISIBLE);
 
+                    /*When there is a list of activities obtained*/
                     if (activityList.size()!= 0) {
                         List<String> uniqueActivities = findUniqueActivities(activityList);
+
+                        /*Adaptor called to show the analysis of the performed activities*/
                         List<ActivityCategory> activityCategoriesList = analyseAndGetOverallCategoryInformation(activityList, uniqueActivities);
                         CategoryAdaptor adapter = new CategoryAdaptor(getApplicationContext(), activityCategoriesList);
                         recyclerView.setAdapter(adapter);
@@ -111,87 +197,5 @@ public class PerformedActivity extends AppCompatActivity{
 
             }
         });
-
-
-        backArrow.setOnClickListener(v -> {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            overridePendingTransition(100, R.anim.fade_in);
-        });
-
-        addActivity.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), AddActivity.class)));
-
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.performed_activities, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.add_activity) {
-            startActivity(new Intent(this, AddActivity.class));
-            return true;
-        }
-        if (item.getItemId() == android.R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
-            overridePendingTransition(100, R.anim.fade_in);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private List<String> findUniqueActivities(List<Activity> activityList) {
-        List<String> differentActivities = new ArrayList<>();
-        for (Activity activity: activityList){
-            if (!differentActivities.contains(activity.getActivity())){
-                differentActivities.add(activity.getActivity());
-            }
-        }
-        return differentActivities;
-    }
-
-    private List<ActivityCategory> analyseAndGetOverallCategoryInformation(List<Activity> activityList, List<String> uniqueActivities) {
-        List<ActivityCategory> uniqueActivityAnalysis = new ArrayList<>();
-        for (String activityName : uniqueActivities){
-            ActivityCategory activityCategory = new ActivityCategory();
-            activityCategory.setName(activityName);
-            int frequency = findFrequencyOfActivity(activityList, activityName);
-            activityCategory.setFrequency(frequency);
-            int averageMinutes = findAverage(activityList, activityName, frequency, "minutes");
-            activityCategory.setAverageMinutes(averageMinutes);
-            int averageEffortLevel = findAverage(activityList, activityName, frequency, "effort level");
-            activityCategory.setAverageEffortLevel(averageEffortLevel);
-            uniqueActivityAnalysis.add(activityCategory);
-        }
-
-        return uniqueActivityAnalysis;
-    }
-
-    private int findAverage(List<Activity> activityList, String activityName, int frequency, String attribute) {
-        int total = 0;
-        for (Activity activity : activityList){
-            String savedActivityNameInDatabase = activity.getActivity();
-            if (savedActivityNameInDatabase.equals(activityName)){
-                if (attribute.equals("minutes"))
-                    total += Integer.parseInt(activity.getMinutes());
-                else if (attribute.equals("effort level"))
-                    total += activity.getEffortLevel();
-            }
-        }
-
-        return total/frequency;
-    }
-
-    private int findFrequencyOfActivity(List<Activity> activityList, String activityName) {
-        int frequencyOfActivity = 0;
-        for (Activity activity : activityList){
-            String savedActivityNameInDatabase = activity.getActivity();
-            if (savedActivityNameInDatabase.equals(activityName))
-                frequencyOfActivity+=1;
-        }
-        return frequencyOfActivity;
     }
 }
