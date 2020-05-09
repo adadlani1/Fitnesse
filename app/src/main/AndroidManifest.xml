@@ -34,9 +34,6 @@
             android:name=".activity.ViewActivityMapsActivity"
             android:label="@string/title_activity_view_maps" />
         <activity
-            android:name=".activity.AddFriendActivity"
-            android:parentActivityName=".activity.MainActivity" />
-        <activity
             android:name=".activity.PerformedActivity"
             android:parentActivityName=".activity.MainActivity" />
         <activity
