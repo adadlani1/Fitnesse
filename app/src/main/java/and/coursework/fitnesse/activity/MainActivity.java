@@ -336,6 +336,7 @@ public class MainActivity extends AppCompatActivity {
         lineChartView.setVisibility(View.VISIBLE);
     }
     private void showNoResults() {
+        progressBar.setVisibility(View.INVISIBLE);
         Activity noActivities = new Activity();
         noActivities.setActivity("No Activity In This Month");
         activityList.add(noActivities);
