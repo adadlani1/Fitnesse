@@ -59,12 +59,15 @@ public class AddActivity extends AppCompatActivity {
     private String latitudeStr;
     private FusedLocationProviderClient mFusedLocationClient;
 
-    /*Variables used in XML file*/
+    /*Views*/
     private ProgressBar progressBar;
     private EditText descriptionText;
     private EditText minutes;
     private Spinner activities;
     private SeekBar effortLevel;
+    private ImageView saveButton;
+    private ImageView backButton;
+    private ConstraintLayout constraintLayout;
 
     /*Variable for objects*/
     private User user;
@@ -86,17 +89,8 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
-        /*Saving the display items to variables*/
-        progressBar = findViewById(R.id.addActivityProgressBar);
-        descriptionText = findViewById(R.id.descriptionEditText);
-        minutes = findViewById(R.id.minutesEditText);
-        activities = findViewById(R.id.activitiesChooser);
-        effortLevel = findViewById(R.id.effortLevelSlider);
-        ImageView saveButton = findViewById(R.id.saveButton);
-        ImageView backButton = findViewById(R.id.backArrow);
-        ConstraintLayout constraintLayout = findViewById(R.id.consraintLayoutAddActivity);
-
-        progressBar.setVisibility(View.INVISIBLE);
+        /*Saving the views to variables*/
+        initialiseViews();
 
         /*Initialising objects*/
         user = new User();
@@ -128,6 +122,19 @@ public class AddActivity extends AppCompatActivity {
             public void onSwipeRight() {goBackToMainPage();}
         });
 
+    }
+
+    private void initialiseViews() {
+        progressBar = findViewById(R.id.addActivityProgressBar);
+        descriptionText = findViewById(R.id.descriptionEditText);
+        minutes = findViewById(R.id.minutesEditText);
+        activities = findViewById(R.id.activitiesChooser);
+        effortLevel = findViewById(R.id.effortLevelSlider);
+        saveButton = findViewById(R.id.saveButton);
+        backButton = findViewById(R.id.backArrow);
+        constraintLayout = findViewById(R.id.consraintLayoutAddActivity);
+
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     /*Method checks if all of the required boxes are filled in*/
@@ -328,7 +335,7 @@ public class AddActivity extends AppCompatActivity {
                 LocationManager.NETWORK_PROVIDER);
     }
 
-    /*checks if required fields are filled in*/
+    /*Checks if required fields are filled in*/
     private void checkIfFieldsFilledIn() {
         TextView blankFields = findViewById(R.id.blankFieldsErrorTextView);
         blankFields.setVisibility(View.VISIBLE);
@@ -340,6 +347,7 @@ public class AddActivity extends AppCompatActivity {
             activities.setBackgroundColor(Color.RED);
     }
 
+    /*Starts the main Activity*/
     private void goBackToMainPage(){
         startActivity(new Intent(this, MainActivity.class));
         overridePendingTransition(100, R.anim.fade_in);
