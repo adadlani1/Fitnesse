@@ -1,10 +1,8 @@
 package and.coursework.fitnesse.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -57,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView monthTextView;
     private ImageView nextMonth;
+    private ImageView previousMonth;
 
     private List<Activity> activityList = new ArrayList<>();
     private String currentMonth;
@@ -66,6 +65,12 @@ public class MainActivity extends AppCompatActivity {
     private String currentMonthSelectedName;
 
     private FirebaseUser mUser;
+    private ImageView account;
+    private ImageView addActivity;
+    private ImageView viewActivities;
+    private ImageView openSpotify;
+    private LineChartView chartView;
+    private TextView welcomeMsg;
 
     @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     @Override
@@ -75,49 +80,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*Everything is initialised when activity is created*/
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        assert mUser != null;
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid()).child("Activities");
+        initialiseFirebase(mAuth);
 
-        recyclerView = findViewById(R.id.recyclerViewMain);
-        progressBar = findViewById(R.id.progressBarMainPage);
-        monthTextView = findViewById(R.id.monthTextView);
-        nextMonth = findViewById(R.id.nextMonthImage);
-        ImageView previousMonth = findViewById(R.id.LastMonthImage);
-        ImageView account = findViewById(R.id.accountImageView);
-        ImageView addActivity = findViewById(R.id.addActivityImageView);
-        ImageView viewActivities = findViewById(R.id.listOfAllActivities);
-        ImageView openSpotify = findViewById(R.id.music);
-        LineChartView chartView = findViewById(R.id.lineChart);
-        TextView welcomeMsg = findViewById(R.id.welcome);
-
-        welcomeMsg.setText(mUser.getDisplayName());
+        initialiseViews();
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         progressBar.setVisibility(View.VISIBLE);
         chartView.setVisibility(View.INVISIBLE);
 
+        /*Current year and month is saved into a variable to be used as a reference point*/
         currentYear = getCurrent("yyyy");
         currentYearSelected = currentYear;
 
         currentMonth = getCurrent("MM");
         currentMonthSelected = currentMonth;
         currentMonthSelectedName = getMonthName(Integer.parseInt(getCurrent("MM")));
+
+        /*Month and name are added to the main page*/
         updateTextView();
         loadActivities();
 
+        /*Checks if user has verified email, if they have then logo shown */
         showVerfied();
 
-        checkIfCurrentTimeIsShownToUser();
+        /*Checks if the month shown on the graph is equal to current month*/
+        checkIfCurrentMonthIsShownToUser();
 
+        /*Firebase checking service is called so notifications can be triggered*/
         if (new PreferenceManager(this).areNotificationsEnabled()){
             Intent intent = new Intent(MainActivity.this, FirebaseBackgroundService.class);
             startService(intent);
         }
 
-
+        /*On Click Listeners for each button as they all start different Activities with intents*/
         viewActivities.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PerformedActivity.class)));
 
         addActivity.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), AddActivity.class)));
@@ -130,14 +128,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "We recommend listening to music while exercising!", Toast.LENGTH_SHORT).show();
         });
 
-        previousMonth.setOnClickListener(v -> {
-            previousMonthInfoRequested();
-        });
+        previousMonth.setOnClickListener(v -> previousMonthInfoRequested());
 
-        nextMonth.setOnClickListener(v -> {
-            nextMonthInfoRequested();
-        });
+        nextMonth.setOnClickListener(v -> nextMonthInfoRequested());
 
+        /*Gestures on the chart*/
         chartView.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()){
             public void onSwipeRight() {
                 previousMonthInfoRequested();
@@ -150,6 +145,29 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*Initialises firebase variables and database*/
+    private void initialiseFirebase(FirebaseAuth mAuth) {
+        mUser = mAuth.getCurrentUser();
+        assert mUser != null;
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid()).child("Activities");
+    }
+
+    /*Initialises Views in the XML document*/
+    private void initialiseViews(){
+        recyclerView = findViewById(R.id.recyclerViewMain);
+        progressBar = findViewById(R.id.progressBarMainPage);
+        monthTextView = findViewById(R.id.monthTextView);
+        nextMonth = findViewById(R.id.nextMonthImage);
+        previousMonth = findViewById(R.id.LastMonthImage);
+        account = findViewById(R.id.accountImageView);
+        addActivity = findViewById(R.id.addActivityImageView);
+        viewActivities = findViewById(R.id.listOfAllActivities);
+        openSpotify = findViewById(R.id.music);
+        chartView = findViewById(R.id.lineChart);
+        welcomeMsg = findViewById(R.id.welcome);
+    }
+
+    /*Previous month arrow button pressed*/
     private void previousMonthInfoRequested() {
         int monthInt = Integer.parseInt(currentMonthSelected);
         int yearInt = Integer.parseInt(currentYearSelected);
@@ -161,9 +179,10 @@ public class MainActivity extends AppCompatActivity {
             currentYearSelected = String.valueOf(yearInt - 1);
             updateMonth(monthInt);
         }
-        checkIfCurrentTimeIsShownToUser();
+        checkIfCurrentMonthIsShownToUser();
     }
 
+    /*Next month arrow button pressed*/
     private void nextMonthInfoRequested() {
         int monthInt = Integer.parseInt(currentMonthSelected);
         int yearInt = Integer.parseInt(currentYearSelected);
@@ -175,9 +194,10 @@ public class MainActivity extends AppCompatActivity {
             monthInt = 1;
             updateMonth(monthInt);
         }
-        checkIfCurrentTimeIsShownToUser();
+        checkIfCurrentMonthIsShownToUser();
     }
 
+    /*Checks if User has verified email*/
     private void showVerfied() {
         ImageView verified = findViewById(R.id.verifiedImage);
         if (mUser.isEmailVerified()) {
@@ -186,7 +206,8 @@ public class MainActivity extends AppCompatActivity {
             verified.setVisibility(View.INVISIBLE);
     }
 
-    private void checkIfCurrentTimeIsShownToUser() {
+    /*Checks if the month shown on page is current month*/
+    private void checkIfCurrentMonthIsShownToUser() {
         if (currentMonthSelected.equals(currentMonth) && currentYearSelected.equals(currentYear)){
             nextMonth.setVisibility(View.INVISIBLE);
         } else
@@ -194,13 +215,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*Gets Current Time */
-
+    /*Gets Current Time Variable*/
     private String getCurrent(String time) {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(time);
         Date date = new Date();
         return dateFormat.format(date);
     }
+
+    /*Queries the database and gets the activities for the displayed month*/
     private void loadActivities() {
         Query query = mDatabase.orderByChild("monthAdded").equalTo((currentMonthSelected));
 
@@ -209,16 +231,19 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() == null){
                     activityList.clear();
+                    /*if there is no activity in the month this method is called*/
                     showNoResults();
                 }
                 if (dataSnapshot.exists()) {
                     activityList.clear();
+                    /*when results exist*/
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Activity activity = snapshot.getValue(Activity.class);
                         activityList.add(activity);
                     }
                     progressBar.setVisibility(View.INVISIBLE);
                     if (activityList.size() != 0) {
+                        /*Activities obtained and adaptor called to show results*/
                         ActivityAdaptor adapter = new ActivityAdaptor(getApplicationContext(), activityList);
                         recyclerView.setAdapter(adapter);
                         showResultsOnChart();
@@ -232,15 +257,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*Updates month shown and welcome message*/
     @SuppressLint("SetTextI18n")
     private void updateTextView() {
         monthTextView.setText(currentMonthSelectedName + " " + currentYearSelected);
+        welcomeMsg.setText(mUser.getDisplayName());
     }
 
     public static String getMonthName(int month) {
         return new DateFormatSymbols().getMonths()[month - 1];
     }
 
+    /*Gets selected month and load activities for the month*/
     private void updateMonth(int monthInt) {
         currentMonthSelectedName = getMonthName(monthInt);
         if (monthInt > 9){
@@ -251,6 +279,7 @@ public class MainActivity extends AppCompatActivity {
         updateTextView();
     }
 
+    /*shows results on the chart*/
     private void showResultsOnChart() {
         LineChartView lineChartView = findViewById(R.id.lineChart);
         lineChartView.setInteractive(true);
@@ -258,23 +287,25 @@ public class MainActivity extends AppCompatActivity {
         List<String> xAxisData = getXAxisData();
         List<Integer> yAxisData = getYAxisData(xAxisData);
 
-
         List<lecho.lib.hellocharts.model.PointValue> yAxisDayOfMonth = new ArrayList<>();
         List<AxisValue> xAxisMinuteValues = new ArrayList<>();
 
 
         Line minutesLine = new Line(yAxisDayOfMonth).setColor(Color.parseColor("#100db4"));
 
+        /*Sets the x axis labels*/
         for (int i = 0; i < xAxisData.size(); i++) {
             xAxisMinuteValues.add(i, new AxisValue(i).setLabel(xAxisData.get(i)));
         }
 
+        /*Sets the y axis labels*/
         int day = 0;
         for (int Minutes: yAxisData) {
             yAxisDayOfMonth.add(new PointValue(day, Minutes));
             day++;
         }
 
+        /*Adds line to graph*/
         List<Line> lineArrayList = new ArrayList<>();
         lineArrayList.add(minutesLine);
 
@@ -285,6 +316,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*Gets y axis data from list of activities*/
     private List<Integer> getYAxisData(List<String> axisData) {
         List<Integer> data = new ArrayList<>();
 
@@ -300,6 +332,7 @@ public class MainActivity extends AppCompatActivity {
         return data;
     }
 
+    /*Gets x axis data by looking at month and working out length of the month*/
     private List<String> getXAxisData() {
         LocalDate date = LocalDate.of(2020, Integer.parseInt(currentMonthSelected), 1);
         int monthSize = date.lengthOfMonth();
@@ -312,12 +345,14 @@ public class MainActivity extends AppCompatActivity {
         return days;
     }
 
+    /*initialises axis by setting variable values*/
     private void initialiseAxis(Axis axis, String nameOfAxis){
         axis.setTextSize(16);
         axis.setName(nameOfAxis);
         axis.setTextColor(Color.parseColor("#08AFFF"));
     }
 
+    /*initialises the chart by showing results to user*/
     private void initialiseChart(List<AxisValue> xAxisMinuteValues, LineChartData lineChartData, LineChartView lineChartView) {
         Axis xAxis = new Axis();
         xAxis.setValues(xAxisMinuteValues);
@@ -335,6 +370,8 @@ public class MainActivity extends AppCompatActivity {
 
         lineChartView.setVisibility(View.VISIBLE);
     }
+
+    /*If no activity is present, this is shown to user*/
     private void showNoResults() {
         progressBar.setVisibility(View.INVISIBLE);
         Activity noActivities = new Activity();
