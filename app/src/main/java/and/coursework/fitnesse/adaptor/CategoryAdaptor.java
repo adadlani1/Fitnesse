@@ -2,7 +2,6 @@ package and.coursework.fitnesse.adaptor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,6 @@ import java.util.Collections;
 import java.util.List;
 
 import and.coursework.fitnesse.R;
-import and.coursework.fitnesse.activity.MainActivity;
-import and.coursework.fitnesse.listeners.OnSwipeTouchListener;
 import and.coursework.fitnesse.objects.ActivityCategory;
 
 public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.ProductViewHolder> {
@@ -53,19 +50,9 @@ public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.Produc
         holder.textViewAverageMinutes.setText("Average Minutes: "+ activityCategory.getAverageMinutes());
         holder.textViewFrequency.setText("No. of Activities: "+ activityCategory.getFrequency());
         setImageOfActivity(activityCategory, holder);
-        setUpSwipeGestures(holder);
-
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private void setUpSwipeGestures(ProductViewHolder holder) {
-        holder.cardView.setOnTouchListener(new OnSwipeTouchListener(context){
-            public void onSwipeRight() {
-                context.startActivity(new Intent(context, MainActivity.class));
-            }
-        });
-    }
-
+    /*Sets Image depending on activity*/
     private void setImageOfActivity(ActivityCategory activity, CategoryAdaptor.ProductViewHolder holder) {
         switch (activity.getName()) {
             case "Boxercise":
@@ -104,7 +91,7 @@ public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.Produc
             case "Weightlifting":
                 holder.activityImage.setImageResource(R.drawable.weightlifting);
                 break;
-            case "Workout":
+            default:
                 holder.activityImage.setImageResource(R.drawable.workout);
                 break;
         }
