@@ -161,7 +161,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
             case "Weightlifting":
                 holder.activityImage.setImageResource(R.drawable.weightlifting);
                 break;
-            case "Workout":
+            default:
                 holder.activityImage.setImageResource(R.drawable.workout);
                 break;
         }
