@@ -40,7 +40,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //inflating and returning our view holder
+        //inflating and returning the view holder
         LayoutInflater inflater = LayoutInflater.from(context);
         @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.activity_layout, null);
         return new ProductViewHolder(view);
@@ -52,6 +52,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
         //getting the product of the specified position
         final Activity activity = activityList.get(position);
 
+        /*If there are no activities present*/
         if (activity.getActivity().equals("No Activity In This Month")) {
 
             String month = "0" + getDate("MM");
@@ -72,24 +73,16 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
 
             //binding the data with the viewholder views
             holder.textViewActivity.setText(activity.getActivity());
-            holder.textViewLocation.setText(activity.getDescription());
             holder.textViewDate.setText("Date: " + date);
             holder.textViewMinutes.setText("Minutes Active: " + activity.getMinutes());
 
             setImageOfActivity(activity, holder);
             showEffortLevel(activity, holder);
 
+            /*Starts map activity when card pressed*/
             holder.cardView.setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), ViewActivityMapsActivity.class);
-                intent.putExtra("activity",  activity.getActivity());
-                intent.putExtra("dayAdded",  activity.getDayAdded());
-                intent.putExtra("monthAdded",  activity.getMonthAdded());
-                intent.putExtra("yearAdded",  activity.getYearAdded());
-                intent.putExtra("description",  activity.getDescription());
-                intent.putExtra("effortLevel",  String.valueOf(activity.getEffortLevel()));
-                intent.putExtra("latitude",  activity.getLatitude());
-                intent.putExtra("longitude",  activity.getLongitude());
-                intent.putExtra("minutes",  activity.getMinutes());
+                addExtraInformation(intent, activity);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 v.getContext().startActivity(intent);
 
@@ -97,12 +90,27 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
         }
     }
 
+    /*Adds extra information to intent*/
+    private void addExtraInformation(Intent intent, Activity activity) {
+        intent.putExtra("activity",  activity.getActivity());
+        intent.putExtra("dayAdded",  activity.getDayAdded());
+        intent.putExtra("monthAdded",  activity.getMonthAdded());
+        intent.putExtra("yearAdded",  activity.getYearAdded());
+        intent.putExtra("description",  activity.getDescription());
+        intent.putExtra("effortLevel",  String.valueOf(activity.getEffortLevel()));
+        intent.putExtra("latitude",  activity.getLatitude());
+        intent.putExtra("longitude",  activity.getLongitude());
+        intent.putExtra("minutes",  activity.getMinutes());
+    }
+
+    /*Gets date*/
     private String getDate(String time) {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(time);
         Date date = new Date();
         return dateFormat.format(date);
     }
 
+    /*Changes colour of card depending on effort level*/
     private void showEffortLevel(Activity activity, ProductViewHolder holder) {
         switch (activity.getEffortLevel()){
             case 0:
@@ -123,6 +131,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
         }
     }
 
+    /*Sets image on card depending on activity*/
     private void setImageOfActivity(Activity activity, ProductViewHolder holder) {
         switch (activity.getActivity()) {
             case "Boxercise":

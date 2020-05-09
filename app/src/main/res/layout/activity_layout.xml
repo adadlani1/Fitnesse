@@ -49,7 +49,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@id/activityImage"
                 android:text="@string/description"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/date"
