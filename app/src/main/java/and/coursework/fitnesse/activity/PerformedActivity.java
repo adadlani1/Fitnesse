@@ -61,7 +61,7 @@ public class PerformedActivity extends AppCompatActivity{
         getActivitiesFromDatabase();
 
         backArrow.setOnClickListener(v -> {
-            onBackPressed();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             overridePendingTransition(100, R.anim.fade_in);
         });
 
