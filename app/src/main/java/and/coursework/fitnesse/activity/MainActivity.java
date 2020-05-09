@@ -50,13 +50,20 @@ import lecho.lib.hellocharts.view.LineChartView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DatabaseReference mDatabase;
+    /*Views*/
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView monthTextView;
+    private TextView welcomeMsg;
     private ImageView nextMonth;
     private ImageView previousMonth;
+    private ImageView account;
+    private ImageView addActivity;
+    private ImageView viewActivities;
+    private ImageView openSpotify;
+    private LineChartView chartView;
 
+    /*Variables*/
     private List<Activity> activityList = new ArrayList<>();
     private String currentMonth;
     private String currentMonthSelected;
@@ -64,13 +71,9 @@ public class MainActivity extends AppCompatActivity {
     private String currentYearSelected;
     private String currentMonthSelectedName;
 
+    /*Firebase Variables*/
     private FirebaseUser mUser;
-    private ImageView account;
-    private ImageView addActivity;
-    private ImageView viewActivities;
-    private ImageView openSpotify;
-    private LineChartView chartView;
-    private TextView welcomeMsg;
+    private DatabaseReference mDatabase;
 
     @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     @Override
