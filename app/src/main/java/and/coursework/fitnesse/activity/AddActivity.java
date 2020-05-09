@@ -349,7 +349,7 @@ public class AddActivity extends AppCompatActivity {
 
     /*Starts the main Activity*/
     private void goBackToMainPage(){
-        startActivity(new Intent(this, MainActivity.class));
+        onBackPressed();
         overridePendingTransition(100, R.anim.fade_in);
     }
 }

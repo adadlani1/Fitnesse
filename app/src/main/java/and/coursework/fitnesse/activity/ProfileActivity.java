@@ -154,7 +154,7 @@ public class ProfileActivity extends AppCompatActivity{
             if (task.isSuccessful()) {
                 Toast.makeText(ProfileActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.INVISIBLE);
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                onBackPressed();
                 overridePendingTransition(100, R.anim.fade_in);
 
             }
