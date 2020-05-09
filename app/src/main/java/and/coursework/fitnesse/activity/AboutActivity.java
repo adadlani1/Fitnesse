@@ -13,6 +13,7 @@ import and.coursework.fitnesse.R;
 
 public class AboutActivity extends AppCompatActivity {
 
+    /*Enables webview to show the HTML user guide*/
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
