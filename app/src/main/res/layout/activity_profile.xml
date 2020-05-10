@@ -19,6 +19,7 @@
         android:id="@+id/topNaviProfileCardView"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
         app:cardBackgroundColor="#000000"
         app:cardCornerRadius="10dp"
         app:cardElevation="100dp"
