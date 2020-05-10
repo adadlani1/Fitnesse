@@ -22,6 +22,9 @@ import java.util.List;
 import and.coursework.fitnesse.R;
 import and.coursework.fitnesse.activity.ViewActivityMapsActivity;
 import and.coursework.fitnesse.objects.Activity;
+import and.coursework.fitnesse.utils.AppUtils;
+
+import static and.coursework.fitnesse.utils.AppUtils.getDate;
 
 public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.ProductViewHolder> {
 
@@ -101,13 +104,6 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
         intent.putExtra("latitude",  activity.getLatitude());
         intent.putExtra("longitude",  activity.getLongitude());
         intent.putExtra("minutes",  activity.getMinutes());
-    }
-
-    /*Gets date*/
-    private String getDate(String time) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(time);
-        Date date = new Date();
-        return dateFormat.format(date);
     }
 
     /*Changes colour of card depending on effort level*/

@@ -28,6 +28,8 @@ import and.coursework.fitnesse.manager.PreferenceManager;
 import and.coursework.fitnesse.objects.Activity;
 import and.coursework.fitnesse.receiver.AlertReceiver;
 
+import static and.coursework.fitnesse.utils.AppUtils.getDate;
+
 /*A background service that checks the database for additions to the Activities of the user*/
 public class FirebaseBackgroundService extends Service {
     private DatabaseReference mDatabase;
@@ -54,7 +56,7 @@ public class FirebaseBackgroundService extends Service {
     /*Checks the database if new activity has been added*/
     private void hasNewActivityBeenAddedToday() {
 
-        String day = AddActivity.getDate("dd");
+        String day = getDate("dd");
 
         Query queryOrderedByDay = mDatabase.orderByChild("dayAdded").equalTo(day);
 
@@ -69,8 +71,8 @@ public class FirebaseBackgroundService extends Service {
 
     /*Checks all of the activities and finds activities completed today*/
     private List<Activity> checkForActivityToday(List<Activity> activityList) {
-        String month = AddActivity.getDate("MM");
-        String year = AddActivity.getDate("yyyy");
+        String month = getDate("MM");
+        String year = getDate("yyyy");
         List<Activity> todaysActivities = new ArrayList<>();
         for (Activity activity: activityList){
             String savedMonth = activity.getMonthAdded();

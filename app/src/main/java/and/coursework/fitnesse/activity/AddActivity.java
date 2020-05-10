@@ -47,6 +47,9 @@ import and.coursework.fitnesse.R;
 import and.coursework.fitnesse.listeners.OnSwipeTouchListener;
 import and.coursework.fitnesse.objects.Activity;
 import and.coursework.fitnesse.objects.User;
+import and.coursework.fitnesse.utils.AppUtils;
+
+import static and.coursework.fitnesse.utils.AppUtils.getDate;
 
 public class AddActivity extends AppCompatActivity {
     /*Constants*/
@@ -174,13 +177,6 @@ public class AddActivity extends AppCompatActivity {
         Toast.makeText(AddActivity.this, "Saved", Toast.LENGTH_SHORT).show();
     }
 
-    /*Gets Current date */
-    public static String getDate(String pattern) {
-
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
 
     /*Adds a custom Action Bar from a different xml file in menu*/
     @Override
@@ -278,7 +274,6 @@ public class AddActivity extends AppCompatActivity {
 
 
     /*Gets new Location Data*/
-    @SuppressLint("MissingPermission")
     private void requestNewLocationData() {
 
         LocationRequest mLocationRequest = new LocationRequest();
