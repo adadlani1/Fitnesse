@@ -5,4 +5,9 @@
     <color name="colorAccent">#08AFFF</color>
     <color name="purple">#4A47A7</color>
     <color name="white">#fff</color>
+    <color name="effortLevel0">#FF9166</color>
+    <color name="effortLevel1">#EBC68A</color>
+    <color name="effortLevel2">#FFF08C</color>
+    <color name="effortLevel3">#D9EB67</color>
+    <color name="effortLevel4">#A9EB57</color>
 </resources>

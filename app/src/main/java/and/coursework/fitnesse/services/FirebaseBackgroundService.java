@@ -23,10 +23,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import and.coursework.fitnesse.activity.AddActivity;
 import and.coursework.fitnesse.manager.PreferenceManager;
 import and.coursework.fitnesse.objects.Activity;
-import and.coursework.fitnesse.receiver.AlertReceiver;
+import and.coursework.fitnesse.receiver.NotificationReceiver;
 
 import static and.coursework.fitnesse.utils.AppUtils.getDate;
 
@@ -130,7 +129,7 @@ public class FirebaseBackgroundService extends Service {
     /*Broadcasts notification and sends it daily*/
     private void broadcastNotification(Calendar calendar) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlertReceiver.class);
+        Intent intent = new Intent(this, NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
 
         assert alarmManager != null;

@@ -60,4 +60,23 @@
     <string name="duration">Duration:</string>
     <string name="mins">mins</string>
 
+    <string name="SPOTIFY_URI">spotify:playlist:37i9dQZF1DWSWA2pLcO5dt</string>
+
+    <string name="SPOTIFY_OPENING_MESSAGE">We recommend listening to music while exercising!</string>
+    <string name="SAVED_ACTIVITY_MESSAGE">Saved</string>
+    <string name="TURN_ON_LOCATION_MESSAGE">Turn on location</string>
+    <string name="ENTER_NUMBER_OF_MINS_MESSAGE">Please Enter the Number of Minutes.</string>
+    <string name="ENTER_DESCRIPTION_MESSAGE">Please Enter More Information About Your Activity.</string>
+    <string name="LOGIN_SUCCESSFUL_MESSAGE">Logged in Successfully</string>
+    <string name="SAVE_SUCCESSFUL_MESSAGE">Saved Successfully</string>
+    <string name="SET_NOTIFICATION_TIME_MESSAGE">Please set the time you would like to be reminded to complete your daily activity</string>
+    <string name="ACCOUNT_CREATED_SUCCESSFUL_MESSAGE">Account Created Successfully</string>
+    <string name="NO_SAVED_ACTIVITIES_MESSAGE">Please click the button above to add an activity</string>
+    <string name="MAPVIEW_BUNDLE_KEY">MapViewBundleKey</string>
+    <string name="NOTIFICATION_TITLE">Exercise Time!</string>
+    <string name="NOTIFICATION_MESSAGE">You haven\'t been active today</string>
+
+
+    <string name="WEBVIEW_LOAD_URL">file:///android_asset/homepage.html</string>
+
 </resources>

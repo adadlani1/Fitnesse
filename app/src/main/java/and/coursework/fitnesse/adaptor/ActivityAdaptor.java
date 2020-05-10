@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
@@ -58,12 +59,12 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
         /*If there are no activities present*/
         if (activity.getActivity().equals("No Activity In This Month")) {
 
-            String month = "0" + getDate("MM");
+            String month = getDate("MM");
             String year = getDate("yyyy");
 
             holder.activityImage.setImageResource(R.drawable.cross);
             if (month.equals(activity.getMonthAdded()) && year.equals(activity.getYearAdded()))
-                holder.textViewLocation.setText("Please click the Button above to add an activity");
+                holder.textViewLocation.setText(R.string.NO_SAVED_ACTIVITIES_MESSAGE);
             else
                 holder.textViewLocation.setVisibility(View.GONE);
             holder.textViewActivity.setText(activity.getActivity());
@@ -110,19 +111,19 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
     private void showEffortLevel(Activity activity, ProductViewHolder holder) {
         switch (activity.getEffortLevel()) {
             case 0:
-                holder.relativeLayout.setBackgroundColor(Color.parseColor("#FF9166"));
+                holder.relativeLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.effortLevel0));
                 break;
             case 1:
-                holder.relativeLayout.setBackgroundColor(Color.parseColor("#EBC68A"));
+                holder.relativeLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.effortLevel1));
                 break;
             case 2:
-                holder.relativeLayout.setBackgroundColor(Color.parseColor("#FFF08C"));
+                holder.relativeLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.effortLevel2));
                 break;
             case 3:
-                holder.relativeLayout.setBackgroundColor(Color.parseColor("#D9EB67"));
+                holder.relativeLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.effortLevel3));
                 break;
             case 4:
-                holder.relativeLayout.setBackgroundColor(Color.parseColor("#A9EB57"));
+                holder.relativeLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.effortLevel4));
                 break;
         }
     }

@@ -127,9 +127,9 @@ public class MainActivity extends AppCompatActivity {
         account.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ProfileActivity.class)));
 
         openSpotify.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("spotify:playlist:37i9dQZF1DWSWA2pLcO5dt"));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.valueOf(R.string.SPOTIFY_URI)));
             this.startActivity(intent);
-            Toast.makeText(getApplicationContext(), "We recommend listening to music while exercising!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.SPOTIFY_OPENING_MESSAGE, Toast.LENGTH_SHORT).show();
         });
 
         previousMonth.setOnClickListener(v -> previousMonthInfoRequested());

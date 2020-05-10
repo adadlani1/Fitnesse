@@ -70,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 createNewUser(Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getUser()));
-                Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, R.string.ACCOUNT_CREATED_SUCCESSFUL_MESSAGE, Toast.LENGTH_SHORT).show();
                 onBackPressed();
             } else {
                 Toast.makeText(RegisterActivity.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();

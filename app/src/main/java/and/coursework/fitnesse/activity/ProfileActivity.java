@@ -79,8 +79,7 @@ public class ProfileActivity extends AppCompatActivity {
         notificationsCheckBox.setOnClickListener(v -> {
             if (notificationsCheckBox.isChecked()) {
                 timePicker.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), "Please set the time you would like to " +
-                        "be reminded to complete your daily activity", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.SET_NOTIFICATION_TIME_MESSAGE, Toast.LENGTH_SHORT).show();
                 setSavedNotificationTimeToTimePicker();
             } else
                 timePicker.setVisibility(View.INVISIBLE);
@@ -154,7 +153,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         mUser.updateProfile(profileUpdates).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(ProfileActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, R.string.SAVE_SUCCESSFUL_MESSAGE, Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.INVISIBLE);
                 onBackPressed();
                 overridePendingTransition(100, R.anim.fade_in);

@@ -40,14 +40,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import and.coursework.fitnesse.R;
 import and.coursework.fitnesse.listeners.OnSwipeTouchListener;
 import and.coursework.fitnesse.objects.Activity;
 import and.coursework.fitnesse.objects.User;
-import and.coursework.fitnesse.utils.AppUtils;
 
 import static and.coursework.fitnesse.utils.AppUtils.getDate;
 
@@ -55,8 +51,6 @@ public class AddActivity extends AppCompatActivity {
     /*Constants*/
     private static final double DECIMAL_PLACES_LOCATION = 100000.0;
     private static final int PERMISSION_ID = 44;
-
-
     /*String variable for location*/
     private String longitudeStr;
     private String latitudeStr;
@@ -176,7 +170,7 @@ public class AddActivity extends AppCompatActivity {
         mDatabase.push().setValue(activity);
 
         /*Message shown to user that */
-        Toast.makeText(AddActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+        Toast.makeText(AddActivity.this, R.string.SAVED_ACTIVITY_MESSAGE, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -265,7 +259,7 @@ public class AddActivity extends AppCompatActivity {
                 );
             } else {
                 /*Starts Location settings if location disabled*/
-                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.TURN_ON_LOCATION_MESSAGE, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
             }
@@ -336,10 +330,11 @@ public class AddActivity extends AppCompatActivity {
     private void checkIfFieldsFilledIn() {
         TextView blankFields = findViewById(R.id.blankFieldsErrorTextView);
         blankFields.setVisibility(View.VISIBLE);
-        if (minutesExercised.equals(""))
-            minutes.setError("Please Enter the Number of Minutes.");
-        if (description.equals(""))
-            descriptionText.setError("Please Enter More Information About Your Activity.");
+        if (minutesExercised != null && minutesExercised.equals("")) {
+            minutes.setError(String.valueOf(R.string.ENTER_NUMBER_OF_MINS_MESSAGE));
+        }
+        if (description != null && description.equals(""))
+            descriptionText.setError(String.valueOf(R.string.ENTER_DESCRIPTION_MESSAGE));
         if (activityChosen.equals("Select"))
             activities.setBackgroundColor(Color.RED);
     }

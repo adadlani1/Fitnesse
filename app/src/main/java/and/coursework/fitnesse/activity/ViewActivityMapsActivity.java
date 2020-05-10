@@ -24,7 +24,6 @@ import and.coursework.fitnesse.R;
 
 public class ViewActivityMapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private MapView mMapView;
     private String activity;
     private String effortLevel;
@@ -46,7 +45,7 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
 
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
-            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+            mapViewBundle = savedInstanceState.getBundle(String.valueOf(R.string.MAPVIEW_BUNDLE_KEY));
         }
 
         /*initialises mapView */
@@ -69,10 +68,10 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
+        Bundle mapViewBundle = outState.getBundle(String.valueOf(R.string.MAPVIEW_BUNDLE_KEY));
         if (mapViewBundle == null) {
             mapViewBundle = new Bundle();
-            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
+            outState.putBundle(String.valueOf(R.string.MAPVIEW_BUNDLE_KEY), mapViewBundle);
         }
 
         mMapView.onSaveInstanceState(mapViewBundle);
