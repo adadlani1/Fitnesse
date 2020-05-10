@@ -26,7 +26,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NavUtils;
 
@@ -64,7 +63,6 @@ public class AddActivity extends AppCompatActivity {
     private SeekBar effortLevel;
     private ImageView saveButton;
     private ImageView backButton;
-    private ConstraintLayout constraintLayout;
 
     /*Variable for objects*/
     private User user;
@@ -109,7 +107,8 @@ public class AddActivity extends AppCompatActivity {
 
         backButton.setOnClickListener(v -> goBackToMainPage());
 
-        constraintLayout.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
+        View gestureView = findViewById(R.id.gestureViewAdd);
+        gestureView.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
             /*Swipe up means save information. Validation method called*/
             public void onSwipeTop() {
                 validation();
@@ -131,7 +130,6 @@ public class AddActivity extends AppCompatActivity {
         effortLevel = findViewById(R.id.effortLevelSlider);
         saveButton = findViewById(R.id.saveButton);
         backButton = findViewById(R.id.backArrow);
-        constraintLayout = findViewById(R.id.consraintLayoutAddActivity);
 
         progressBar.setVisibility(View.INVISIBLE);
     }

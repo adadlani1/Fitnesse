@@ -60,6 +60,10 @@
 
     </androidx.cardview.widget.CardView>
 
+    <and.coursework.fitnesse.views.GesturesView
+        android:id="@+id/gestureViewProfile"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
     <EditText
         android:id="@+id/Name"
         android:layout_width="322dp"

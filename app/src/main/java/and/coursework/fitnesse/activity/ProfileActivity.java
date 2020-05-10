@@ -1,6 +1,5 @@
 package and.coursework.fitnesse.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -38,9 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView verified;
     private ImageView aboutImageView;
     private ImageView backArrow;
-    private RelativeLayout relativeLayout;
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -86,7 +82,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         /*Gestures*/
-        relativeLayout.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
+
+        View gestureView = findViewById(R.id.gestureViewProfile);
+        gestureView.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
             public void onSwipeRight() {
                 saveChanges();
             }
@@ -123,7 +121,6 @@ public class ProfileActivity extends AppCompatActivity {
         verified = findViewById(R.id.verifiedBox);
         aboutImageView = findViewById(R.id.about);
         backArrow = findViewById(R.id.backArrowProfile);
-        relativeLayout = findViewById(R.id.profileRelativeLayout);
     }
 
     /*Saves changes and updates profile*/
