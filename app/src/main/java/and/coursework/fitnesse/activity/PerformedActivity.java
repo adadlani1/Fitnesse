@@ -35,7 +35,7 @@ import and.coursework.fitnesse.adaptor.CategoryAdaptor;
 import and.coursework.fitnesse.objects.Activity;
 import and.coursework.fitnesse.objects.ActivityCategory;
 
-public class PerformedActivity extends AppCompatActivity{
+public class PerformedActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private List<Activity> activityList = new ArrayList<>();
@@ -99,8 +99,8 @@ public class PerformedActivity extends AppCompatActivity{
     /*Finds unique activities saved by user in database*/
     private List<String> findUniqueActivities(List<Activity> activityList) {
         List<String> differentActivities = new ArrayList<>();
-        for (Activity activity: activityList){
-            if (!differentActivities.contains(activity.getActivity())){
+        for (Activity activity : activityList) {
+            if (!differentActivities.contains(activity.getActivity())) {
                 differentActivities.add(activity.getActivity());
             }
         }
@@ -108,10 +108,10 @@ public class PerformedActivity extends AppCompatActivity{
     }
 
     /*Analyses the information provided by the database, returns a list of categories with
-    * information about each unique activity*/
+     * information about each unique activity*/
     private List<ActivityCategory> analyseAndGetOverallCategoryInformation(List<Activity> activityList, List<String> uniqueActivities) {
         List<ActivityCategory> uniqueActivityAnalysis = new ArrayList<>();
-        for (String activityName : uniqueActivities){
+        for (String activityName : uniqueActivities) {
             ActivityCategory activityCategory = new ActivityCategory();
             activityCategory.setName(activityName);
 
@@ -137,9 +137,9 @@ public class PerformedActivity extends AppCompatActivity{
     /*Finds average when details passed*/
     private int findAverage(List<Activity> activityList, String activityName, int frequency, String attribute) {
         int total = 0;
-        for (Activity activity : activityList){
+        for (Activity activity : activityList) {
             String savedActivityNameInDatabase = activity.getActivity();
-            if (savedActivityNameInDatabase.equals(activityName)){
+            if (savedActivityNameInDatabase.equals(activityName)) {
                 if (attribute.equals("minutes"))
                     total += Integer.parseInt(activity.getMinutes());
                 else if (attribute.equals("effort level"))
@@ -147,16 +147,16 @@ public class PerformedActivity extends AppCompatActivity{
             }
         }
 
-        return total/frequency;
+        return total / frequency;
     }
 
     /*Finds frequency of the activity name*/
     private int findFrequencyOfActivity(List<Activity> activityList, String activityName) {
         int frequencyOfActivity = 0;
-        for (Activity activity : activityList){
+        for (Activity activity : activityList) {
             String savedActivityNameInDatabase = activity.getActivity();
             if (savedActivityNameInDatabase.equals(activityName))
-                frequencyOfActivity+=1;
+                frequencyOfActivity += 1;
         }
         return frequencyOfActivity;
     }
@@ -167,9 +167,9 @@ public class PerformedActivity extends AppCompatActivity{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 progressBar.setVisibility(View.VISIBLE);
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     activityList.clear();
-                    for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Activity activity = snapshot.getValue(Activity.class);
                         activityList.add(activity);
                     }
@@ -177,7 +177,7 @@ public class PerformedActivity extends AppCompatActivity{
                     progressBar.setVisibility(View.INVISIBLE);
 
                     /*When there is a list of activities obtained*/
-                    if (activityList.size()!= 0) {
+                    if (activityList.size() != 0) {
                         List<String> uniqueActivities = findUniqueActivities(activityList);
 
                         /*Adaptor called to show the analysis of the performed activities*/

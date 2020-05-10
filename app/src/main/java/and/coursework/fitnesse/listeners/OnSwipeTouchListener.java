@@ -7,11 +7,11 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /*Touch Listener that checks for gestures and depending on movement of the finger, the swipe
-* loads a specific method*/
+ * loads a specific method*/
 public class OnSwipeTouchListener implements View.OnTouchListener {
     private final GestureDetector gestureDetector;
 
-    protected OnSwipeTouchListener(Context ctx){
+    protected OnSwipeTouchListener(Context ctx) {
         gestureDetector = new GestureDetector(ctx, new GestureListener());
     }
 
@@ -50,8 +50,7 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
                         }
                         result = true;
                     }
-                }
-                else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                     if (diffY > 0) {
                         onSwipeBottom();
                     } else {

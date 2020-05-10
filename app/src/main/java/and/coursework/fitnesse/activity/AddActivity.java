@@ -115,14 +115,16 @@ public class AddActivity extends AppCompatActivity {
 
         backButton.setOnClickListener(v -> goBackToMainPage());
 
-        constraintLayout.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()){
+        constraintLayout.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
             /*Swipe up means save information. Validation method called*/
             public void onSwipeTop() {
                 validation();
             }
 
             /*Swipe Right means go back to previous page*/
-            public void onSwipeRight() {goBackToMainPage();}
+            public void onSwipeRight() {
+                goBackToMainPage();
+            }
         });
 
     }
@@ -343,7 +345,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
     /*Starts the main Activity*/
-    private void goBackToMainPage(){
+    private void goBackToMainPage() {
         onBackPressed();
         overridePendingTransition(100, R.anim.fade_in);
     }

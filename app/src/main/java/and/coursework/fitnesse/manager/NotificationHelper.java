@@ -34,15 +34,15 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     /*Initiates Notification manager to start the notification service*/
-    public NotificationManager getManager(){
-        if (notificationManager == null){
+    public NotificationManager getManager() {
+        if (notificationManager == null) {
             notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         }
         return notificationManager;
     }
 
     /*Builds the notification and calls the receiver*/
-    public NotificationCompat.Builder getChannelNotification(String title, String message){
+    public NotificationCompat.Builder getChannelNotification(String title, String message) {
         return new NotificationCompat.Builder(getApplicationContext(), channel1ID)
                 .setContentTitle(title)
                 .setContentText(message)

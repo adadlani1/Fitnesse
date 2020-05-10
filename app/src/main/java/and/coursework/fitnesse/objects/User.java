@@ -5,7 +5,7 @@ public class User {
     private String Email;
     private String Activities;
 
-    public User(){
+    public User() {
 
     }
 

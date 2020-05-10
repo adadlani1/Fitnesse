@@ -47,8 +47,8 @@ public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.Produc
 
         holder.textViewActivity.setText(activityCategory.getName());
         holder.textViewAverageEffortLevel.setText("Average Effort Level: " + activityCategory.getAverageEffortLevel());
-        holder.textViewAverageMinutes.setText("Average Minutes: "+ activityCategory.getAverageMinutes());
-        holder.textViewFrequency.setText("No. of Activities: "+ activityCategory.getFrequency());
+        holder.textViewAverageMinutes.setText("Average Minutes: " + activityCategory.getAverageMinutes());
+        holder.textViewFrequency.setText("No. of Activities: " + activityCategory.getFrequency());
         setImageOfActivity(activityCategory, holder);
     }
 
@@ -107,7 +107,7 @@ public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.Produc
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewActivity, textViewAverageEffortLevel, textViewAverageMinutes,textViewFrequency;
+        TextView textViewActivity, textViewAverageEffortLevel, textViewAverageMinutes, textViewFrequency;
         ImageView activityImage;
         CardView cardView;
         RelativeLayout relativeLayout;

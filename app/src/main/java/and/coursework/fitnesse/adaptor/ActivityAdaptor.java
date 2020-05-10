@@ -95,20 +95,20 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
 
     /*Adds extra information to intent*/
     private void addExtraInformation(Intent intent, Activity activity) {
-        intent.putExtra("activity",  activity.getActivity());
-        intent.putExtra("dayAdded",  activity.getDayAdded());
-        intent.putExtra("monthAdded",  activity.getMonthAdded());
-        intent.putExtra("yearAdded",  activity.getYearAdded());
-        intent.putExtra("description",  activity.getDescription());
-        intent.putExtra("effortLevel",  String.valueOf(activity.getEffortLevel()));
-        intent.putExtra("latitude",  activity.getLatitude());
-        intent.putExtra("longitude",  activity.getLongitude());
-        intent.putExtra("minutes",  activity.getMinutes());
+        intent.putExtra("activity", activity.getActivity());
+        intent.putExtra("dayAdded", activity.getDayAdded());
+        intent.putExtra("monthAdded", activity.getMonthAdded());
+        intent.putExtra("yearAdded", activity.getYearAdded());
+        intent.putExtra("description", activity.getDescription());
+        intent.putExtra("effortLevel", String.valueOf(activity.getEffortLevel()));
+        intent.putExtra("latitude", activity.getLatitude());
+        intent.putExtra("longitude", activity.getLongitude());
+        intent.putExtra("minutes", activity.getMinutes());
     }
 
     /*Changes colour of card depending on effort level*/
     private void showEffortLevel(Activity activity, ProductViewHolder holder) {
-        switch (activity.getEffortLevel()){
+        switch (activity.getEffortLevel()) {
             case 0:
                 holder.relativeLayout.setBackgroundColor(Color.parseColor("#FF9166"));
                 break;

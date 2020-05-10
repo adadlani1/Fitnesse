@@ -64,7 +64,7 @@ public class FirebaseBackgroundService extends Service {
         List<Activity> todaysActivities = checkForActivityToday(activityList);
 
         /*If no activities today are present*/
-        if (todaysActivities.size() == 0){
+        if (todaysActivities.size() == 0) {
             sendNotifications();
         }
     }
@@ -74,10 +74,10 @@ public class FirebaseBackgroundService extends Service {
         String month = getDate("MM");
         String year = getDate("yyyy");
         List<Activity> todaysActivities = new ArrayList<>();
-        for (Activity activity: activityList){
+        for (Activity activity : activityList) {
             String savedMonth = activity.getMonthAdded();
             String savedYear = activity.getYearAdded();
-            if (savedMonth.equals(month) && savedYear.equals(year)){
+            if (savedMonth.equals(month) && savedYear.equals(year)) {
                 todaysActivities.add(activity);
             }
         }
@@ -90,10 +90,10 @@ public class FirebaseBackgroundService extends Service {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null){
+                if (dataSnapshot.getValue() == null) {
                     sendNotifications();
                 }
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     activityList.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Activity activity = snapshot.getValue(Activity.class);
@@ -131,7 +131,7 @@ public class FirebaseBackgroundService extends Service {
     private void broadcastNotification(Calendar calendar) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent,0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
 
         assert alarmManager != null;
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);

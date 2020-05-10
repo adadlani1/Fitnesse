@@ -26,10 +26,10 @@ import and.coursework.fitnesse.R;
 import and.coursework.fitnesse.listeners.OnSwipeTouchListener;
 import and.coursework.fitnesse.manager.PreferenceManager;
 
-public class ProfileActivity extends AppCompatActivity{
+public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseUser mUser;
-    
+
     private ProgressBar progressBar;
     private TextView email;
     private TextView name;
@@ -67,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity{
             verified.setVisibility(View.GONE);
 
         /*Gets value of notification preference and shows with the check box ticked if
-        * notifications enabled */
+         * notifications enabled */
         showSharedPreferences();
 
         backArrow.setOnClickListener(v -> saveChanges());
@@ -77,7 +77,7 @@ public class ProfileActivity extends AppCompatActivity{
 
         /*When the notifications checkbox is checked, time picker shows*/
         notificationsCheckBox.setOnClickListener(v -> {
-            if (notificationsCheckBox.isChecked()){
+            if (notificationsCheckBox.isChecked()) {
                 timePicker.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(), "Please set the time you would like to " +
                         "be reminded to complete your daily activity", Toast.LENGTH_SHORT).show();
@@ -87,13 +87,15 @@ public class ProfileActivity extends AppCompatActivity{
         });
 
         /*Gestures*/
-        relativeLayout.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()){
+        relativeLayout.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
             public void onSwipeRight() {
                 saveChanges();
             }
+
             public void onSwipeLeft() {
                 startActivity(new Intent(getApplicationContext(), AboutActivity.class));
             }
+
             public void onSwipeBottom() {
                 signOutClicked();
             }
@@ -102,11 +104,11 @@ public class ProfileActivity extends AppCompatActivity{
 
     /*Gets and shows notification preferences*/
     private void showSharedPreferences() {
-        if (new PreferenceManager(this).areNotificationsEnabled()){
+        if (new PreferenceManager(this).areNotificationsEnabled()) {
             notificationsCheckBox.setChecked(true);
             timePicker.setVisibility(View.VISIBLE);
             setSavedNotificationTimeToTimePicker();
-        } else{
+        } else {
             notificationsCheckBox.setChecked(false);
             timePicker.setVisibility(View.GONE);
         }
