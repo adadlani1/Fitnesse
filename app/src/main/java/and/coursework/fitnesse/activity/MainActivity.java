@@ -29,10 +29,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import and.coursework.fitnesse.R;
@@ -48,6 +46,8 @@ import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
+
+import static and.coursework.fitnesse.utils.AppUtils.getDate;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser mUser;
     private DatabaseReference mDatabase;
 
-    @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
+    @SuppressLint({"SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -96,12 +96,12 @@ public class MainActivity extends AppCompatActivity {
         chartView.setVisibility(View.INVISIBLE);
 
         /*Current year and month is saved into a variable to be used as a reference point*/
-        currentYear = getCurrent("yyyy");
+        currentYear = getDate("yyyy");
         currentYearSelected = currentYear;
 
-        currentMonth = getCurrent("MM");
+        currentMonth = getDate("MM");
         currentMonthSelected = currentMonth;
-        currentMonthSelectedName = getMonthName(Integer.parseInt(getCurrent("MM")));
+        currentMonthSelectedName = getMonthName(Integer.parseInt(getDate("MM")));
 
         /*Month and name are added to the main page*/
         updateTextView();
@@ -136,8 +136,9 @@ public class MainActivity extends AppCompatActivity {
 
         nextMonth.setOnClickListener(v -> nextMonthInfoRequested());
 
-        /*Gestures on the chart*/
-        chartView.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
+        /*Gestures on the CardView*/
+        View gestureView = findViewById(R.id.gestureViewMain);
+        gestureView.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
             public void onSwipeRight() {
                 previousMonthInfoRequested();
             }
@@ -230,13 +231,6 @@ public class MainActivity extends AppCompatActivity {
         } else
             nextMonth.setVisibility(View.VISIBLE);
 
-    }
-
-    /*Gets Current Time Variable*/
-    private String getCurrent(String time) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(time);
-        Date date = new Date();
-        return dateFormat.format(date);
     }
 
     /*Queries the database and gets the activities for the displayed month*/

@@ -138,6 +138,10 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="0dp" />
+            <and.coursework.fitnesse.views.GesturesView
+                android:id="@+id/gestureViewMain"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent" />
 
         </RelativeLayout>
 
