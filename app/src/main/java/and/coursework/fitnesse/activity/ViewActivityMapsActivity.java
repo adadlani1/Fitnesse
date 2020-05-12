@@ -1,7 +1,10 @@
 package and.coursework.fitnesse.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -10,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,13 +52,19 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
             mapViewBundle = savedInstanceState.getBundle(String.valueOf(R.string.MAPVIEW_BUNDLE_KEY));
         }
 
-        /*initialises mapView */
-        mMapView = findViewById(R.id.user_list_map);
-        mMapView.onCreate(mapViewBundle);
-        mMapView.getMapAsync(this);
+        if (checkPermissions()) {
 
-        getIncomingIntent();
+            /*initialises mapView */
+            mMapView = findViewById(R.id.user_list_map);
+            mMapView.onCreate(mapViewBundle);
+            mMapView.getMapAsync(this);
 
+            getIncomingIntent();
+
+        } else {
+            requestPermissions();
+            Log.d("Anmol", "sup");
+        }
         ImageView backArrow = findViewById(R.id.backArrowViewActivity);
         backArrow.setOnClickListener(v -> {
             onBackPressed();
@@ -159,6 +169,22 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
         dateTextView.setText(dayAdded + " " + monthAddedName + " " + yearAdded);
         ratingBar.setNumStars(Integer.parseInt(effortLevel) + 1);
         ratingBar.setRating(Integer.parseInt(effortLevel) + 1);
+    }
+
+    /*Checks if the permission has been given*/
+    private boolean checkPermissions() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+    }
+
+    /*Requests permissions to access Location*/
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION},
+                44
+        );
     }
 
 }
