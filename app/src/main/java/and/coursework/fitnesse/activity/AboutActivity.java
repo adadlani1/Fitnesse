@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -26,5 +27,10 @@ public class AboutActivity extends AppCompatActivity {
         wv.setWebViewClient(new WebViewClient());
         wv.getSettings().setJavaScriptEnabled(true);
         wv.loadUrl(this.getResources().getString(R.string.WEBVIEW_LOAD_URL));
+
+        WebSettings webSettings = wv.getSettings();
+        webSettings.setBuiltInZoomControls(true);
+        wv.setMinimumWidth(260);
+        wv.setMinimumHeight(400);
     }
 }

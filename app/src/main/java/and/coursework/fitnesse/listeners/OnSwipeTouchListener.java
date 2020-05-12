@@ -11,8 +11,8 @@ import android.view.View;
 public class OnSwipeTouchListener implements View.OnTouchListener {
     private final GestureDetector gestureDetector;
 
-    protected OnSwipeTouchListener(Context ctx) {
-        gestureDetector = new GestureDetector(ctx, new GestureListener());
+    protected OnSwipeTouchListener(Context context) {
+        gestureDetector = new GestureDetector(context, new GestureListener());
     }
 
     @SuppressLint("ClickableViewAccessibility")
