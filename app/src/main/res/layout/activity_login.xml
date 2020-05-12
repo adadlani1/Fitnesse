@@ -42,14 +42,6 @@
             android:layout_marginTop="32dp"
             android:text="@string/login_btn" />
 
-        <TextView
-            android:id="@+id/resetPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:text="Forgot password?" />
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
