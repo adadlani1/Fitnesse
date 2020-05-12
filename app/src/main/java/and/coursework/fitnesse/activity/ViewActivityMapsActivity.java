@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -52,6 +51,7 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
             mapViewBundle = savedInstanceState.getBundle(String.valueOf(R.string.MAPVIEW_BUNDLE_KEY));
         }
 
+        /*Loads activity if permissions have been granted*/
         if (checkPermissions()) {
 
             /*initialises mapView */
@@ -61,9 +61,10 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
 
             getIncomingIntent();
 
-        } else {
+        }
+        /*Requests permissions if permissions have not been granted*/
+        else {
             requestPermissions();
-            Log.d("Anmol", "sup");
         }
         ImageView backArrow = findViewById(R.id.backArrowViewActivity);
         backArrow.setOnClickListener(v -> {
