@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,16 +57,8 @@ public class FirebaseBackgroundService extends Service {
     private void hasNewActivityBeenAddedToday() {
 
         String day = getDate("dd");
+        queryEventListener(day);
 
-        Query queryOrderedByDay = mDatabase.orderByChild("dayAdded").equalTo(day);
-
-        List<Activity> activityList = queryEventListener(queryOrderedByDay);
-        List<Activity> todaysActivities = checkForActivityToday(activityList);
-
-        /*If no activities today are present*/
-        if (todaysActivities.size() == 0) {
-            sendNotifications();
-        }
     }
 
     /*Checks all of the activities and finds activities completed today*/
@@ -84,9 +77,10 @@ public class FirebaseBackgroundService extends Service {
     }
 
     /*Gets results from the database*/
-    private List<Activity> queryEventListener(Query query) {
+    private void queryEventListener(String day) {
         List<Activity> activityList = new ArrayList<>();
-        query.addValueEventListener(new ValueEventListener() {
+        Query queryOrderedByDay = mDatabase.orderByChild("dayAdded").equalTo(day);
+        queryOrderedByDay.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() == null) {
@@ -99,6 +93,13 @@ public class FirebaseBackgroundService extends Service {
                         activityList.add(activity);
                     }
                 }
+
+                List<Activity> todaysActivities = checkForActivityToday(activityList);
+
+                /*If no activities today are present*/
+                if (todaysActivities.size() == 0) {
+                    sendNotifications();
+                }
             }
 
             @Override
@@ -106,7 +107,6 @@ public class FirebaseBackgroundService extends Service {
 
             }
         });
-        return activityList;
     }
 
     private void sendNotifications() {
