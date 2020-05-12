@@ -1,5 +1,6 @@
 package and.coursework.fitnesse.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -94,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             public void onSwipeBottom() {
-                signOutClicked();
+                showSignOutConfirmationDialog();
             }
         });
     }
@@ -136,10 +137,22 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     /*Signs user out when corresponding button or gesture used*/
-    void signOutClicked() {
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-        overridePendingTransition(100, R.anim.fade_in);
+    void signOutConfirmed() {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            overridePendingTransition(100, R.anim.fade_in);
+    }
+
+    /*Dialog pops up asking user to confirm signing out*/
+    private void showSignOutConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm exit")
+                .setMessage("Are you sure you want to sign out?")
+                .setPositiveButton("YES", (dialog, id) -> signOutConfirmed())
+                .setNegativeButton("NO", (dialog, id) -> dialog.cancel())
+                .setCancelable(false)
+                .show();
+
     }
 
     /*Updates profile in firebase and locally on the app*/
