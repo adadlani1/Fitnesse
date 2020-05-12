@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import and.coursework.fitnesse.R;
@@ -256,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.INVISIBLE);
                     if (activityList.size() != 0) {
                         /*Activities obtained and adaptor called to show results*/
+                        Collections.reverse(activityList);
                         ActivityAdaptor adapter = new ActivityAdaptor(getApplicationContext(), activityList);
                         recyclerView.setAdapter(adapter);
                         showResultsOnChart();

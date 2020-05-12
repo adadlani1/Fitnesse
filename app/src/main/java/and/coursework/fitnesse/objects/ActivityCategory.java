@@ -40,6 +40,7 @@ public class ActivityCategory {
         this.name = name;
     }
 
+    /*Sorts activity categories in order of number of times user has performed each activity*/
     public static Comparator<ActivityCategory> numberOfActivitiesComparator = (o1, o2) -> {
         Integer categoryNumberOfActivities1 = o1.getFrequency();
         Integer categoryNumberOfActivities2 = o2.getFrequency();
