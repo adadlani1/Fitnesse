@@ -127,7 +127,8 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
     /*Sets the latitude and longitude of the activity clicked on and zooms to that location*/
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Activity Location"));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
+                .title(this.getResources().getString(R.string.ACTIVITY_MARKER_NAME)));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15.0f));
         googleMap.setMyLocationEnabled(true);
     }
@@ -174,8 +175,10 @@ public class ViewActivityMapsActivity extends AppCompatActivity implements OnMap
 
     /*Checks if the permission has been given*/
     private boolean checkPermissions() {
-        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
     }
 

@@ -50,11 +50,11 @@ public class RegisterActivity extends AppCompatActivity {
 
             /*Statements for validation*/
             if (TextUtils.isEmpty(email)) {
-                emailField.setError("Email is Required");
+                emailField.setError(this.getResources().getString(R.string.EMAIL_REQUIRED));
             }
 
             if (TextUtils.isEmpty(password))
-                passwordField.setError("Password is Required");
+                passwordField.setError(this.getResources().getString(R.string.PASSWORD_REQUIRED));
 
             if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(name)) {
                 registerSequence(email, password);

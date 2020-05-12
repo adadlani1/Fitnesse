@@ -25,6 +25,6 @@ public class AboutActivity extends AppCompatActivity {
         WebView wv = findViewById(R.id.webview);
         wv.setWebViewClient(new WebViewClient());
         wv.getSettings().setJavaScriptEnabled(true);
-        wv.loadUrl("file:///android_asset/homepage.html");
+        wv.loadUrl(this.getResources().getString(R.string.WEBVIEW_LOAD_URL));
     }
 }

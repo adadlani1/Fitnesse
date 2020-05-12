@@ -75,8 +75,19 @@
     <string name="MAPVIEW_BUNDLE_KEY">MapViewBundleKey</string>
     <string name="NOTIFICATION_TITLE">Exercise Time!</string>
     <string name="NOTIFICATION_MESSAGE">You haven\'t been active today</string>
-
+    <string name="ACTIVITY_MARKER_NAME">Activity Location</string>
+    <string name="SIGN_OUT_DIALOG_TITLE">Confirm Sign Out</string>
 
     <string name="WEBVIEW_LOAD_URL">file:///android_asset/homepage.html</string>
+    <string name="SIGN_OUT_DIALOG_MESSAGE">Are you sure you want to sign out?</string>
+    <string name="CURRENT_NOT_AVAILABLE">Current Location Not Available</string>
+
+    <string name="EMAIL_REQUIRED">Email is Required</string>
+    <string name="PASSWORD_REQUIRED">Password is Required</string>
+    <string name="EXIT_APP_TITLE">Confirm exit</string>
+    <string name="EXIT_APP_MESSAGE">Are you sure you want to exit Fitnesse?</string>
+    <string name="X_AXIS_LABEL">Day of Month</string>
+    <string name="Y_AXIS_LABEL">Activity (mins)</string>
+    <string name="NO_ACTIVITY">No Activity This Month</string>
 
 </resources>

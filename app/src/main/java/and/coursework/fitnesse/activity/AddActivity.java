@@ -167,7 +167,7 @@ public class AddActivity extends AppCompatActivity {
         mDatabase.push().setValue(activity);
 
         /*Message shown to user that */
-        Toast.makeText(AddActivity.this, R.string.SAVED_ACTIVITY_MESSAGE, Toast.LENGTH_SHORT).show();
+        Toast.makeText(AddActivity.this, this.getResources().getString(R.string.SAVED_ACTIVITY_MESSAGE), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -205,7 +205,7 @@ public class AddActivity extends AppCompatActivity {
         if (locAvailable) {
             locationText = "Current Location: " + latitudeStr + ", " + longitudeStr;
         } else {
-            locationText = "Current Location Not Available";
+            locationText = this.getResources().getString(R.string.CURRENT_NOT_AVAILABLE);
             latitudeStr = "Not Available";
             longitudeStr = "Not Available";
 
@@ -327,10 +327,10 @@ public class AddActivity extends AppCompatActivity {
         TextView blankFields = findViewById(R.id.blankFieldsErrorTextView);
         blankFields.setVisibility(View.VISIBLE);
         if (minutesExercised != null && minutesExercised.equals("")) {
-            minutes.setError(String.valueOf(R.string.ENTER_NUMBER_OF_MINS_MESSAGE));
+            minutes.setError(this.getResources().getString(R.string.ENTER_NUMBER_OF_MINS_MESSAGE));
         }
         if (description != null && description.equals(""))
-            descriptionText.setError(String.valueOf(R.string.ENTER_DESCRIPTION_MESSAGE));
+            descriptionText.setError(this.getResources().getString(R.string.ENTER_DESCRIPTION_MESSAGE));
         if (activityChosen.equals("Select"))
             activities.setBackgroundColor(Color.RED);
     }

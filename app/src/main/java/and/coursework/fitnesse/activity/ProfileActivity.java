@@ -76,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
         notificationsCheckBox.setOnClickListener(v -> {
             if (notificationsCheckBox.isChecked()) {
                 timePicker.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), R.string.SET_NOTIFICATION_TIME_MESSAGE, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), this.getResources().getString(R.string.SET_NOTIFICATION_TIME_MESSAGE), Toast.LENGTH_SHORT).show();
                 setSavedNotificationTimeToTimePicker();
             } else
                 timePicker.setVisibility(View.INVISIBLE);
@@ -146,8 +146,8 @@ public class ProfileActivity extends AppCompatActivity {
     /*Dialog pops up asking user to confirm signing out*/
     private void showSignOutConfirmationDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Confirm exit")
-                .setMessage("Are you sure you want to sign out?")
+                .setTitle(this.getResources().getString(R.string.SIGN_OUT_DIALOG_TITLE))
+                .setMessage(this.getResources().getString(R.string.SIGN_OUT_DIALOG_MESSAGE))
                 .setPositiveButton("YES", (dialog, id) -> signOutConfirmed())
                 .setNegativeButton("NO", (dialog, id) -> dialog.cancel())
                 .setCancelable(false)
@@ -163,7 +163,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         mUser.updateProfile(profileUpdates).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(ProfileActivity.this, R.string.SAVE_SUCCESSFUL_MESSAGE, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, this.getResources().getString(R.string.SAVE_SUCCESSFUL_MESSAGE), Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.INVISIBLE);
                 onBackPressed();
                 overridePendingTransition(100, R.anim.fade_in);

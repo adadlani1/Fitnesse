@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -127,9 +128,9 @@ public class MainActivity extends AppCompatActivity {
         account.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ProfileActivity.class)));
 
         openSpotify.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("spotify:playlist:37i9dQZF1DWSWA2pLcO5dt"));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(this.getResources().getString(R.string.SPOTIFY_URI)));
             this.startActivity(intent);
-            Toast.makeText(getApplicationContext(), R.string.SPOTIFY_OPENING_MESSAGE, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), this.getResources().getString(R.string.SPOTIFY_OPENING_MESSAGE), Toast.LENGTH_SHORT).show();
         });
 
         previousMonth.setOnClickListener(v -> previousMonthInfoRequested());
@@ -155,8 +156,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
-                .setTitle("Confirm exit")
-                .setMessage("Are you sure you want to exit the application?")
+                .setTitle(this.getResources().getString(R.string.EXIT_APP_TITLE))
+                .setMessage(this.getResources().getString(R.string.EXIT_APP_MESSAGE))
                 .setPositiveButton("YES", (dialog, id) -> this.finishAffinity())
                 .setNegativeButton("NO", (dialog, id) -> dialog.cancel())
                 .setCancelable(false)
@@ -302,7 +303,8 @@ public class MainActivity extends AppCompatActivity {
         List<AxisValue> xAxisMinuteValues = new ArrayList<>();
 
 
-        Line minutesLine = new Line(yAxisDayOfMonth).setColor(Color.parseColor("#100db4"));
+        Line minutesLine = new Line(yAxisDayOfMonth).setColor(ContextCompat
+                .getColor(getApplicationContext(), R.color.colorPrimary));
 
         /*Sets the x axis labels*/
         for (int i = 0; i < xAxisData.size(); i++) {
@@ -360,18 +362,18 @@ public class MainActivity extends AppCompatActivity {
     private void initialiseAxis(Axis axis, String nameOfAxis) {
         axis.setTextSize(16);
         axis.setName(nameOfAxis);
-        axis.setTextColor(Color.parseColor("#08AFFF"));
+        axis.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
     }
 
     /*initialises the chart by showing results to user*/
     private void initialiseChart(List<AxisValue> xAxisMinuteValues, LineChartData lineChartData, LineChartView lineChartView) {
         Axis xAxis = new Axis();
         xAxis.setValues(xAxisMinuteValues);
-        initialiseAxis(xAxis, "Day of Month");
+        initialiseAxis(xAxis, this.getResources().getString(R.string.X_AXIS_LABEL));
         lineChartData.setAxisXBottom(xAxis);
 
         Axis yAxis = new Axis();
-        initialiseAxis(yAxis, "Activity (mins)");
+        initialiseAxis(yAxis, this.getResources().getString(R.string.Y_AXIS_LABEL));
         lineChartData.setAxisYLeft(yAxis);
 
         lineChartView.setLineChartData(lineChartData);
@@ -386,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
     private void showNoResults() {
         progressBar.setVisibility(View.INVISIBLE);
         Activity noActivities = new Activity();
-        noActivities.setActivity("No Activity In This Month");
+        noActivities.setActivity(this.getResources().getString(R.string.NO_ACTIVITY));
         activityList.add(noActivities);
         ActivityAdaptor adaptor = new ActivityAdaptor(getApplicationContext(), activityList);
         recyclerView.setAdapter(adaptor);
