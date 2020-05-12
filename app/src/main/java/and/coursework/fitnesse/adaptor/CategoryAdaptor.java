@@ -34,7 +34,7 @@ public class CategoryAdaptor extends RecyclerView.Adapter<CategoryAdaptor.Produc
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflating and returning the view holder
         LayoutInflater inflater = LayoutInflater.from(context);
-        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.activity_categories_layout, null);
+        View view = inflater.inflate(R.layout.activity_categories_layout, parent, false);
         return new ProductViewHolder(view);
     }
 

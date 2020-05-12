@@ -76,7 +76,6 @@ public class AddActivity extends AppCompatActivity {
     private String activityChosen;
     private int effortLevelValue;
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -236,7 +235,6 @@ public class AddActivity extends AppCompatActivity {
     }
 
     /*gets the last recorded location by the phone*/
-    @SuppressLint("MissingPermission")
     private void getLastLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {

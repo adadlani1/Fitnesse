@@ -3,7 +3,6 @@ package and.coursework.fitnesse.adaptor;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +15,11 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import and.coursework.fitnesse.R;
 import and.coursework.fitnesse.activity.ViewActivityMapsActivity;
 import and.coursework.fitnesse.objects.Activity;
-import and.coursework.fitnesse.utils.AppUtils;
 
 import static and.coursework.fitnesse.utils.AppUtils.getDate;
 
@@ -46,7 +42,7 @@ public class ActivityAdaptor extends RecyclerView.Adapter<ActivityAdaptor.Produc
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflating and returning the view holder
         LayoutInflater inflater = LayoutInflater.from(context);
-        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.activity_layout, null);
+        View view = inflater.inflate(R.layout.activity_layout, parent, false);
         return new ProductViewHolder(view);
     }
 
